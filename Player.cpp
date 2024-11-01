@@ -18,6 +18,7 @@ bool Player::playCard(int cardValue)
     }
     return false;
 }
+//alin asta e destept rau
 
 void Player::resetCards()
 {
