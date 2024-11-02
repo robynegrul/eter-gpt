@@ -14,7 +14,7 @@ private:
     
 public:
     Board(int boardSize);
-
+    
     bool placeCard(int row, int col, int cardValue);
     //commit 
 
