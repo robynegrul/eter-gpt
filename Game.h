@@ -1,3 +1,4 @@
+//commit
 #ifndef GAME_H
 #define GAME_H
 
@@ -12,7 +13,9 @@ private:
     int player1Wins;
     int player2Wins;
     int currentPlayerId;
+    //commit
 
+    //commit
 public:
     Game();
     void start();
@@ -22,4 +25,4 @@ public:
     void displayScore() const;
 };
 
-#endif
+#endif//commit

@@ -1,4 +1,5 @@
-﻿#include "Game.h"
+﻿//commit 
+#include "Game.h"
 #include <iostream>
 
 Game::Game() : board(3), player1(1), player2(2), player1Wins(0), player2Wins(0), currentPlayerId(1) {}
@@ -12,12 +13,13 @@ void Game::start()
     }
     std::cout << "Meci incheiat!\n";
     std::cout << (player1Wins == 2 ? "Jucatorul 1 a castigat meciul!\n" : "Jucatorul 2 a castigat meciul!\n");
-}
+}//commit 
 
 void Game::playRound() 
 {
     while (true) 
     {
+        //commit
         board.display();
         std::cout << "Jucatorul " << currentPlayerId << " alege o carte (1-4): ";
         int cardValue;
@@ -25,8 +27,9 @@ void Game::playRound()
 
         std::cout << "Alege pozitia (rand si coloana): ";
         int row, col;
-        std::cin >> row >> col;
+        std::cin >> row >> col;//commit
 
+        
         Player& currentPlayer = (currentPlayerId == 1) ? player1 : player2;
 
         if (currentPlayer.playCard(cardValue) && board.placeCard(row, col, currentPlayerId))
@@ -61,7 +64,7 @@ void Game::playRound()
         displayScore();
     }
 }
-
+//commit 
 void Game::resetRound() 
 {
     board.reset();
@@ -70,7 +73,9 @@ void Game::resetRound()
     currentPlayerId = 1;
     std::cout << "START JOC NOU!\n";
 }
+//commit 
 
+//commit 
 bool Game::checkWinCondition() 
 {
     return board.checkWinCondition(currentPlayerId);
@@ -79,4 +84,4 @@ bool Game::checkWinCondition()
 void Game::displayScore() const 
 {
     std::cout << "Scor: Jucator 1: " << player1Wins << " Jucator 2: " << player2Wins << "\n";
-}
+}//commit 
