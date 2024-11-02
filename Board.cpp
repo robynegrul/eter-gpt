@@ -6,9 +6,7 @@ Board::Board(int boardSize) : size(boardSize), grid(boardSize, std::vector<int>(
 void Board::reset()
 {
     grid.assign(size, std::vector<int>(size, 0));
-}//commit 
-
-//commit 
+}
 bool Board::placeCard(int row, int col, int cardValue)
 {
     if (row >= 0 && row < size && col >= 0 && col < size) {
@@ -19,8 +17,9 @@ bool Board::placeCard(int row, int col, int cardValue)
         }
     }
     return false;
-}
+}//commit
 
+//commit
 bool Board::checkWinCondition(int playerValue) const
 {
     for (int i = 0; i < size; ++i) {
@@ -49,8 +48,9 @@ bool Board::checkRow(int row, int playerValue) const
             return false;
     }
     return true;
-}
+}//commit
 
+//commit
 bool Board::checkColumn(int col, int playerValue) const
 {
     for (int row = 0; row < size; ++row) {
@@ -58,14 +58,28 @@ bool Board::checkColumn(int col, int playerValue) const
             return false;
     }
     return true;
-}
+}//commit
+
+  //commit
 
 bool Board::checkDiagonals(int playerValue) const
 {
-    bool diag1 = true, diag2 = true;
+    bool mainDiagonal = true;
+    bool secondaryDiagonal = true;
+
     for (int i = 0; i < size; ++i) {
-        diag1 &= (grid[i][i] == playerValue);
-        diag2 &= (grid[i][size - i - 1] == playerValue);
+        if (grid[i][i] != playerValue) {
+            mainDiagonal = false;
+        }
+        if (grid[i][size - i - 1] != playerValue) {
+            secondaryDiagonal = false;
+        }
+        // Dacă ambele sunt false, ieșim din buclă
+        if (!mainDiagonal && !secondaryDiagonal) {
+            return false;
+        }
     }
-    return diag1 || diag2;
-}//commit 
+
+    return mainDiagonal || secondaryDiagonal;
+}
+//commit 
