@@ -13,7 +13,7 @@ bool Board::placeCard(int row, int col, int cardValue)
 {
     if (row >= 0 && row < size && col >= 0 && col < size) {
         int existingCard = grid[row][col];
-        if (existingCard == 0 || cardValue > existingCard) {  // Plasează doar dacă este mai mare decât cartea existentă
+        if (existingCard == 0 || cardValue > existingCard) { 
             grid[row][col] = cardValue;
             return true;
         }
