@@ -1,4 +1,5 @@
-﻿#ifndef BOARD_H
+﻿//commit 
+#ifndef BOARD_H
 #define BOARD_H
 
 #include <vector>
@@ -10,12 +11,15 @@ class Board
 private:
     std::vector<std::vector<int>> grid;
     int size;
-
+    
 public:
     Board(int boardSize);
 
     bool placeCard(int row, int col, int cardValue);
+    //commit 
 
+
+    //commit 
     bool checkWinCondition(int playerValue) const;
 
     void reset();
@@ -30,4 +34,4 @@ private:
     bool checkDiagonals(int playerValue) const;
 };
 
-#endif
+#endif//commit 

@@ -3,13 +3,15 @@
 #include <iostream>
 
 int main() {
+    //commit 
     int boardSize = 3;
     Board board(boardSize);
     Player player1(1);
     Player player2(2);
 	int player1Wins = 0;
 	int player2Wins = 0;
-    int currentPlayerId = 1;
+    int currentPlayerId = 1;//commit 
+
 
     while (player1Wins < 2 && player2Wins < 2)
     {

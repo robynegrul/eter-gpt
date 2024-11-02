@@ -1,3 +1,4 @@
+//commit 
 #ifndef PLAYER_H
 #define PLAYER_H
 
@@ -8,7 +9,9 @@ private:
     int id;
     std::vector<int> cards;
     const std::vector<int> initialCards;
+    //commit 
 
+    //commit 
 public:
     Player(int playerId);
 
@@ -21,4 +24,4 @@ public:
 	bool hasCardsLeft() const;
 };
 
-#endif
+#endif//commit 

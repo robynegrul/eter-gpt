@@ -1,7 +1,14 @@
-﻿#include "Board.h"
+﻿//commit 
+#include "Board.h"
 
 Board::Board(int boardSize) : size(boardSize), grid(boardSize, std::vector<int>(boardSize, 0)) {}
 
+void Board::reset()
+{
+    grid.assign(size, std::vector<int>(size, 0));
+}//commit 
+
+//commit 
 bool Board::placeCard(int row, int col, int cardValue)
 {
     if (row >= 0 && row < size && col >= 0 && col < size) {
@@ -23,13 +30,9 @@ bool Board::checkWinCondition(int playerValue) const
     }
     // Verifică diagonale
     return checkDiagonals(playerValue);
-}
+}//commit 
 
-void Board::reset()
-{
-    grid.assign(size, std::vector<int>(size, 0));
-}
-
+//commit 
 void Board::display() const
 {
     for (const auto& row : grid) {
@@ -38,8 +41,9 @@ void Board::display() const
         }
         std::cout << "\n";
     }
-}
+}//commit 
 
+//commit 
 bool Board::checkRow(int row, int playerValue) const
 {
     for (int col = 0; col < size; ++col) {
@@ -66,4 +70,4 @@ bool Board::checkDiagonals(int playerValue) const
         diag2 &= (grid[i][size - i - 1] == playerValue);
     }
     return diag1 || diag2;
-}
+}//commit 
