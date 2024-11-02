@@ -22,7 +22,7 @@ bool Board::placeCard(int row, int col, int cardValue)
 }
 
 bool Board::checkWinCondition(int playerValue) const
-{
+    {
     for (int i = 0; i < size; ++i) {
         if (checkRow(i, playerValue) || checkColumn(i, playerValue))
             return true;
