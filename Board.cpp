@@ -23,12 +23,10 @@ bool Board::placeCard(int row, int col, int cardValue)
 
 bool Board::checkWinCondition(int playerValue) const
 {
-    // Verifică linii și coloane
     for (int i = 0; i < size; ++i) {
         if (checkRow(i, playerValue) || checkColumn(i, playerValue))
             return true;
     }
-    // Verifică diagonale
     return checkDiagonals(playerValue);
 }//commit 
 
