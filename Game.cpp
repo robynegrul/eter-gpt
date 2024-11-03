@@ -15,6 +15,26 @@ void Game::start()
     std::cout << (player1Wins == 2 ? "Jucatorul 1 a castigat meciul!\n" : "Jucatorul 2 a castigat meciul!\n");
 }//commit 
 
+//commit 
+void Game::resetRound()
+{
+    board.reset();
+    player1.resetCards();
+    player2.resetCards();
+    currentPlayerId = 1;
+    std::cout << "START JOC NOU!\n";
+}
+
+bool Game::checkWinCondition()
+{
+    return board.checkWinCondition(currentPlayerId);
+}
+
+void Game::displayScore() const
+{
+    std::cout << "Scor: Jucator 1: " << player1Wins << " Jucator 2: " << player2Wins << "\n";
+}//commit 
+
 void Game::playRound() 
 {
     while (true) 
@@ -29,7 +49,7 @@ void Game::playRound()
         int row, col;
         std::cin >> row >> col;//commit
 
-        
+        //commit
         Player& currentPlayer = (currentPlayerId == 1) ? player1 : player2;
 
         if (currentPlayer.playCard(cardValue) && board.placeCard(row, col, currentPlayerId))
@@ -61,27 +81,8 @@ void Game::playRound()
         {
             std::cout << "Mutare invalida, incearca din nou.\n";
         }
+        //commit
         displayScore();
     }
 }
-//commit 
-void Game::resetRound() 
-{
-    board.reset();
-    player1.resetCards();
-    player2.resetCards();
-    currentPlayerId = 1;
-    std::cout << "START JOC NOU!\n";
-}
-//commit 
 
-//commit 
-bool Game::checkWinCondition() 
-{
-    return board.checkWinCondition(currentPlayerId);
-}
-
-void Game::displayScore() const 
-{
-    std::cout << "Scor: Jucator 1: " << player1Wins << " Jucator 2: " << player2Wins << "\n";
-}//commit 
