@@ -32,15 +32,52 @@ bool Board::placeCard(int row, int col, int cardValue)
     }
     else if (firstCardPlaced == true && isAdjacent(row, col))
     {
-        if ((row < 0 || row >= size) && !fixedGridRows())
+		//if diagonal shift is allowed
+		if (!fixedGridRows() && !fixedGridColumns())
+		{
+			if (row < 0 && col < 0 && row == col) {
+				shiftRows(row, col);
+				shiftColumns(row, col);
+				grid[row][col] = cardValue;
+				return true;
+			}
+			else if (row >= size && col >= size && size == col) {
+                shiftRows(row, col);
+                shiftColumns(row, col);
+				grid[row][col] = cardValue;
+				return true;
+			}
+			else if (row < 0 && col >= size && row + col == size - 1) {
+                shiftRows(row, col);
+                shiftColumns(row, col);
+				grid[row][col] = cardValue;
+				return true;
+			}
+			else if (row >= size && col < 0 && row + col == size - 1) {
+                shiftRows(row, col);
+                shiftColumns(row, col);
+				grid[row][col] = cardValue;
+				return true;
+			}
+		}
+        else
         {
-            shiftGrid(row, col);
+            if (fixedGridRows() && fixedGridColumns())
+            {
+                std::cerr << "Error: Cannot shift grid diagonally as there is at least one element in each row or column" << std::endl;
+                return false;
+            }
+        }
+
+        if ((row < 0 || row >= size) && !fixedGridRows() && (col>=0 && col<size) )
+        {
+            shiftRows(row, col);
             grid[row][col] = cardValue;
             return true;
         }
-        if ((col < 0 || col >= size) && !fixedGridColumns())
+        if ((col < 0 || col >= size) && !fixedGridColumns() && (row >= 0 && row < size))
         {
-            shiftGrid(row, col);
+            shiftColumns(row, col);
             grid[row][col] = cardValue;
             return true;
         }
@@ -84,8 +121,8 @@ bool Board::shiftGrid(int& row, int& col) {
     }
 
     // Diagonal shifts
-    if (!fixedGridRows() && !fixedGridColumns()) {
-        if (row < 0 && col < 0) {
+    if (!fixedGridRows() || !fixedGridColumns()) {
+        if (row < 0 && col < 0 && row==col) {
             grid.insert(grid.begin(), std::vector<int>(size, 0));
             grid.pop_back();
             for (auto& r : grid) {
@@ -96,7 +133,7 @@ bool Board::shiftGrid(int& row, int& col) {
             col = 0;
             shifted = true;
         }
-        else if (row >= size && col >= size) {
+        else if (row >= size && col >= size && size==col) {
             grid.push_back(std::vector<int>(size, 0));
             grid.erase(grid.begin());
             for (auto& r : grid) {
@@ -107,7 +144,7 @@ bool Board::shiftGrid(int& row, int& col) {
             col = size - 1;
             shifted = true;
         }
-        else if (row < 0 && col >= size) {
+        else if (row < 0 && col >= size && row+col==size-1) {
             grid.insert(grid.begin(), std::vector<int>(size, 0));
             grid.pop_back();
             for (auto& r : grid) {
@@ -118,7 +155,7 @@ bool Board::shiftGrid(int& row, int& col) {
             col = size - 1;
             shifted = true;
         }
-        else if (row >= size && col < 0) {
+        else if (row >= size && col < 0 && row + col == size - 1) {
             grid.push_back(std::vector<int>(size, 0));
             grid.erase(grid.begin());
             for (auto& r : grid) {
@@ -135,6 +172,38 @@ bool Board::shiftGrid(int& row, int& col) {
     }
 
     return shifted;
+}
+
+void Board::shiftRows(int& row, int& col)
+{
+    if (row < 0) {
+        grid.insert(grid.begin(), std::vector<int>(size, 0));
+        grid.pop_back();
+        row = 0;
+    }
+    else if (row >= size) {
+        grid.push_back(std::vector<int>(size, 0));
+        grid.erase(grid.begin());
+        row = size - 1;
+    }
+}
+
+void Board::shiftColumns(int& row, int& col)
+{
+    if (col < 0) {
+        for (auto& r : grid) {
+            r.insert(r.begin(), 0);
+            r.pop_back();
+        }
+        col = 0;
+    }
+    else if (col >= size) {
+        for (auto& r : grid) {
+            r.push_back(0);
+            r.erase(r.begin());
+        }
+        col = size - 1;
+    }
 }
 
 bool Board::fixedGridRows() const

@@ -4,6 +4,7 @@
 #include <vector>
 #include <iostream>
 #include <string>
+#include <algorithm>
 
 class Board
 {
@@ -36,6 +37,8 @@ private:
 
     // New function declarations
     bool shiftGrid(int& row, int& col);
+    void shiftRows(int& row, int& col);
+    void shiftColumns(int& row, int& col);
     bool fixedGridRows() const;
     bool fixedGridColumns() const;
 };
