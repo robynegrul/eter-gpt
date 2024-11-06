@@ -1,17 +1,15 @@
-//commit 
 #ifndef PLAYER_H
 #define PLAYER_H
 
 #include <vector>
+#include <iostream>
 
 class Player {
 private:
     int id;
     std::vector<int> cards;
     const std::vector<int> initialCards;
-    //commit 
-
-    //commit 
+    
 public:
     Player(int playerId);
 
@@ -22,6 +20,11 @@ public:
 	void resetCards();
 
 	bool hasCardsLeft() const;
+
+    //commit
+    void displayAvailableCards() const;
+    //commit
+
 };
 
-#endif//commit 
+#endif
