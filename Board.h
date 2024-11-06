@@ -35,8 +35,7 @@ private:
     bool checkDiagonals(int playerValue) const;
 
     // New function declarations
-    bool canShiftGrid(int row, int col) const;
-    void shiftGrid(int& row, int& col);
+    bool shiftGrid(int& row, int& col);
     bool fixedGridRows() const;
     bool fixedGridColumns() const;
 };
