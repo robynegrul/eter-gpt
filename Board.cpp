@@ -30,21 +30,27 @@ bool Board::placeCard(int row, int col, int cardValue)
             return true;
         }
     }
-    else if (firstCardPlaced == true)
+    else if (firstCardPlaced == true && isAdjacent(row, col))
     {
-        if (canShiftGrid(row, col)) {
+        if ((row < 0 || row >= size) && !fixedGridRows())
+        {
             shiftGrid(row, col);
             grid[row][col] = cardValue;
             return true;
         }
-    }
-    return false;
-}
-
-bool Board::canShiftGrid(int row, int col) const
-{
-    if (row < 0 || row >= size || col < 0 || col >= size) {
-        return true;
+        if ((col < 0 || col >= size) && !fixedGridColumns())
+        {
+            shiftGrid(row, col);
+            grid[row][col] = cardValue;
+            return true;
+        }
+        //diagonal shift
+        if (((row == col) || (row + col == size - 1)) && fixedGridRows() == false && fixedGridColumns() == false)
+        {
+            shiftGrid(row, col);
+            grid[row][col] = cardValue;
+            return true;
+        }
     }
     return false;
 }
@@ -75,6 +81,83 @@ void Board::shiftGrid(int& row, int& col)
         }
         col = size - 1;
     }
+    // Diagonal shifts
+    if (row < 0 && col < 0 && !fixedGridRows() && !fixedGridColumns()) {
+        grid.insert(grid.begin(), std::vector<int>(size, 0));
+        grid.pop_back();
+        for (auto& r : grid) {
+            r.insert(r.begin(), 0);
+            r.pop_back();
+        }
+        row = 0;
+        col = 0;
+    }
+    else if (row >= size && col >= size && !fixedGridRows() && !fixedGridColumns()) {
+        grid.push_back(std::vector<int>(size, 0));
+        grid.erase(grid.begin());
+        for (auto& r : grid) {
+            r.push_back(0);
+            r.erase(r.begin());
+        }
+        row = size - 1;
+        col = size - 1;
+    }
+    else if (row < 0 && col >= size && !fixedGridRows() && !fixedGridColumns()) {
+        grid.insert(grid.begin(), std::vector<int>(size, 0));
+        grid.pop_back();
+        for (auto& r : grid) {
+            r.push_back(0);
+            r.erase(r.begin());
+        }
+        row = 0;
+        col = size - 1;
+    }
+    else if (row >= size && col < 0 && !fixedGridRows() && !fixedGridColumns()) {
+        grid.push_back(std::vector<int>(size, 0));
+        grid.erase(grid.begin());
+        for (auto& r : grid) {
+            r.insert(r.begin(), 0);
+            r.pop_back();
+        }
+        row = size - 1;
+        col = 0;
+    }
+}
+
+bool Board::fixedGridRows() const
+{
+    // Check if there is at least one element in each row
+    for (const auto& row : grid) {
+        bool hasElement = false;
+        for (int cell : row) {
+            if (cell != 0) {
+                hasElement = true;
+                break;
+            }
+        }
+        if (!hasElement) {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool Board::fixedGridColumns() const
+{
+    // Check if there is at least one element in each column
+    for (int col = 0; col < size; ++col) {
+        bool hasElement = false;
+        for (int row = 0; row < size; ++row) {
+            if (grid[row][col] != 0) {
+                hasElement = true;
+                break;
+            }
+        }
+        if (!hasElement) {
+            return false;
+        }
+    }
+    return true;
 }
 
 bool Board::checkWinCondition(int playerValue) const
