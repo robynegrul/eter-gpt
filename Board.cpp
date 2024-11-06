@@ -12,7 +12,6 @@ bool Board::placeCard(int row, int col, int cardValue)
 {
     if (row >= 0 && row < size && col >= 0 && col < size) {
         int existingCard = grid[row][col];
-        //commit
         if (isAdjacent(row, col) && firstCardPlaced == true)
         {
             if (existingCard == 0) {
@@ -30,9 +29,52 @@ bool Board::placeCard(int row, int col, int cardValue)
             firstCardPlaced = true;
             return true;
         }
-        //commit
+    }
+    else if (firstCardPlaced == true)
+    {
+        if (canShiftGrid(row, col)) {
+            shiftGrid(row, col);
+            grid[row][col] = cardValue;
+            return true;
+        }
     }
     return false;
+}
+
+bool Board::canShiftGrid(int row, int col) const
+{
+    if (row < 0 || row >= size || col < 0 || col >= size) {
+        return true;
+    }
+    return false;
+}
+
+void Board::shiftGrid(int& row, int& col)
+{
+    if (row < 0) {
+        grid.insert(grid.begin(), std::vector<int>(size, 0));
+        grid.pop_back();
+        row = 0;
+    }
+    else if (row >= size) {
+        grid.push_back(std::vector<int>(size, 0));
+        grid.erase(grid.begin());
+        row = size - 1;
+    }
+    if (col < 0) {
+        for (auto& r : grid) {
+            r.insert(r.begin(), 0);
+            r.pop_back();
+        }
+        col = 0;
+    }
+    else if (col >= size) {
+        for (auto& r : grid) {
+            r.push_back(0);
+            r.erase(r.begin());
+        }
+        col = size - 1;
+    }
 }
 
 bool Board::checkWinCondition(int playerValue) const
@@ -54,7 +96,6 @@ void Board::display() const
     }
 }
 
-//commit
 bool Board::isAdjacent(int row, int col) const
 {
     int directions[8][2] = { {-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1} };
@@ -67,8 +108,6 @@ bool Board::isAdjacent(int row, int col) const
     }
     return false;
 }
-//commit 
-
 
 bool Board::checkRow(int row, int playerValue) const
 {

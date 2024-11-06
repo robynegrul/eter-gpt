@@ -10,11 +10,11 @@ class Board
 private:
     std::vector<std::vector<int>> grid;
     int size;
-	bool firstCardPlaced; //commit
-    
+    bool firstCardPlaced; //commit
+
 public:
     Board(int boardSize);
-    
+
     bool placeCard(int row, int col, int cardValue);
 
     bool checkWinCondition(int playerValue) const;
@@ -33,6 +33,10 @@ private:
     bool checkColumn(int col, int playerValue) const;
 
     bool checkDiagonals(int playerValue) const;
+
+    // New function declarations
+    bool canShiftGrid(int row, int col) const;
+    void shiftGrid(int& row, int& col);
 };
 
 #endif
