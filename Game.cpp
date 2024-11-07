@@ -1,7 +1,7 @@
 ﻿#include "Game.h"
 #include <iostream>
 
-Game::Game() : board(3), player1(1), player2(2), player1Wins(0), player2Wins(0), currentPlayerId(1) {}
+Game::Game() : board{ 3 }, player1{ 1 }, player2{ 2 }, player1Wins{ 0 }, player2Wins{ 0 }, currentPlayerId{ 1 }, firstCardPlaced{ false } {}
 
 void Game::start()
 {
@@ -20,6 +20,7 @@ void Game::resetRound()
 	player1.resetCards();
 	player2.resetCards();
 	currentPlayerId = 1;
+	firstCardPlaced = false;
 	std::cout << "START JOC NOU!\n";
 }
 
@@ -30,14 +31,14 @@ bool Game::checkWinCondition()
 
 void Game::displayScore() const
 {
-	std::cout << "Scor: Jucator 1: " << player1Wins << "\nJucator 2: " << player2Wins << "\n"; //commit
+	std::cout << "Scor: \nJucator 1: " << player1Wins << "\nJucator 2: " << player2Wins << "\n\n"; //commit
 }
 
 void Game::playRound()
 {
 	while (true)
 	{
-		board.display();
+		//board.display();
 
 		//commit
 		Player& currentPlayer = (currentPlayerId == 1) ? player1 : player2;
@@ -47,39 +48,53 @@ void Game::playRound()
 		std::cout << "Jucatorul " << currentPlayerId << " alege o carte: ";
 		int cardValue;
 		std::cin >> cardValue;
+		card playCard = { currentPlayerId,cardValue };
 
-		std::cout << "Alege pozitia (rand si coloana): ";
-		int row, col;
-		std::cin >> row >> col;
-		if (board.placeCard(row, col, currentPlayerId))//commit in jos
-			if (currentPlayer.playCard(cardValue))
+		if (!firstCardPlaced)
+		{
+			if (board.placeCard(1, 1, playCard))
 			{
-				if (checkWinCondition())
-				{
-					board.display();
-					std::cout << "Jucatorul " << currentPlayerId << " a castigat!\n";
-					if (currentPlayerId == 1)
-					{
-						player1Wins++;
-					}
-					else
-					{
-						player2Wins++;
-					}
-					break;
-				}
-				if (!player1.hasCardsLeft() && !player2.hasCardsLeft())
-				{
-					std::cout << "Egalitate! Nu mai sunt carti disponibile.\n";
-					break;
-				}
-				currentPlayerId = (currentPlayerId == 1) ? 2 : 1;
+				firstCardPlaced = true;
+				currentPlayerId = 2;
+				board.display();
 			}
-			else
+		}
+		else
+		{
+			std::cout << "Alege pozitia (rand si coloana): ";
+			int row, col;
+			std::cin >> row >> col;
+			if (board.placeCard(row, col, playCard))//commit in jos
 			{
-				std::cout << "Mutare invalida, incearca din nou.\n";
+				board.display();
+				if (currentPlayer.playCard(cardValue))
+				{
+					if (checkWinCondition())
+					{
+						std::cout << "Jucatorul " << currentPlayerId << " a castigat!\n\n";
+						if (currentPlayerId == 1)
+						{
+							player1Wins++;
+						}
+						else
+						{
+							player2Wins++;
+						}
+						break;
+					}
+					if (!player1.hasCardsLeft() && !player2.hasCardsLeft())
+					{
+						std::cout << "Egalitate! Nu mai sunt carti disponibile.\n";
+						break;
+					}
+					currentPlayerId = (currentPlayerId == 1) ? 2 : 1;
+				}
+				else
+				{
+					std::cout << "Mutare invalida, incearca din nou.\n";
+				}
 			}
+		}
 	}
-	displayScore();
 }
 

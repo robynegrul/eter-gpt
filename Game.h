@@ -13,6 +13,7 @@ private:
     int player1Wins;
     int player2Wins;
     int currentPlayerId;
+    bool firstCardPlaced;
     //commit
 
     //commit

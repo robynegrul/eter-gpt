@@ -6,19 +6,21 @@
 #include <string>
 #include <algorithm>
 
+#define card std::pair<int, int>
+
 class Board
 {
 private:
-    std::vector<std::vector<int>> grid;
+    std::vector<std::vector<card>> grid;
     int size;
     bool firstCardPlaced; //commit
 
 public:
     Board(int boardSize);
 
-    bool placeCard(int row, int col, int cardValue);
+    bool placeCard(int row, int col, card playCard);
 
-    bool checkWinCondition(int playerValue) const;
+    bool checkWinCondition(int playerId) const;
 
     void reset();
 
@@ -29,11 +31,11 @@ public:
     //commit
 
 private:
-    bool checkRow(int row, int playerValue) const;
+    bool checkRow(int row, int playerId) const;
 
-    bool checkColumn(int col, int playerValue) const;
+    bool checkColumn(int col, int playerId) const;
 
-    bool checkDiagonals(int playerValue) const;
+    bool checkDiagonals(int playerId) const;
 
     // New function declarations
     bool shiftGrid(int& row, int& col);

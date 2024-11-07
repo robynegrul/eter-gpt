@@ -1,31 +1,27 @@
 ﻿#include "Board.h"
 
-Board::Board(int boardSize) : size(boardSize), grid(boardSize, std::vector<int>(boardSize, 0)), firstCardPlaced{ false } {}
+Board::Board(int boardSize) : size(boardSize), grid(boardSize, std::vector<card>(boardSize, { 0,0 })), firstCardPlaced{ false } {}
 
 void Board::reset()
 {
-    grid.assign(size, std::vector<int>(size, 0));
+	grid.assign(size, std::vector<card>(size, { 0,0 }));
     firstCardPlaced = false;
 }
 
-bool Board::placeCard(int row, int col, int cardValue)
+bool Board::placeCard(int row, int col, card playCard)
 {
     if (row >= 0 && row < size && col >= 0 && col < size) {
-        int existingCard = grid[row][col];
+        int existingCard = grid[row][col].second;
         if (isAdjacent(row, col) && firstCardPlaced == true)
         {
-            if (existingCard == 0) {
-                grid[row][col] = cardValue;
-                return true;
-            }
-            else if (cardValue > existingCard) {
-                grid[row][col] = cardValue;
+			if (existingCard == 0 || playCard.second > existingCard) {
+                grid[row][col].second = playCard.second;
                 return true;
             }
         }
         else if (firstCardPlaced == false)
         {
-            grid[row][col] = cardValue;
+            grid[row][col].second = playCard.second;
             firstCardPlaced = true;
             return true;
         }
@@ -38,25 +34,25 @@ bool Board::placeCard(int row, int col, int cardValue)
 			if (row < 0 && col < 0 && row == col) {
 				shiftRows(row, col);
 				shiftColumns(row, col);
-				grid[row][col] = cardValue;
+				grid[row][col].second = playCard.second;
 				return true;
 			}
 			else if (row >= size && col >= size && size == col) {
                 shiftRows(row, col);
                 shiftColumns(row, col);
-				grid[row][col] = cardValue;
+				grid[row][col].second = playCard.second;
 				return true;
 			}
 			else if (row < 0 && col >= size && row + col == size - 1) {
                 shiftRows(row, col);
                 shiftColumns(row, col);
-				grid[row][col] = cardValue;
+				grid[row][col].second = playCard.second;
 				return true;
 			}
 			else if (row >= size && col < 0 && row + col == size - 1) {
                 shiftRows(row, col);
                 shiftColumns(row, col);
-				grid[row][col] = cardValue;
+				grid[row][col].second = playCard.second;
 				return true;
 			}
 		}
@@ -72,13 +68,13 @@ bool Board::placeCard(int row, int col, int cardValue)
         if ((row < 0 || row >= size) && !fixedGridRows() && (col>=0 && col<size) )
         {
             shiftRows(row, col);
-            grid[row][col] = cardValue;
+            grid[row][col].second = playCard.second;
             return true;
         }
         if ((col < 0 || col >= size) && !fixedGridColumns() && (row >= 0 && row < size))
         {
             shiftColumns(row, col);
-            grid[row][col] = cardValue;
+            grid[row][col].second = playCard.second;
             return true;
         }
     }
@@ -90,13 +86,13 @@ bool Board::shiftGrid(int& row, int& col) {
 
     // Shift rows
     if (row < 0) {
-        grid.insert(grid.begin(), std::vector<int>(size, 0));
+        grid.insert(grid.begin(), std::vector<card>(size, { 0,0 }));
         grid.pop_back();
         row = 0;
         shifted = true;
     }
     else if (row >= size) {
-        grid.push_back(std::vector<int>(size, 0));
+		grid.push_back(std::vector<card>(size, { 0,0 }));
         grid.erase(grid.begin());
         row = size - 1;
         shifted = true;
@@ -105,7 +101,7 @@ bool Board::shiftGrid(int& row, int& col) {
     // Shift columns
     if (col < 0) {
         for (auto& r : grid) {
-            r.insert(r.begin(), 0);
+			r.insert(r.begin(), { 0, 0 });
             r.pop_back();
         }
         col = 0;
@@ -113,7 +109,7 @@ bool Board::shiftGrid(int& row, int& col) {
     }
     else if (col >= size) {
         for (auto& r : grid) {
-            r.push_back(0);
+            r.push_back({ 0,0 });
             r.erase(r.begin());
         }
         col = size - 1;
@@ -123,10 +119,10 @@ bool Board::shiftGrid(int& row, int& col) {
     // Diagonal shifts
     if (!fixedGridRows() || !fixedGridColumns()) {
         if (row < 0 && col < 0 && row==col) {
-            grid.insert(grid.begin(), std::vector<int>(size, 0));
+            grid.insert(grid.begin(), std::vector<card>(size, { 0,0 }));
             grid.pop_back();
             for (auto& r : grid) {
-                r.insert(r.begin(), 0);
+                r.insert(r.begin(), { 0, 0});
                 r.pop_back();
             }
             row = 0;
@@ -134,10 +130,10 @@ bool Board::shiftGrid(int& row, int& col) {
             shifted = true;
         }
         else if (row >= size && col >= size && size==col) {
-            grid.push_back(std::vector<int>(size, 0));
+            grid.push_back(std::vector<card>(size, { 0,0 }));
             grid.erase(grid.begin());
             for (auto& r : grid) {
-                r.push_back(0);
+                r.push_back({ 0,0 });
                 r.erase(r.begin());
             }
             row = size - 1;
@@ -145,10 +141,10 @@ bool Board::shiftGrid(int& row, int& col) {
             shifted = true;
         }
         else if (row < 0 && col >= size && row+col==size-1) {
-            grid.insert(grid.begin(), std::vector<int>(size, 0));
+            grid.insert(grid.begin(), std::vector<card>(size, { 0,0 }));
             grid.pop_back();
             for (auto& r : grid) {
-                r.push_back(0);
+                r.push_back({ 0,0 });
                 r.erase(r.begin());
             }
             row = 0;
@@ -156,10 +152,10 @@ bool Board::shiftGrid(int& row, int& col) {
             shifted = true;
         }
         else if (row >= size && col < 0 && row + col == size - 1) {
-            grid.push_back(std::vector<int>(size, 0));
+            grid.push_back(std::vector<card>(size, { 0,0 }));
             grid.erase(grid.begin());
             for (auto& r : grid) {
-                r.insert(r.begin(), 0);
+                r.insert(r.begin(), { 0,0 });
                 r.pop_back();
             }
             row = size - 1;
@@ -177,12 +173,12 @@ bool Board::shiftGrid(int& row, int& col) {
 void Board::shiftRows(int& row, int& col)
 {
     if (row < 0) {
-        grid.insert(grid.begin(), std::vector<int>(size, 0));
+        grid.insert(grid.begin(), std::vector<card>(size, { 0,0 }));
         grid.pop_back();
         row = 0;
     }
     else if (row >= size) {
-        grid.push_back(std::vector<int>(size, 0));
+        grid.push_back(std::vector<card>(size, { 0,0 }));
         grid.erase(grid.begin());
         row = size - 1;
     }
@@ -192,14 +188,14 @@ void Board::shiftColumns(int& row, int& col)
 {
     if (col < 0) {
         for (auto& r : grid) {
-            r.insert(r.begin(), 0);
+            r.insert(r.begin(), { 0,0 });
             r.pop_back();
         }
         col = 0;
     }
     else if (col >= size) {
         for (auto& r : grid) {
-            r.push_back(0);
+            r.push_back({ 0,0 });
             r.erase(r.begin());
         }
         col = size - 1;
@@ -211,8 +207,8 @@ bool Board::fixedGridRows() const
     // Check if there is at least one element in each row
     for (const auto& row : grid) {
         bool hasElement = false;
-        for (int cell : row) {
-            if (cell != 0) {
+        for (const auto& cell : row) {
+            if (cell.second != 0) {
                 hasElement = true;
                 break;
             }
@@ -230,7 +226,7 @@ bool Board::fixedGridColumns() const
     for (int col = 0; col < size; ++col) {
         bool hasElement = false;
         for (int row = 0; row < size; ++row) {
-            if (grid[row][col] != 0) {
+            if (grid[row][col].second != 0) {
                 hasElement = true;
                 break;
             }
@@ -242,20 +238,20 @@ bool Board::fixedGridColumns() const
     return true;
 }
 
-bool Board::checkWinCondition(int playerValue) const
+bool Board::checkWinCondition(int playerId) const
 {
     for (int i = 0; i < size; ++i) {
-        if (checkRow(i, playerValue) || checkColumn(i, playerValue))
+        if (checkRow(i, playerId) || checkColumn(i, playerId))
             return true;
     }
-    return checkDiagonals(playerValue);
+    return checkDiagonals(playerId);
 }
 
 void Board::display() const
 {
     for (const auto& row : grid) {
-        for (int cell : row) {
-            std::cout << (cell == 0 ? "." : std::to_string(cell)) << " ";
+        for (const auto& cell : row) {
+            std::cout << (cell.second == 0 ? " " : std::to_string(cell.first)) << " ";
         }
         std::cout << "\n";
     }
@@ -267,41 +263,41 @@ bool Board::isAdjacent(int row, int col) const
     for (auto& dir : directions) {
         int newRow = row + dir[0];
         int newCol = col + dir[1];
-        if (newRow >= 0 && newRow < size && newCol >= 0 && newCol < size && grid[newRow][newCol] != 0) {
+        if (newRow >= 0 && newRow < size && newCol >= 0 && newCol < size && grid[newRow][newCol].second != 0) {
             return true;
         }
     }
     return false;
 }
 
-bool Board::checkRow(int row, int playerValue) const
+bool Board::checkRow(int row, int playerId) const
 {
     for (int col = 0; col < size; ++col) {
-        if (grid[row][col] != playerValue)
+        if (grid[row][col].first != playerId)
             return false;
     }
     return true;
 }
 
-bool Board::checkColumn(int col, int playerValue) const
+bool Board::checkColumn(int col, int playerId) const
 {
     for (int row = 0; row < size; ++row) {
-        if (grid[row][col] != playerValue)
+        if (grid[row][col].first != playerId)
             return false;
     }
     return true;
 }
 
-bool Board::checkDiagonals(int playerValue) const
+bool Board::checkDiagonals(int playerId) const
 {
     bool mainDiagonal = true;
     bool secondaryDiagonal = true;
 
     for (int i = 0; i < size; ++i) {
-        if (grid[i][i] != playerValue) {
+        if (grid[i][i].first != playerId) {
             mainDiagonal = false;
         }
-        if (grid[i][size - i - 1] != playerValue) {
+        if (grid[i][size - i - 1].first != playerId) {
             secondaryDiagonal = false;
         }
 
