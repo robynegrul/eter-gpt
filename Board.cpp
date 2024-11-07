@@ -1,14 +1,12 @@
-﻿//commit - alin
-#include "Board.h"
+﻿#include "Board.h"
 
-Board::Board(int boardSize) : size(boardSize), grid(boardSize, std::vector<card>(boardSize, { 0,0 })), firstCardPlaced{ false } {}
+Board::Board(int boardSize) : size{ boardSize }, grid{ boardSize, std::vector<card>(boardSize, {0,0}) }, firstCardPlaced{ false } {}
 
 void Board::reset()
 {
 	grid.assign(size, std::vector<card>(size, { 0,0 }));
     firstCardPlaced = false;
-}//commit
-
+}
 bool Board::placeCard(int row, int col, card playCard)//commit in jos complet refacut
 {
     //commit-eu
@@ -95,7 +93,6 @@ bool Board::placeCard(int row, int col, card playCard)//commit in jos complet re
 bool Board::shiftGrid(int& row, int& col) {
     bool shifted = false;
 
-    //commit - alin
     if (row < 0) {
         grid.insert(grid.begin(), std::vector<card>(size, { 0,0 }));
         grid.pop_back();
@@ -107,9 +104,8 @@ bool Board::shiftGrid(int& row, int& col) {
         grid.erase(grid.begin());
         row = size - 1;
         shifted = true;
-    }//commit
+    }
 
-    // commit - alin 
     if (col < 0) {
         for (auto& r : grid) {
 			r.insert(r.begin(), { 0, 0 });
@@ -125,9 +121,8 @@ bool Board::shiftGrid(int& row, int& col) {
         }
         col = size - 1;
         shifted = true;
-    }//commit
+    }
 
-	// commit - alin
     if (!fixedGridRows() || !fixedGridColumns()) {
         if (row < 0 && col < 0 && row==col) {
             grid.insert(grid.begin(), std::vector<card>(size, { 0,0 }));
@@ -150,9 +145,8 @@ bool Board::shiftGrid(int& row, int& col) {
             row = size - 1;
             col = size - 1;
             shifted = true;
-        }//commit
+        }
 
-		//commit - alin
         else if (row < 0 && col >= size && row+col==size-1) {
             grid.insert(grid.begin(), std::vector<card>(size, { 0,0 }));
             grid.pop_back();
@@ -181,7 +175,7 @@ bool Board::shiftGrid(int& row, int& col) {
     }
 
     return shifted;
-}//commit
+}
 
 void Board::shiftRows(int& row, int& col)//commit - paul + h
 {
@@ -217,7 +211,6 @@ void Board::shiftColumns(int& row, int& col)//commit - paul + h
 
 bool Board::fixedGridRows() const//commit - Vlad +h
 {
-    // Check if there is at least one element in each row
     for (const auto& row : grid) {
         bool hasElement = false;
         for (const auto& cell : row) {
@@ -235,7 +228,6 @@ bool Board::fixedGridRows() const//commit - Vlad +h
 
 bool Board::fixedGridColumns() const//commit - Vlad +h
 {
-    // Check if there is at least one element in each column
     for (int col = 0; col < size; ++col) {
         bool hasElement = false;
         for (int row = 0; row < size; ++row) {

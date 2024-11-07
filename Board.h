@@ -5,14 +5,14 @@
 #include <iostream>
 #include <string>
 
-#define card std::pair<int, int>//
+#define card std::pair<int, int>
 
 class Board
 {
 private:
-    std::vector<std::vector<card>> grid;//
+    std::vector<std::vector<card>> grid;
     int size;
-    bool firstCardPlaced; //
+    bool firstCardPlaced; 
 
 public:
     Board(int boardSize);
@@ -36,8 +36,8 @@ private:
 
     bool checkDiagonals(int playerId) const;
 
-    // New function declarations
     bool shiftGrid(int& row, int& col);
+    //commituri in jos
     void shiftRows(int& row, int& col);
     void shiftColumns(int& row, int& col);
     bool fixedGridRows() const;

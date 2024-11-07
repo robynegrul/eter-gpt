@@ -1,6 +1,6 @@
 #include "Player.h"
 
-Player::Player(int playerId) : id(playerId), initialCards({1,1,2,2,3,3,4}), cards(initialCards){}
+Player::Player(int playerId) : id{ playerId }, initialCards{ { 1,1,2,2,3,3,4 } }, cards{ initialCards } {}
 
 int Player::getId() const
 {
