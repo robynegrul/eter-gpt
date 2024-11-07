@@ -12,16 +12,21 @@ bool Board::placeCard(int row, int col, card playCard)
 {
     if (row >= 0 && row < size && col >= 0 && col < size) {
         int existingCard = grid[row][col].second;
-        if (isAdjacent(row, col) && firstCardPlaced == true)
+        if(existingCard!=0 && firstCardPlaced && playCard.second > existingCard)
+		{
+			grid[row][col] = playCard;
+			return true;
+		}
+		else if (isAdjacent(row, col) && firstCardPlaced)
         {
-			if (existingCard == 0 || playCard.second > existingCard) {
-                grid[row][col].second = playCard.second;
+			if (existingCard == 0) {
+                grid[row][col] = playCard;
                 return true;
             }
         }
         else if (firstCardPlaced == false)
         {
-            grid[row][col].second = playCard.second;
+            grid[row][col] = playCard;
             firstCardPlaced = true;
             return true;
         }
@@ -34,25 +39,25 @@ bool Board::placeCard(int row, int col, card playCard)
 			if (row < 0 && col < 0 && row == col) {
 				shiftRows(row, col);
 				shiftColumns(row, col);
-				grid[row][col].second = playCard.second;
+				grid[row][col] = playCard;
 				return true;
 			}
 			else if (row >= size && col >= size && size == col) {
                 shiftRows(row, col);
                 shiftColumns(row, col);
-				grid[row][col].second = playCard.second;
+				grid[row][col] = playCard;
 				return true;
 			}
 			else if (row < 0 && col >= size && row + col == size - 1) {
                 shiftRows(row, col);
                 shiftColumns(row, col);
-				grid[row][col].second = playCard.second;
+				grid[row][col] = playCard;
 				return true;
 			}
 			else if (row >= size && col < 0 && row + col == size - 1) {
                 shiftRows(row, col);
                 shiftColumns(row, col);
-				grid[row][col].second = playCard.second;
+				grid[row][col] = playCard;
 				return true;
 			}
 		}
@@ -68,13 +73,13 @@ bool Board::placeCard(int row, int col, card playCard)
         if ((row < 0 || row >= size) && !fixedGridRows() && (col>=0 && col<size) )
         {
             shiftRows(row, col);
-            grid[row][col].second = playCard.second;
+            grid[row][col] = playCard;
             return true;
         }
         if ((col < 0 || col >= size) && !fixedGridColumns() && (row >= 0 && row < size))
         {
             shiftColumns(row, col);
-            grid[row][col].second = playCard.second;
+            grid[row][col] = playCard;
             return true;
         }
     }

@@ -48,11 +48,11 @@ void Game::playRound()
 		std::cout << "Jucatorul " << currentPlayerId << " alege o carte: ";
 		int cardValue;
 		std::cin >> cardValue;
-		card playCard = { currentPlayerId,cardValue };
+		card currentCard = { currentPlayerId,cardValue };
 
 		if (!firstCardPlaced)
 		{
-			if (board.placeCard(1, 1, playCard))
+			if (board.placeCard(1, 1, currentCard) && currentPlayer.playCard(currentCard.second))
 			{
 				firstCardPlaced = true;
 				currentPlayerId = 2;
@@ -64,7 +64,7 @@ void Game::playRound()
 			std::cout << "Alege pozitia (rand si coloana): ";
 			int row, col;
 			std::cin >> row >> col;
-			if (board.placeCard(row, col, playCard))//commit in jos
+			if (board.placeCard(row, col, currentCard))//commit in jos
 			{
 				board.display();
 				if (currentPlayer.playCard(cardValue))
