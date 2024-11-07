@@ -1,7 +1,7 @@
 ﻿#include "Game.h"
 #include <iostream>
 
-Game::Game() : board{ 3 }, player1{ 1 }, player2{ 2 }, player1Wins{ 0 }, player2Wins{ 0 }, currentPlayerId{ 1 }, firstCardPlaced{ false } {}
+Game::Game() : board{ 3 }, player1{ 1 }, player2{ 2 }, player1Wins{ 0 }, player2Wins{ 0 }, currentPlayerId{ 1 }, firstCardPlaced{ false } {}//
 
 void Game::start()
 {
@@ -20,7 +20,7 @@ void Game::resetRound()
 	player1.resetCards();
 	player2.resetCards();
 	currentPlayerId = 1;
-	firstCardPlaced = false;
+	firstCardPlaced = false;//
 	std::cout << "START JOC NOU!\n";
 }
 
@@ -34,16 +34,14 @@ void Game::displayScore() const
 	std::cout << "Scor: \nJucator 1: " << player1Wins << "\nJucator 2: " << player2Wins << "\n\n"; //commit
 }
 
-void Game::playRound()
+void Game::playRound()//commit in jos functie refacuta
 {
 	while (true)
 	{
-		//board.display();
-
-		//commit
+		//commit - eu
 		Player& currentPlayer = (currentPlayerId == 1) ? player1 : player2;
 		currentPlayer.displayAvailableCards();
-		//commit
+		
 
 		std::cout << "Jucatorul " << currentPlayerId << " alege o carte: ";
 		int cardValue;
@@ -58,13 +56,13 @@ void Game::playRound()
 				currentPlayerId = 2;
 				board.display();
 			}
-		}
-		else
+		}//commit 
+		else//commit in jos remodelare - eu
 		{
 			std::cout << "Alege pozitia (rand si coloana): ";
 			int row, col;
 			std::cin >> row >> col;
-			if (board.placeCard(row, col, currentCard))//commit in jos
+			if (board.placeCard(row, col, currentCard))
 			{
 				board.display();
 				if (currentPlayer.playCard(cardValue))
@@ -94,7 +92,7 @@ void Game::playRound()
 					std::cout << "Mutare invalida, incearca din nou.\n";
 				}
 			}
-		}
+		}//commit
 	}
 }
 

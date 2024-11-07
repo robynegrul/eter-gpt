@@ -4,21 +4,20 @@
 #include <vector>
 #include <iostream>
 #include <string>
-#include <algorithm>
 
-#define card std::pair<int, int>
+#define card std::pair<int, int>//
 
 class Board
 {
 private:
-    std::vector<std::vector<card>> grid;
+    std::vector<std::vector<card>> grid;//
     int size;
-    bool firstCardPlaced; //commit
+    bool firstCardPlaced; //
 
 public:
     Board(int boardSize);
 
-    bool placeCard(int row, int col, card playCard);
+    bool placeCard(int row, int col, card playCard);//
 
     bool checkWinCondition(int playerId) const;
 

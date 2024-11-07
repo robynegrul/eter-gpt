@@ -29,7 +29,7 @@ bool Player::hasCardsLeft() const
     return !cards.empty();
 }
 
-//commit
+//commit- Paul + h
 void Player::displayAvailableCards() const
 {
     std::cout << "Cartile disponibile pentru Jucatorul " << id << ": ";

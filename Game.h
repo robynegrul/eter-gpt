@@ -1,4 +1,4 @@
-//commit
+
 #ifndef GAME_H
 #define GAME_H
 
@@ -13,10 +13,8 @@ private:
     int player1Wins;
     int player2Wins;
     int currentPlayerId;
-    bool firstCardPlaced;
-    //commit
-
-    //commit
+    bool firstCardPlaced;//
+   
 public:
     Game();
     void start();
@@ -26,4 +24,4 @@ public:
     void displayScore() const;
 };
 
-#endif//commit
+#endif

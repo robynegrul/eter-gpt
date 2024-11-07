@@ -1,4 +1,5 @@
-﻿#include "Board.h"
+﻿//commit - alin
+#include "Board.h"
 
 Board::Board(int boardSize) : size(boardSize), grid(boardSize, std::vector<card>(boardSize, { 0,0 })), firstCardPlaced{ false } {}
 
@@ -6,10 +7,11 @@ void Board::reset()
 {
 	grid.assign(size, std::vector<card>(size, { 0,0 }));
     firstCardPlaced = false;
-}
+}//commit
 
-bool Board::placeCard(int row, int col, card playCard)
+bool Board::placeCard(int row, int col, card playCard)//commit in jos complet refacut
 {
+    //commit-eu
     if (row >= 0 && row < size && col >= 0 && col < size) {
         int existingCard = grid[row][col].second;
         if(existingCard!=0 && firstCardPlaced && playCard.second > existingCard)
@@ -30,7 +32,9 @@ bool Board::placeCard(int row, int col, card playCard)
             firstCardPlaced = true;
             return true;
         }
-    }
+    }//commit
+
+    //commit - eu
     else if (firstCardPlaced == true && isAdjacent(row, col))
     {
 		//if diagonal shift is allowed
@@ -60,7 +64,9 @@ bool Board::placeCard(int row, int col, card playCard)
 				grid[row][col] = playCard;
 				return true;
 			}
-		}
+		}//commmit
+
+        //commit - eu
         else
         {
             if (fixedGridRows() && fixedGridColumns())
@@ -84,12 +90,12 @@ bool Board::placeCard(int row, int col, card playCard)
         }
     }
     return false;
-}
+}//commit
 
 bool Board::shiftGrid(int& row, int& col) {
     bool shifted = false;
 
-    // Shift rows
+    //commit - alin
     if (row < 0) {
         grid.insert(grid.begin(), std::vector<card>(size, { 0,0 }));
         grid.pop_back();
@@ -101,9 +107,9 @@ bool Board::shiftGrid(int& row, int& col) {
         grid.erase(grid.begin());
         row = size - 1;
         shifted = true;
-    }
+    }//commit
 
-    // Shift columns
+    // commit - alin 
     if (col < 0) {
         for (auto& r : grid) {
 			r.insert(r.begin(), { 0, 0 });
@@ -119,9 +125,9 @@ bool Board::shiftGrid(int& row, int& col) {
         }
         col = size - 1;
         shifted = true;
-    }
+    }//commit
 
-    // Diagonal shifts
+	// commit - alin
     if (!fixedGridRows() || !fixedGridColumns()) {
         if (row < 0 && col < 0 && row==col) {
             grid.insert(grid.begin(), std::vector<card>(size, { 0,0 }));
@@ -144,7 +150,9 @@ bool Board::shiftGrid(int& row, int& col) {
             row = size - 1;
             col = size - 1;
             shifted = true;
-        }
+        }//commit
+
+		//commit - alin
         else if (row < 0 && col >= size && row+col==size-1) {
             grid.insert(grid.begin(), std::vector<card>(size, { 0,0 }));
             grid.pop_back();
@@ -173,9 +181,9 @@ bool Board::shiftGrid(int& row, int& col) {
     }
 
     return shifted;
-}
+}//commit
 
-void Board::shiftRows(int& row, int& col)
+void Board::shiftRows(int& row, int& col)//commit - paul + h
 {
     if (row < 0) {
         grid.insert(grid.begin(), std::vector<card>(size, { 0,0 }));
@@ -187,9 +195,9 @@ void Board::shiftRows(int& row, int& col)
         grid.erase(grid.begin());
         row = size - 1;
     }
-}
+}//commit
 
-void Board::shiftColumns(int& row, int& col)
+void Board::shiftColumns(int& row, int& col)//commit - paul + h
 {
     if (col < 0) {
         for (auto& r : grid) {
@@ -205,9 +213,9 @@ void Board::shiftColumns(int& row, int& col)
         }
         col = size - 1;
     }
-}
+}//commit
 
-bool Board::fixedGridRows() const
+bool Board::fixedGridRows() const//commit - Vlad +h
 {
     // Check if there is at least one element in each row
     for (const auto& row : grid) {
@@ -223,9 +231,9 @@ bool Board::fixedGridRows() const
         }
     }
     return true;
-}
+}//commit
 
-bool Board::fixedGridColumns() const
+bool Board::fixedGridColumns() const//commit - Vlad +h
 {
     // Check if there is at least one element in each column
     for (int col = 0; col < size; ++col) {
@@ -241,9 +249,9 @@ bool Board::fixedGridColumns() const
         }
     }
     return true;
-}
+}//commit
 
-bool Board::checkWinCondition(int playerId) const
+bool Board::checkWinCondition(int playerId) const//schimbare nume variabila - eu nodificari nici
 {
     for (int i = 0; i < size; ++i) {
         if (checkRow(i, playerId) || checkColumn(i, playerId))
@@ -252,7 +260,7 @@ bool Board::checkWinCondition(int playerId) const
     return checkDiagonals(playerId);
 }
 
-void Board::display() const
+void Board::display() const//cateva modificari
 {
     for (const auto& row : grid) {
         for (const auto& cell : row) {
@@ -262,7 +270,7 @@ void Board::display() const
     }
 }
 
-bool Board::isAdjacent(int row, int col) const
+bool Board::isAdjacent(int row, int col) const//commit - Vlad + h
 {
     int directions[8][2] = { {-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1} };
     for (auto& dir : directions) {
@@ -273,9 +281,9 @@ bool Board::isAdjacent(int row, int col) const
         }
     }
     return false;
-}
+}//commit
 
-bool Board::checkRow(int row, int playerId) const
+bool Board::checkRow(int row, int playerId) const//modificari micute
 {
     for (int col = 0; col < size; ++col) {
         if (grid[row][col].first != playerId)
@@ -284,7 +292,7 @@ bool Board::checkRow(int row, int playerId) const
     return true;
 }
 
-bool Board::checkColumn(int col, int playerId) const
+bool Board::checkColumn(int col, int playerId) const//modificari mici
 {
     for (int row = 0; row < size; ++row) {
         if (grid[row][col].first != playerId)
@@ -293,7 +301,7 @@ bool Board::checkColumn(int col, int playerId) const
     return true;
 }
 
-bool Board::checkDiagonals(int playerId) const
+bool Board::checkDiagonals(int playerId) const//modificari mici
 {
     bool mainDiagonal = true;
     bool secondaryDiagonal = true;
