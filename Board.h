@@ -25,9 +25,7 @@ public:
 
     void display() const;
 
-    //commit
     bool isAdjacent(int row, int col) const;
-    //commit
 
 private:
     bool checkRow(int row, int playerId) const;
@@ -39,7 +37,6 @@ private:
     bool shiftGrid(int& row, int& col);
     void shiftRows(int& row, int& col);
     void shiftColumns(int& row, int& col);
-    //commituri in jos
     bool fixedGridRows() const;
     bool fixedGridColumns() const;
 };

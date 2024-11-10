@@ -204,7 +204,7 @@ void Board::shiftColumns(int& row, int& col)
     }
 }
 
-bool Board::fixedGridRows() const//commit - Vlad +h
+bool Board::fixedGridRows() const
 {
     for (const auto& row : grid) {
         bool hasElement = false;
@@ -219,9 +219,9 @@ bool Board::fixedGridRows() const//commit - Vlad +h
         }
     }
     return true;
-}//commit
+}
 
-bool Board::fixedGridColumns() const//commit - Vlad +h
+bool Board::fixedGridColumns() const
 {
     for (int col = 0; col < size; ++col) {
         bool hasElement = false;
@@ -236,9 +236,9 @@ bool Board::fixedGridColumns() const//commit - Vlad +h
         }
     }
     return true;
-}//commit
+}
 
-bool Board::isAdjacent(int row, int col) const//commit - Vlad + h
+bool Board::isAdjacent(int row, int col) const
 {
     int directions[8][2] = { {-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1} };
     for (auto& dir : directions) {
@@ -249,8 +249,7 @@ bool Board::isAdjacent(int row, int col) const//commit - Vlad + h
         }
     }
     return false;
-}//commit
-
+}
 bool Board::checkWinCondition(int playerId) const
 {
     for (int i = 0; i < size; ++i) {
