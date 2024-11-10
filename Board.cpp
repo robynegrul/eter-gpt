@@ -9,7 +9,7 @@ void Board::reset()
 }
 bool Board::placeCard(int row, int col, card playCard)//commit in jos complet refacut
 {
-    //commit-eu
+    //commit-eu-----------------------------------------------------------------------------------------------
     if (row >= 0 && row < size && col >= 0 && col < size) {
         int existingCard = grid[row][col].second;
         if(existingCard!=0 && firstCardPlaced && playCard.second > existingCard)
@@ -32,7 +32,7 @@ bool Board::placeCard(int row, int col, card playCard)//commit in jos complet re
         }
     }//commit
 
-    //commit - eu
+	//commit - eu-----------------------------------------------------------------------------------------------
     else if (firstCardPlaced == true && isAdjacent(row, col))
     {
 		//if diagonal shift is allowed
@@ -64,7 +64,7 @@ bool Board::placeCard(int row, int col, card playCard)//commit in jos complet re
 			}
 		}//commmit
 
-        //commit - eu
+		//commit - eu-----------------------------------------------------------------------------------------------
         else
         {
             if (fixedGridRows() && fixedGridColumns())
@@ -243,6 +243,19 @@ bool Board::fixedGridColumns() const//commit - Vlad +h
     return true;
 }//commit
 
+bool Board::isAdjacent(int row, int col) const//commit - Vlad + h
+{
+    int directions[8][2] = { {-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1} };
+    for (auto& dir : directions) {
+        int newRow = row + dir[0];
+        int newCol = col + dir[1];
+        if (newRow >= 0 && newRow < size && newCol >= 0 && newCol < size && grid[newRow][newCol].second != 0) {
+            return true;
+        }
+    }
+    return false;
+}//commit
+
 bool Board::checkWinCondition(int playerId) const//schimbare nume variabila - eu nodificari nici
 {
     for (int i = 0; i < size; ++i) {
@@ -261,19 +274,6 @@ void Board::display() const//cateva modificari
         std::cout << "\n";
     }
 }
-
-bool Board::isAdjacent(int row, int col) const//commit - Vlad + h
-{
-    int directions[8][2] = { {-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1} };
-    for (auto& dir : directions) {
-        int newRow = row + dir[0];
-        int newCol = col + dir[1];
-        if (newRow >= 0 && newRow < size && newCol >= 0 && newCol < size && grid[newRow][newCol].second != 0) {
-            return true;
-        }
-    }
-    return false;
-}//commit
 
 bool Board::checkRow(int row, int playerId) const//modificari micute
 {

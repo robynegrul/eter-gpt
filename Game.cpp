@@ -38,7 +38,7 @@ void Game::playRound()//commit in jos functie refacuta
 {
 	while (true)
 	{
-		//commit - eu
+		//commit - eu-------------------------------------------------------------------------------------------
 		Player& currentPlayer = (currentPlayerId == 1) ? player1 : player2;
 		currentPlayer.displayAvailableCards();
 		
@@ -57,7 +57,7 @@ void Game::playRound()//commit in jos functie refacuta
 				board.display();
 			}
 		}//commit 
-		else//commit in jos remodelare - eu
+		else//commit in jos remodelare - eu-----------------------------------------------------------------
 		{
 			std::cout << "Alege pozitia (rand si coloana): ";
 			int row, col;
