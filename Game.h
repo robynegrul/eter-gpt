@@ -13,7 +13,7 @@ private:
     int player1Wins;
     int player2Wins;
     int currentPlayerId;
-    bool firstCardPlaced;//
+    bool firstCardPlaced;
    
 public:
     Game();

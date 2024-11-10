@@ -17,7 +17,7 @@ private:
 public:
     Board(int boardSize);
 
-    bool placeCard(int row, int col, card playCard);//
+    bool placeCard(int row, int col, card playCard);
 
     bool checkWinCondition(int playerId) const;
 
@@ -37,11 +37,11 @@ private:
     bool checkDiagonals(int playerId) const;
 
     bool shiftGrid(int& row, int& col);
-    //commituri in jos
     void shiftRows(int& row, int& col);
     void shiftColumns(int& row, int& col);
+    //commituri in jos
     bool fixedGridRows() const;
     bool fixedGridColumns() const;
 };
 
-#endif
+#endif BOARD_H

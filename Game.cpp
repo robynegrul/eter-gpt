@@ -20,7 +20,7 @@ void Game::resetRound()
 	player1.resetCards();
 	player2.resetCards();
 	currentPlayerId = 1;
-	firstCardPlaced = false;//
+	firstCardPlaced = false;
 	std::cout << "START JOC NOU!\n";
 }
 
@@ -31,14 +31,13 @@ bool Game::checkWinCondition()
 
 void Game::displayScore() const
 {
-	std::cout << "Scor: \nJucator 1: " << player1Wins << "\nJucator 2: " << player2Wins << "\n\n"; //commit
+	std::cout << "Scor: \nJucator 1: " << player1Wins << "\nJucator 2: " << player2Wins << "\n\n";
 }
 
-void Game::playRound()//commit in jos functie refacuta
+void Game::playRound()
 {
 	while (true)
 	{
-		//commit - eu-------------------------------------------------------------------------------------------
 		Player& currentPlayer = (currentPlayerId == 1) ? player1 : player2;
 		currentPlayer.displayAvailableCards();
 		
@@ -56,8 +55,8 @@ void Game::playRound()//commit in jos functie refacuta
 				currentPlayerId = 2;
 				board.display();
 			}
-		}//commit 
-		else//commit in jos remodelare - eu-----------------------------------------------------------------
+		}
+		else
 		{
 			std::cout << "Alege pozitia (rand si coloana): ";
 			int row, col;
@@ -92,7 +91,7 @@ void Game::playRound()//commit in jos functie refacuta
 					std::cout << "Mutare invalida, incearca din nou.\n";
 				}
 			}
-		}//commit
+		}
 	}
 }
 

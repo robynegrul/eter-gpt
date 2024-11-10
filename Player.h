@@ -2,7 +2,7 @@
 #define PLAYER_H
 
 #include <vector>
-#include <iostream> //
+#include <iostream> 
 
 class Player {
 private:
@@ -21,7 +21,7 @@ public:
 
 	bool hasCardsLeft() const;
 
-    void displayAvailableCards() const;//
+    void displayAvailableCards() const;
     
 
 };
