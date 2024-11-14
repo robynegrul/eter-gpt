@@ -4,8 +4,8 @@ Player::Player(int playerId) : id{ playerId }, initialCards{ { 1,1,2,2,3,3,4 } }
 
 int Player::getId() const
 {
-	return id;
-	
+    return id;
+
 }
 
 bool Player::playCard(int cardValue)
@@ -21,7 +21,7 @@ bool Player::playCard(int cardValue)
 
 void Player::resetCards()
 {
-	cards = initialCards;
+    cards = initialCards;
 }
 
 bool Player::hasCardsLeft() const

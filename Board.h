@@ -12,7 +12,7 @@ class Board
 private:
     std::vector<std::vector<card>> grid;
     int size;
-    bool firstCardPlaced; 
+    bool firstCardPlaced;
 
 public:
     Board(int boardSize);
@@ -26,6 +26,12 @@ public:
     void display() const;
 
     bool isAdjacent(int row, int col) const;
+
+    int getSize() const;
+
+    card getCard(int row, int col) const;
+
+    bool isFull() const;
 
 private:
     bool checkRow(int row, int playerId) const;

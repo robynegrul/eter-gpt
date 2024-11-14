@@ -9,7 +9,7 @@ private:
     int id;
     std::vector<int> cards;
     const std::vector<int> initialCards;
-    
+
 public:
     Player(int playerId);
 
@@ -17,12 +17,12 @@ public:
 
     bool playCard(int cardValue);
 
-	void resetCards();
+    void resetCards();
 
-	bool hasCardsLeft() const;
+    bool hasCardsLeft() const;
 
     void displayAvailableCards() const;
-    
+
 
 };
 

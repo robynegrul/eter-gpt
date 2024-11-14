@@ -1,24 +1,24 @@
 ﻿#include "Board.h"
 
-Board::Board(int boardSize) : size{ boardSize }, grid{ boardSize, std::vector<card>(boardSize, {0,0}) }, firstCardPlaced{ false } {}
+Board::Board(int boardSize) : size{ boardSize }, grid(boardSize, std::vector<card>(boardSize, { 0,0 })), firstCardPlaced{ false } {}
 
 void Board::reset()
 {
-	grid.assign(size, std::vector<card>(size, { 0,0 }));
+    grid.assign(size, std::vector<card>(size, { 0,0 }));
     firstCardPlaced = false;
 }
 bool Board::placeCard(int row, int col, card playCard)
 {
     if (row >= 0 && row < size && col >= 0 && col < size) {
         int existingCard = grid[row][col].second;
-        if(existingCard!=0 && firstCardPlaced && playCard.second > existingCard)
-		{
-			grid[row][col] = playCard;
-			return true;
-		}
-		else if (isAdjacent(row, col) && firstCardPlaced)
+        if (existingCard != 0 && firstCardPlaced && playCard.second > existingCard)
         {
-			if (existingCard == 0) {
+            grid[row][col] = playCard;
+            return true;
+        }
+        else if (isAdjacent(row, col) && firstCardPlaced)
+        {
+            if (existingCard == 0) {
                 grid[row][col] = playCard;
                 return true;
             }
@@ -33,33 +33,33 @@ bool Board::placeCard(int row, int col, card playCard)
 
     else if (firstCardPlaced == true && isAdjacent(row, col))
     {
-		if (!fixedGridRows() && !fixedGridColumns())
-		{
-			if (row < 0 && col < 0 && row == col) {
-				shiftRows(row, col);
-				shiftColumns(row, col);
-				grid[row][col] = playCard;
-				return true;
-			}
-			else if (row >= size && col >= size && size == col) {
+        if (!fixedGridRows() && !fixedGridColumns())
+        {
+            if (row < 0 && col < 0 && row == col) {
                 shiftRows(row, col);
                 shiftColumns(row, col);
-				grid[row][col] = playCard;
-				return true;
-			}
-			else if (row < 0 && col >= size && row + col == size - 1) {
+                grid[row][col] = playCard;
+                return true;
+            }
+            else if (row >= size && col >= size && size == col) {
                 shiftRows(row, col);
                 shiftColumns(row, col);
-				grid[row][col] = playCard;
-				return true;
-			}
-			else if (row >= size && col < 0 && row + col == size - 1) {
+                grid[row][col] = playCard;
+                return true;
+            }
+            else if (row < 0 && col >= size && row + col == size - 1) {
                 shiftRows(row, col);
                 shiftColumns(row, col);
-				grid[row][col] = playCard;
-				return true;
-			}
-		}
+                grid[row][col] = playCard;
+                return true;
+            }
+            else if (row >= size && col < 0 && row + col == size - 1) {
+                shiftRows(row, col);
+                shiftColumns(row, col);
+                grid[row][col] = playCard;
+                return true;
+            }
+        }
         else
         {
             if (fixedGridRows() && fixedGridColumns())
@@ -69,7 +69,7 @@ bool Board::placeCard(int row, int col, card playCard)
             }
         }
 
-        if ((row < 0 || row >= size) && !fixedGridRows() && (col>=0 && col<size) )
+        if ((row < 0 || row >= size) && !fixedGridRows() && (col >= 0 && col < size))
         {
             shiftRows(row, col);
             grid[row][col] = playCard;
@@ -95,7 +95,7 @@ bool Board::shiftGrid(int& row, int& col) {
         shifted = true;
     }
     else if (row >= size) {
-		grid.push_back(std::vector<card>(size, { 0,0 }));
+        grid.push_back(std::vector<card>(size, { 0,0 }));
         grid.erase(grid.begin());
         row = size - 1;
         shifted = true;
@@ -103,7 +103,7 @@ bool Board::shiftGrid(int& row, int& col) {
 
     if (col < 0) {
         for (auto& r : grid) {
-			r.insert(r.begin(), { 0, 0 });
+            r.insert(r.begin(), { 0, 0 });
             r.pop_back();
         }
         col = 0;
@@ -119,18 +119,18 @@ bool Board::shiftGrid(int& row, int& col) {
     }
 
     if (!fixedGridRows() || !fixedGridColumns()) {
-        if (row < 0 && col < 0 && row==col) {
+        if (row < 0 && col < 0 && row == col) {
             grid.insert(grid.begin(), std::vector<card>(size, { 0,0 }));
             grid.pop_back();
             for (auto& r : grid) {
-                r.insert(r.begin(), { 0, 0});
+                r.insert(r.begin(), { 0, 0 });
                 r.pop_back();
             }
             row = 0;
             col = 0;
             shifted = true;
         }
-        else if (row >= size && col >= size && size==col) {
+        else if (row >= size && col >= size && size == col) {
             grid.push_back(std::vector<card>(size, { 0,0 }));
             grid.erase(grid.begin());
             for (auto& r : grid) {
@@ -142,7 +142,7 @@ bool Board::shiftGrid(int& row, int& col) {
             shifted = true;
         }
 
-        else if (row < 0 && col >= size && row+col==size-1) {
+        else if (row < 0 && col >= size && row + col == size - 1) {
             grid.insert(grid.begin(), std::vector<card>(size, { 0,0 }));
             grid.pop_back();
             for (auto& r : grid) {
@@ -250,6 +250,29 @@ bool Board::isAdjacent(int row, int col) const
     }
     return false;
 }
+int Board::getSize() const
+{
+    return size;
+}
+
+card Board::getCard(int row, int col) const
+{
+    return grid[row][col];
+}
+
+bool Board::isFull() const
+{
+    for (const auto& row : grid)
+    {
+        for (const auto& cell : row)
+        {
+            if (cell.second == 0) // If there is an empty space
+                return false;
+        }
+    }
+    return true;
+}
+
 bool Board::checkWinCondition(int playerId) const
 {
     for (int i = 0; i < size; ++i) {
