@@ -1,4 +1,4 @@
-// Game.h
+
 #ifndef GAME_H
 #define GAME_H
 
@@ -12,7 +12,7 @@ private:
     Player player2;
     int player1Wins;
     int player2Wins;
-    int currentPlayerId;
+    int currentPlayerId;//inlocuire variabila
 
 public:
     Game();
@@ -21,7 +21,7 @@ public:
     void resetRound();
     bool checkWinCondition();
     void displayScore() const;
-    void calculateFinalScores();
+    void calculateFinalScores();//functie noua
 };
 
 #endif

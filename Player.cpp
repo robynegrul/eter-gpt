@@ -1,7 +1,7 @@
-// Player.cpp (Ensure Illusion Cannot Be Used More Than Once)
+
 #include "Player.h"
 
-Player::Player(int playerId)
+Player::Player(int playerId)//adaugare o variabila
     : id{ playerId }, initialCards{ { 1, 1, 2, 2, 3, 3, 4 } }, cards{ initialCards }, illusionUsed{ false } {
 }
 
@@ -21,7 +21,7 @@ bool Player::playCard(int cardValue) {
 
 void Player::resetCards() {
     cards = initialCards;
-    illusionUsed = false; // Reset the illusion flag
+    illusionUsed = false; //adaugare
 }
 
 bool Player::hasCardsLeft() const {
@@ -36,11 +36,11 @@ void Player::displayAvailableCards() const {
     std::cout << "\n";
 }
 
-bool Player::canUseIllusion() const {
+bool Player::canUseIllusion() const {//adaugare
     return !illusionUsed;
 }
 
-bool Player::useIllusion(int cardValue) {
+bool Player::useIllusion(int cardValue) {//commit
     if (illusionUsed) {
         std::cout << "You have already used an illusion. Choose a regular card.\n";
         return false;
@@ -54,4 +54,4 @@ bool Player::useIllusion(int cardValue) {
     }
     std::cout << "Card not available. Choose a valid card.\n";
     return false;
-}
+}//commit

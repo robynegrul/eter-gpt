@@ -9,7 +9,7 @@ private:
     int id;
     std::vector<int> cards;
     const std::vector<int> initialCards;
-    bool illusionUsed;
+    bool illusionUsed;//adaugare
 
 public:
     Player(int playerId);
@@ -24,9 +24,9 @@ public:
 
     void displayAvailableCards() const;
 
-    bool canUseIllusion() const;
+	bool canUseIllusion() const;//adaugare
 
-    bool useIllusion(int cardValue);
+	bool useIllusion(int cardValue);//adaugare
 
 
 };

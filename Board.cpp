@@ -1,17 +1,15 @@
 ﻿#include "Board.h"
-
+//adaugare la constructor
 Board::Board(int boardSize) : size{ boardSize }, grid(boardSize, std::vector<card>(boardSize, { 0,0 })), isIllusion(boardSize, std::vector<bool>(boardSize, false)), firstCardPlaced{ false } {}
 
 void Board::reset() {
     grid.assign(size, std::vector<card>(size, { 0,0 }));
-    isIllusion.assign(size, std::vector<bool>(size, false));
+    isIllusion.assign(size, std::vector<bool>(size, false));//adaugare
     firstCardPlaced = false;
 }
-
+//modificare toata functia - 1 sau 2 commit uri
 bool Board::placeCard(int row, int col, card playCard, bool isIllusionCard) {
-    // Check if the position is out of bounds
     if (row < 0 || row >= size || col < 0 || col >= size) {
-        // Only shift the grid if it's not already fixed
         if (!fixedGridRows() || !fixedGridColumns()) {
             if (shiftGrid(row, col)) {
                 std::cout << "Grid shifted to accommodate the new position.\n";
@@ -27,26 +25,23 @@ bool Board::placeCard(int row, int col, card playCard, bool isIllusionCard) {
         }
     }
 
-    // Check if the position is occupied
     if (grid[row][col].second != 0) {
         std::cout << "Position is already occupied. Try a different spot.\n";
         return false;
     }
 
-    // Place the card and set the illusion flag if applicable
     grid[row][col] = playCard;
     isIllusion[row][col] = isIllusionCard;
     if (!firstCardPlaced) firstCardPlaced = true;
     return true;
-}
+}//1 sau 2 commit uri
 
+//adaugare functie
 void Board::revealCard(int row, int col) {
     isIllusion[row][col] = false;
-    // Card remains face-up for the rest of the game
-}
+}//adaugare functie
 
 bool Board::checkWinCondition(int playerId) const {
-    // Check rows, columns, and diagonals
     for (int i = 0; i < size; ++i) {
         if (checkRow(i, playerId) || checkColumn(i, playerId))
             return true;
@@ -134,6 +129,7 @@ bool Board::shiftGrid(int& row, int& col) {
             shifted = true;
         }
     }
+    //adaugare afisare
     else {
         std::cerr << "Error: Cannot shift grid diagonally as there is at least one element in each row or column" << std::endl;
     }
@@ -219,29 +215,29 @@ bool Board::isAdjacent(int row, int col) const
     }
     return false;
 }
-
+//adaugare
 int Board::getSize() const
 {
     return size;
 }
-
+//adaugare
 card Board::getCard(int row, int col) const
 {
     return grid[row][col];
 }
-
+//commit
 bool Board::isFull() const
 {
     for (const auto& row : grid)
     {
         for (const auto& cell : row)
         {
-            if (cell.second == 0) // If there is an empty space
+            if (cell.second == 0) 
                 return false;
         }
     }
     return true;
-}
+}//commit
 
 void Board::display() const
 {
@@ -291,24 +287,18 @@ bool Board::checkDiagonals(int playerId) const
 
     return mainDiagonal || secondaryDiagonal;
 }
-
+//commit
 bool Board::tryCoverCard(int row, int col, card opponentCard) {
-    // Check if the position is within bounds
     if (row < 0 || row >= size || col < 0 || col >= size) {
-        return false; // Out-of-bounds move is not allowed
+        return false;
     }
-
-    // Check if there is an illusion card at the specified position
     if (isIllusion[row][col]) {
-        // Reveal the illusion card
         isIllusion[row][col] = false;
 
-        // Compare the opponent's card value with the revealed illusion card's value
         if (opponentCard.second <= grid[row][col].second) {
-            // The opponent's card is eliminated, and the turn ends
-            return true; // Indicates that the opponent's move failed
+            return true;
         }
     }
 
-    return false; // The move does not cover an illusion or succeeds without issues
-}
+    return false;
+}//commit
