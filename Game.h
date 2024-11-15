@@ -14,7 +14,7 @@ private:
     int player2Wins;
     int currentPlayerId;
     bool firstCardPlaced;
-
+   
 public:
     Game();
     void start();
@@ -22,7 +22,6 @@ public:
     void resetRound();
     bool checkWinCondition();
     void displayScore() const;
-    void calculateFinalScores();
 };
 
 #endif
