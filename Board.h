@@ -1,44 +1,47 @@
-﻿#ifndef BOARD_H
+﻿// Board.h
+#ifndef BOARD_H
 #define BOARD_H
 
 #include <vector>
 #include <iostream>
 #include <string>
 
-#define card std::pair<int, int>
+// Define 'card' as a pair of integers: (playerId, value)
+using card = std::pair<int, int>;
 
-class Board
-{
+class Board {
 private:
     std::vector<std::vector<card>> grid;
+    std::vector<std::vector<bool>> isIllusion;
     int size;
-    bool firstCardPlaced; 
+    bool firstCardPlaced;
 
 public:
     Board(int boardSize);
 
-    bool placeCard(int row, int col, card playCard);
-
+    bool placeCard(int row, int col, card playCard, bool isIllusionCard = false);
+    bool tryCoverCard(int row, int col, card opponentCard);
+    void revealCard(int row, int col);
     bool checkWinCondition(int playerId) const;
 
     void reset();
-
     void display() const;
-
     bool isAdjacent(int row, int col) const;
+    int getSize() const;
+    card getCard(int row, int col) const;
+    bool isFull() const;
 
-private:
-    bool checkRow(int row, int playerId) const;
-
-    bool checkColumn(int col, int playerId) const;
-
-    bool checkDiagonals(int playerId) const;
-
+    // Existing methods for shifting and checking fixed rows/columns
     bool shiftGrid(int& row, int& col);
     void shiftRows(int& row, int& col);
     void shiftColumns(int& row, int& col);
     bool fixedGridRows() const;
     bool fixedGridColumns() const;
+
+private:
+    bool checkRow(int row, int playerId) const;
+    bool checkColumn(int col, int playerId) const;
+    bool checkDiagonals(int playerId) const;
 };
 
-#endif BOARD_H
+#endif // BOARD_H

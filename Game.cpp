@@ -1,97 +1,164 @@
 ﻿#include "Game.h"
 #include <iostream>
 
-Game::Game() : board{ 3 }, player1{ 1 }, player2{ 2 }, player1Wins{ 0 }, player2Wins{ 0 }, currentPlayerId{ 1 }, firstCardPlaced{ false } {}
+Game::Game() : board{ 3 }, player1{ 1 }, player2{ 2 }, player1Wins{ 0 }, player2Wins{ 0 }, currentPlayerId{ 1 } {}
+
+void Game::playRound() {
+    while (true) {
+        if (board.isFull()) {
+            std::cout << "Board is full. Calculating final scores...\n";
+            calculateFinalScores();
+            break;
+        }
+
+        Player& currentPlayer = (currentPlayerId == 1) ? player1 : player2;
+        Player& opponent = (currentPlayerId == 1) ? player2 : player1;
+
+        currentPlayer.displayAvailableCards();
+        if (currentPlayer.canUseIllusion()) {
+            std::cout << "Choose a card or type -1 to use an illusion: ";
+        }
+        else {
+            std::cout << "Choose a card: ";
+        }
+        int cardValue;
+        std::cin >> cardValue;
+
+        bool validMove = false;
+
+        if (cardValue == -1 && currentPlayer.canUseIllusion()) {
+            std::cout << "Choose a card to use as an illusion: ";
+            std::cin >> cardValue;
+            if (currentPlayer.useIllusion(cardValue)) {
+                std::cout << "Choose a position (row and column) to place the illusion (0 to " << board.getSize() - 1 << "): ";
+                int row, col;
+                std::cin >> row >> col;
+                if (board.placeCard(row, col, { currentPlayerId, 1 }, true)) {
+                    validMove = true; // Illusion placed successfully
+                }
+                else {
+                    std::cout << "Invalid move. Try again.\n";
+                }
+            }
+            else {
+                std::cout << "Invalid card choice or illusion already used.\n";
+            }
+        }
+        else if (cardValue != -1) {
+            card currentCard = { currentPlayerId, cardValue };
+            std::cout << "Choose a position (row and column) (0 to " << board.getSize() - 1 << "): ";
+            int row, col;
+            std::cin >> row >> col;
+
+            if (board.tryCoverCard(row, col, currentCard)) {
+                std::cout << "Failed to replace the illusion! Your card is eliminated, and your turn ends.\n";
+                currentPlayer.playCard(cardValue); // Remove the card from the player's hand
+                currentPlayerId = (currentPlayerId == 1) ? 2 : 1; // End the turn
+                validMove = false; // Move failed
+            }
+            else if (board.placeCard(row, col, currentCard)) {
+                if (currentPlayer.playCard(cardValue)) {
+                    if (checkWinCondition()) {
+                        std::cout << "Player " << currentPlayerId << " wins!\n";
+                        (currentPlayerId == 1) ? player1Wins++ : player2Wins++;
+                        break;
+                    }
+                    currentPlayerId = (currentPlayerId == 1) ? 2 : 1; // Switch players
+                    validMove = true; // Move successful
+                }
+                else {
+                    std::cout << "Invalid move. Try again.\n";
+                }
+            }
+            else {
+                std::cout << "Invalid move. Try again.\n";
+            }
+        }
+        else {
+            std::cout << "Invalid input. Try again.\n";
+        }
+
+        // Only display the board if a valid move was made
+        if (validMove) {
+            board.display();
+        }
+    }
+}
 
 void Game::start()
 {
-	while (player1Wins < 2 && player2Wins < 2)
-	{
-		resetRound();
-		playRound();
-	}
-	std::cout << "Meci incheiat!\n";
-	std::cout << (player1Wins == 2 ? "Jucatorul 1 a castigat meciul!\n" : "Jucatorul 2 a castigat meciul!\n");
+    while (player1Wins < 2 && player2Wins < 2)
+    {
+        resetRound();
+        playRound();
+        displayScore(); // Display number of victories at the end of each round
+
+        // Check if any player has reached 2 victories and end the match
+        if (player1Wins == 2 || player2Wins == 2)
+            break;
+    }
+    std::cout << "Meci incheiat!\n";
+    std::cout << (player1Wins == 2 ? "Jucatorul 1 a castigat meciul!\n" : "Jucatorul 2 a castigat meciul!\n");
 }
 
 void Game::resetRound()
 {
-	board.reset();
-	player1.resetCards();
-	player2.resetCards();
-	currentPlayerId = 1;
-	firstCardPlaced = false;
-	std::cout << "START JOC NOU!\n";
+    board.reset();
+    player1.resetCards();
+    player2.resetCards();
+    currentPlayerId = 1;
+    //firstCardPlaced = false;
+    std::cout << "START JOC NOU!\n";
 }
 
 bool Game::checkWinCondition()
 {
-	return board.checkWinCondition(currentPlayerId);
+    return board.checkWinCondition(currentPlayerId);
 }
 
 void Game::displayScore() const
 {
-	std::cout << "Scor: \nJucator 1: " << player1Wins << "\nJucator 2: " << player2Wins << "\n\n";
+    std::cout << "Numar de victorii: \n";
+    std::cout << "Jucator 1: " << player1Wins << "\n";
+    std::cout << "Jucator 2: " << player2Wins << "\n\n";
 }
 
-void Game::playRound()
+void Game::calculateFinalScores()
 {
-	while (true)
-	{
-		Player& currentPlayer = (currentPlayerId == 1) ? player1 : player2;
-		currentPlayer.displayAvailableCards();
-		
+    int player1Score = 0;
+    int player2Score = 0;
 
-		std::cout << "Jucatorul " << currentPlayerId << " alege o carte: ";
-		int cardValue;
-		std::cin >> cardValue;
-		card currentCard = { currentPlayerId,cardValue };
+    // Loop through the board to sum visible card values
+    for (int row = 0; row < board.getSize(); ++row)
+    {
+        for (int col = 0; col < board.getSize(); ++col)
+        {
+            card currentCard = board.getCard(row, col);
+            if (currentCard.second != 0) // Card is visible
+            {
+                if (currentCard.first == 1)
+                    player1Score += currentCard.second;
+                else if (currentCard.first == 2)
+                    player2Score += currentCard.second;
+            }
+        }
+    }
 
-		if (!firstCardPlaced)
-		{
-			if (board.placeCard(1, 1, currentCard) && currentPlayer.playCard(currentCard.second))
-			{
-				firstCardPlaced = true;
-				currentPlayerId = 2;
-				board.display();
-			}
-		}
-		else
-		{
-			std::cout << "Alege pozitia (rand si coloana): ";
-			int row, col;
-			std::cin >> row >> col;
-			if (board.placeCard(row, col, currentCard))
-			{
-				board.display();
-				if (currentPlayer.playCard(cardValue))
-				{
-					if (checkWinCondition())
-					{
-						std::cout << "Jucatorul " << currentPlayerId << " a castigat!\n\n";
-						if (currentPlayerId == 1)
-						{
-							player1Wins++;
-						}
-						else
-						{
-							player2Wins++;
-						}
-						break;
-					}
-					if (!player1.hasCardsLeft() && !player2.hasCardsLeft())
-					{
-						std::cout << "Egalitate! Nu mai sunt carti disponibile.\n";
-						break;
-					}
-					currentPlayerId = (currentPlayerId == 1) ? 2 : 1;
-				}
-				else
-				{
-					std::cout << "Mutare invalida, incearca din nou.\n";
-				}
-			}
-		}
-	}
+    std::cout << "Punctajul cartilor: \n";
+    std::cout << "Jucator 1: " << player1Score << "\n";
+    std::cout << "Jucator 2: " << player2Score << "\n";
+    if (player1Score > player2Score)
+    {
+        std::cout << "Jucatorul 1 castiga runda pe baza punctajului!\n";
+        player1Wins++; // Update the victory count
+    }
+    else if (player2Score > player1Score)
+    {
+        std::cout << "Jucatorul 2 castiga runda pe baza punctajului!\n";
+        player2Wins++; // Update the victory count
+    }
+    else
+    {
+        std::cout << "Egalitate pe baza punctajului!\n";
+    }
 }
-
