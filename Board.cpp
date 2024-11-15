@@ -25,9 +25,19 @@ bool Board::placeCard(int row, int col, card playCard, bool isIllusionCard) {
         }
     }
 
-    if (grid[row][col].second != 0) {
-        std::cout << "Position is already occupied. Try a different spot.\n";
-        return false;
+    int existingCard = grid[row][col].second;
+    if (existingCard == 0 && firstCardPlaced && playCard.second > existingCard)
+    {
+        grid[row][col] = playCard;
+        return true;
+    }
+    else if (isAdjacent(row, col) && firstCardPlaced)
+    {
+        if (existingCard == 0)
+        {
+            grid[row][col] = playCard;
+            return true;
+        }
     }
 
     grid[row][col] = playCard;

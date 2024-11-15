@@ -34,7 +34,9 @@ void Game::playRound() {
 
         bool validMove = false;//adaugare
 
-        //schimbari din else in if - 1 sau 2 commit uri
+        //schimbari din else in if - 3 commit uri
+
+        //
         if (cardValue == -1 && currentPlayer.canUseIllusion()) {
             std::cout << "Choose a card to use as an illusion: ";
             std::cin >> cardValue;
@@ -52,7 +54,9 @@ void Game::playRound() {
             else {
                 std::cout << "Invalid card choice or illusion already used.\n";
             }
-        }
+        }//
+
+        //
         else if (cardValue != -1) {
             card currentCard = { currentPlayerId, cardValue };
             std::cout << "Choose a position (row and column) (0 to " << board.getSize() - 1 << "): ";
@@ -64,7 +68,9 @@ void Game::playRound() {
                 currentPlayer.playCard(cardValue); 
                 currentPlayerId = (currentPlayerId == 1) ? 2 : 1; 
                 validMove = false; 
-            }
+            }//
+
+            //
             else if (board.placeCard(row, col, currentCard)) {
                 if (currentPlayer.playCard(cardValue)) {
                     if (checkWinCondition()) {
@@ -89,8 +95,9 @@ void Game::playRound() {
 
         if (validMove) {
             board.display();
-        }
-    }//1 sau 2 commit uri
+        }//
+
+    }//3 commit
 }
 
 void Game::start()
