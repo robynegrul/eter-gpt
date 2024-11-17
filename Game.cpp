@@ -34,9 +34,7 @@ void Game::playRound() {
 
         bool validMove = false;//adaugare
 
-        //schimbari din else in if - 3 commit uri - vlad
-
-        //
+      
         if (cardValue == -1 && currentPlayer.canUseIllusion()) {
             std::cout << "Choose a card to use as an illusion: ";
             std::cin >> cardValue;
@@ -54,7 +52,7 @@ void Game::playRound() {
             else {
                 std::cout << "Invalid card choice or illusion already used.\n";
             }
-        }//
+        }
 
         //
         else if (cardValue != -1) {
