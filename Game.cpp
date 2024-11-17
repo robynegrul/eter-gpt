@@ -138,9 +138,9 @@ void Game::displayScore() const
     std::cout << "Jucator 2: " << player2Wins << "\n\n";
 }
 
-void Game::calculateFinalScores()//functie noua - 2 commit uri - paul
+void Game::calculateFinalScores()
 {
-    //commit 1
+   
     int player1Score = 0;
     int player2Score = 0;
 
@@ -157,9 +157,9 @@ void Game::calculateFinalScores()//functie noua - 2 commit uri - paul
                     player2Score += currentCard.second;
             }
         }
-    }//commit 1
+    }
+    
 
-    //commit 2
     std::cout << "Punctajul cartilor: \n";
     std::cout << "Jucator 1: " << player1Score << "\n";
     std::cout << "Jucator 2: " << player2Score << "\n";
