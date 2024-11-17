@@ -7,12 +7,12 @@
 #include <string>
 
 
-using card = std::pair<int, int>;//modificare
+using card = std::pair<int, int>;
 
 class Board {
 private:
     std::vector<std::vector<card>> grid;
-    std::vector<std::vector<bool>> isIllusion;//adaugare
+    std::vector<std::vector<bool>> isIllusion;
     int size;
     bool firstCardPlaced;
 
@@ -20,7 +20,7 @@ public:
     Board(int boardSize);
 
     bool placeCard(int row, int col, card playCard, bool isIllusionCard = false);
-    bool tryCoverCard(int row, int col, card opponentCard);//adaugare
+    bool tryCoverCard(int row, int col, card opponentCard);
     void revealCard(int row, int col);//adaugare
     bool checkWinCondition(int playerId) const;
 
