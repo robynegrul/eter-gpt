@@ -7,7 +7,6 @@ void Board::reset() {
     isIllusion.assign(size, std::vector<bool>(size, false));//adaugare
     firstCardPlaced = false;
 }
-//modificare toata functia - 1 sau 2 commit uri-eu
 bool Board::placeCard(int row, int col, card playCard, bool isIllusionCard) {
     if (row < 0 || row >= size || col < 0 || col >= size) {
         if (!fixedGridRows() || !fixedGridColumns()) {
@@ -44,7 +43,7 @@ bool Board::placeCard(int row, int col, card playCard, bool isIllusionCard) {
     isIllusion[row][col] = isIllusionCard;
     if (!firstCardPlaced) firstCardPlaced = true;
     return true;
-}//1 sau 2 commit uri
+}
 
 //adaugare functie
 void Board::revealCard(int row, int col) {

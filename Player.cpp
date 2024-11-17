@@ -36,11 +36,11 @@ void Player::displayAvailableCards() const {
     std::cout << "\n";
 }
 
-bool Player::canUseIllusion() const {//adaugare
+bool Player::canUseIllusion() const {
     return !illusionUsed;
 }
 
-bool Player::useIllusion(int cardValue) {//commit - eu
+bool Player::useIllusion(int cardValue) {
     if (illusionUsed) {
         std::cout << "You have already used an illusion. Choose a regular card.\n";
         return false;
@@ -54,4 +54,4 @@ bool Player::useIllusion(int cardValue) {//commit - eu
     }
     std::cout << "Card not available. Choose a valid card.\n";
     return false;
-}//commit - eu
+}/
