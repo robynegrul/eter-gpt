@@ -1,4 +1,4 @@
-﻿#include "Game.h"//cf ba
+﻿#include "Game.h"
 
 int main()
 {
@@ -6,4 +6,3 @@ int main()
     game.start();
     return 0;
 }
-//salut
