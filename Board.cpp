@@ -7,7 +7,7 @@ void Board::reset() {
     isIllusion.assign(size, std::vector<bool>(size, false));//adaugare
     firstCardPlaced = false;
 }
-//modificare toata functia - 1 sau 2 commit uri
+//modificare toata functia - 1 sau 2 commit uri-eu
 bool Board::placeCard(int row, int col, card playCard, bool isIllusionCard) {
     if (row < 0 || row >= size || col < 0 || col >= size) {
         if (!fixedGridRows() || !fixedGridColumns()) {
@@ -225,7 +225,7 @@ bool Board::isAdjacent(int row, int col) const
     }
     return false;
 }
-//adaugare
+//adaugare - alin
 int Board::getSize() const
 {
     return size;
@@ -234,8 +234,9 @@ int Board::getSize() const
 card Board::getCard(int row, int col) const
 {
     return grid[row][col];
-}
-//commit
+}//alin
+
+//commit - alin
 bool Board::isFull() const
 {
     for (const auto& row : grid)
@@ -247,7 +248,7 @@ bool Board::isFull() const
         }
     }
     return true;
-}//commit
+}//commit - alin
 
 void Board::display() const
 {
@@ -297,7 +298,7 @@ bool Board::checkDiagonals(int playerId) const
 
     return mainDiagonal || secondaryDiagonal;
 }
-//commit
+//commit - alin
 bool Board::tryCoverCard(int row, int col, card opponentCard) {
     if (row < 0 || row >= size || col < 0 || col >= size) {
         return false;
@@ -311,4 +312,4 @@ bool Board::tryCoverCard(int row, int col, card opponentCard) {
     }
 
     return false;
-}//commit
+}//commit - alin
