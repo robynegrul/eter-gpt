@@ -1,7 +1,7 @@
 
 #include "Player.h"
 
-Player::Player(int playerId)//adaugare o variabila
+Player::Player(int playerId)
     : id{ playerId }, initialCards{ { 1, 1, 2, 2, 3, 3, 4 } }, cards{ initialCards }, illusionUsed{ false } {
 }
 
@@ -21,7 +21,7 @@ bool Player::playCard(int cardValue) {
 
 void Player::resetCards() {
     cards = initialCards;
-    illusionUsed = false; //adaugare
+    illusionUsed = false; 
 }
 
 bool Player::hasCardsLeft() const {
