@@ -5,30 +5,30 @@ Game::Game() : board{ 3 }, player1{ 1 }, player2{ 2 }, player1Wins{ 0 }, player2
 
 void Game::playRound() {
     while (true) {
-        //conditie noua - commit paul
+        
         if (board.isFull()) {
             std::cout << "Board is full. Calculating final scores...\n";
             calculateFinalScores();
             break;
-        }//commit - paul
+        }
 
         Player& currentPlayer = (currentPlayerId == 1) ? player1 : player2;
-        Player& opponent = (currentPlayerId == 1) ? player2 : player1;//adaugare variabila
+        Player& opponent = (currentPlayerId == 1) ? player2 : player1;
 
         currentPlayer.displayAvailableCards();
-        //eliminare afisare
+       
         
-        //commit - paul
+       
         if (currentPlayer.canUseIllusion()) {
             std::cout << "Choose a card or type -1 to use an illusion: ";
         }
         else {
             std::cout << "Choose a card: ";
         }
-		//commit - paul
+		
         int cardValue;
         std::cin >> cardValue;
-        //eliminare variabila
+       
 
         //eliminare if
 
