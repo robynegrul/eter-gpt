@@ -5,12 +5,12 @@ Game::Game() : board{ 3 }, player1{ 1 }, player2{ 2 }, player1Wins{ 0 }, player2
 
 void Game::playRound() {
     while (true) {
-        //conditie noua - commit ?
+        //conditie noua - commit paul
         if (board.isFull()) {
             std::cout << "Board is full. Calculating final scores...\n";
             calculateFinalScores();
             break;
-        }//commit ?
+        }//commit - paul
 
         Player& currentPlayer = (currentPlayerId == 1) ? player1 : player2;
         Player& opponent = (currentPlayerId == 1) ? player2 : player1;//adaugare variabila
@@ -18,14 +18,14 @@ void Game::playRound() {
         currentPlayer.displayAvailableCards();
         //eliminare afisare
         
-        //commit ?
+        //commit - paul
         if (currentPlayer.canUseIllusion()) {
             std::cout << "Choose a card or type -1 to use an illusion: ";
         }
         else {
             std::cout << "Choose a card: ";
         }
-		//commit ?
+		//commit - paul
         int cardValue;
         std::cin >> cardValue;
         //eliminare variabila
@@ -34,7 +34,7 @@ void Game::playRound() {
 
         bool validMove = false;//adaugare
 
-        //schimbari din else in if - 3 commit uri
+        //schimbari din else in if - 3 commit uri - vlad
 
         //
         if (cardValue == -1 && currentPlayer.canUseIllusion()) {
@@ -97,7 +97,7 @@ void Game::playRound() {
             board.display();
         }//
 
-    }//3 commit
+    }//3 commit - vlad
 }
 
 void Game::start()
@@ -138,7 +138,7 @@ void Game::displayScore() const
     std::cout << "Jucator 2: " << player2Wins << "\n\n";
 }
 
-void Game::calculateFinalScores()//functie noua
+void Game::calculateFinalScores()//functie noua - 2 commit uri - paul
 {
     //commit 1
     int player1Score = 0;
