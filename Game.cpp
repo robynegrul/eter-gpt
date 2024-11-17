@@ -54,7 +54,6 @@ void Game::playRound() {
             }
         }
 
-        //
         else if (cardValue != -1) {
             card currentCard = { currentPlayerId, cardValue };
             std::cout << "Choose a position (row and column) (0 to " << board.getSize() - 1 << "): ";
@@ -66,7 +65,7 @@ void Game::playRound() {
                 currentPlayer.playCard(cardValue); 
                 currentPlayerId = (currentPlayerId == 1) ? 2 : 1; 
                 validMove = false; 
-            }//
+            }
 
             //
             else if (board.placeCard(row, col, currentCard)) {
