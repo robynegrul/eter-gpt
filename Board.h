@@ -29,7 +29,7 @@ public:
     bool isAdjacent(int row, int col) const;
     int getSize() const;//adaugare
     card getCard(int row, int col) const;//adaugare
-    bool isFull() const;//adaugare
+    bool isFull() const;
 
     bool shiftGrid(int& row, int& col);
     void shiftRows(int& row, int& col);

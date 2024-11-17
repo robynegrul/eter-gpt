@@ -235,7 +235,6 @@ card Board::getCard(int row, int col) const
     return grid[row][col];
 }//alin
 
-//commit - alin
 bool Board::isFull() const
 {
     for (const auto& row : grid)
@@ -247,7 +246,7 @@ bool Board::isFull() const
         }
     }
     return true;
-}//commit - alin
+}
 
 void Board::display() const
 {
@@ -297,7 +296,7 @@ bool Board::checkDiagonals(int playerId) const
 
     return mainDiagonal || secondaryDiagonal;
 }
-//commit - alin
+
 bool Board::tryCoverCard(int row, int col, card opponentCard) {
     if (row < 0 || row >= size || col < 0 || col >= size) {
         return false;
@@ -311,4 +310,4 @@ bool Board::tryCoverCard(int row, int col, card opponentCard) {
     }
 
     return false;
-}//commit - alin
+}
