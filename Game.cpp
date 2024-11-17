@@ -177,5 +177,4 @@ void Game::calculateFinalScores()
     {
         std::cout << "Egalitate pe baza punctajului!\n";
     }
-    //commit 2
 }
