@@ -21,14 +21,14 @@ public:
 
     bool placeCard(int row, int col, card playCard, bool isIllusionCard = false);
     bool tryCoverCard(int row, int col, card opponentCard);
-    void revealCard(int row, int col);//adaugare
+    void revealCard(int row, int col);
     bool checkWinCondition(int playerId) const;
 
     void reset();
     void display() const;
     bool isAdjacent(int row, int col) const;
-    int getSize() const;//adaugare
-    card getCard(int row, int col) const;//adaugare
+    int getSize() const;
+    card getCard(int row, int col) const;
     bool isFull() const;
 
     bool shiftGrid(int& row, int& col);

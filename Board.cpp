@@ -1,10 +1,10 @@
 ﻿#include "Board.h"
-//adaugare la constructor
+
 Board::Board(int boardSize) : size{ boardSize }, grid(boardSize, std::vector<card>(boardSize, { 0,0 })), isIllusion(boardSize, std::vector<bool>(boardSize, false)), firstCardPlaced{ false } {}
 
 void Board::reset() {
     grid.assign(size, std::vector<card>(size, { 0,0 }));
-    isIllusion.assign(size, std::vector<bool>(size, false));//adaugare
+    isIllusion.assign(size, std::vector<bool>(size, false));
     firstCardPlaced = false;
 }
 bool Board::placeCard(int row, int col, card playCard, bool isIllusionCard) {
@@ -45,10 +45,9 @@ bool Board::placeCard(int row, int col, card playCard, bool isIllusionCard) {
     return true;
 }
 
-//adaugare functie
 void Board::revealCard(int row, int col) {
     isIllusion[row][col] = false;
-}//adaugare functie
+}
 
 bool Board::checkWinCondition(int playerId) const {
     for (int i = 0; i < size; ++i) {
@@ -138,7 +137,7 @@ bool Board::shiftGrid(int& row, int& col) {
             shifted = true;
         }
     }
-    //adaugare afisare
+
     else {
         std::cerr << "Error: Cannot shift grid diagonally as there is at least one element in each row or column" << std::endl;
     }
@@ -224,16 +223,16 @@ bool Board::isAdjacent(int row, int col) const
     }
     return false;
 }
-//adaugare - alin
+
 int Board::getSize() const
 {
     return size;
 }
-//adaugare
+
 card Board::getCard(int row, int col) const
 {
     return grid[row][col];
-}//alin
+}
 
 bool Board::isFull() const
 {
