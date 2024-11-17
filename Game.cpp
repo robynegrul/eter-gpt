@@ -67,7 +67,6 @@ void Game::playRound() {
                 validMove = false; 
             }
 
-            //
             else if (board.placeCard(row, col, currentCard)) {
                 if (currentPlayer.playCard(cardValue)) {
                     if (checkWinCondition()) {
@@ -92,9 +91,9 @@ void Game::playRound() {
 
         if (validMove) {
             board.display();
-        }//
+        }
 
-    }//3 commit - vlad
+    }
 }
 
 void Game::start()
