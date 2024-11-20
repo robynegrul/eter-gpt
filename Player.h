@@ -2,14 +2,13 @@
 #define PLAYER_H
 
 #include <vector>
-#include <iostream> 
+#include <iostream>
 
 class Player {
 private:
     int id;
     std::vector<int> cards;
     const std::vector<int> initialCards;
-    bool illusionUsed;
 
 public:
     Player(int playerId);
@@ -22,13 +21,11 @@ public:
 
     bool hasCardsLeft() const;
 
+    bool hasCard(int cardValue) const; // 
+
     void displayAvailableCards() const;
 
-	bool canUseIllusion() const;
-
-	bool useIllusion(int cardValue);
-
-
+    void addCard(int cardValue);
 };
 
 #endif

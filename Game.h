@@ -12,7 +12,10 @@ private:
     Player player2;
     int player1Wins;
     int player2Wins;
-    int currentPlayerId;//inlocuire variabila
+    int currentPlayerId;
+    bool firstCardPlaced;//
+    bool player1UsedIllusion;
+    bool player2UsedIllusion;
 
 public:
     Game();
@@ -21,7 +24,6 @@ public:
     void resetRound();
     bool checkWinCondition();
     void displayScore() const;
-    void calculateFinalScores();//functie noua
 };
 
 #endif
