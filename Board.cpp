@@ -11,7 +11,7 @@ void Board::reset() {
 
 bool Board::placeCard(int row, int col, card playCard) {
     // Only attempt to shift the grid if not all rows and columns are fixed
-    if (!(fixedGridRows() && fixedGridColumns()) && shiftGrid(row, col) && isAdjacent(row, col)) {
+    if (!(fixedGridRows() && fixedGridColumns()) && isAdjacent(row, col)&& shiftGrid(row, col)) {
         std::cout << "The grid has been shifted to accommodate the new position.\n";
     }
 
@@ -255,7 +255,7 @@ bool Board::isFull() const {
 }
 
 bool Board::placeIllusion(int row, int col, int playerId, int cardValue) {
-    if (!(fixedGridRows() && fixedGridColumns()) && shiftGrid(row, col) && isAdjacent(row, col)) {
+    if (!(fixedGridRows() && fixedGridColumns()) && isAdjacent(row, col) && shiftGrid(row, col)) {
         std::cout << "The grid has been shifted to accommodate the new position.\n";
     }
 
