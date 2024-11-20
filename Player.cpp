@@ -1,7 +1,8 @@
+
 #include "Player.h"
 
 Player::Player(int playerId)
-    : id(playerId), initialCards{ 1, 1, 2, 2, 3, 3, 4 }, cards(initialCards) {
+    : id{ playerId }, initialCards{ { 1, 1, 2, 2, 3, 3, 4 } }, cards{ initialCards }, illusionUsed{ false } {
 }
 
 int Player::getId() const {
@@ -20,6 +21,7 @@ bool Player::playCard(int cardValue) {
 
 void Player::resetCards() {
     cards = initialCards;
+    illusionUsed = false; 
 }
 
 bool Player::hasCardsLeft() const {
