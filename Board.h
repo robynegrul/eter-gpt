@@ -8,6 +8,7 @@
 
 using card = std::pair<int, int>;
 
+//adaugare enum
 enum class PlaceCardResult {
     Success,
     Failure,
@@ -18,16 +19,17 @@ class Board
 {
 private:
     std::vector<std::vector<card>> grid;
+    //eliminare
     int size;
     bool firstCardPlaced;
-    std::vector<std::pair<int, int>> illusionPositions; // To store positions of illusions
-    std::map<std::pair<int, int>, int> illusionCards;   // Map to store the card values of illusions
+    std::vector<std::pair<int, int>> illusionPositions; //adaugare
+    std::map<std::pair<int, int>, int> illusionCards; //adaugare
 
 
 public:
     Board(int boardSize);
 
-    PlaceCardResult placeCard(int row, int col, card playCard);//
+    PlaceCardResult placeCard(int row, int col, card playCard);//modificare functie inclus tip
 
     bool checkWinCondition(int playerId) const;
 
@@ -35,18 +37,19 @@ public:
 
     void display() const;
 
-    //commit
     bool isAdjacent(int row, int col) const;
-    //commit
-    int calculateCardValueSum(int playerId) const;
+
+    int calculateCardValueSum(int playerId) const; //adaugare
 
     bool isFull() const;
 
-    bool placeIllusion(int row, int col, int playerId, int cardValue);
+    bool placeIllusion(int row, int col, int playerId, int cardValue);//adaugare
 
-    bool revealIllusion(int row, int col, int opponentCardValue, int& illusionCardValue);
+    bool revealIllusion(int row, int col, int opponentCardValue, int& illusionCardValue);//adaugare
 
-    bool isIllusion(int row, int col) const;
+    bool isIllusion(int row, int col) const;//adaugare
+
+    //eliminare cateva functii
 
 private:
     bool checkRow(int row, int playerId) const;
@@ -56,7 +59,6 @@ private:
     bool checkDiagonals(int playerId) const;
 
     bool shiftGrid(int& row, int& col);
-    //commituri in jos
     void shiftRows(int& row, int& col);
     void shiftColumns(int& row, int& col);
     bool fixedGridRows() const;

@@ -1,7 +1,7 @@
 ﻿#include "Game.h"
 #include <iostream>
 
-Game::Game()
+Game::Game()//adaugari constructor
     : board(3), player1(1), player2(2), player1Wins(0), player2Wins(0), currentPlayerId(1), firstCardPlaced(false),
     player1UsedIllusion(false), player2UsedIllusion(false) {
 }
@@ -10,20 +10,22 @@ void Game::start() {
     while (player1Wins < 2 && player2Wins < 2) {
         resetRound();
         playRound();
+        //elminari
     }
+    //schimbare afisare ro
     std::cout << "Game Over!\n";
     std::cout << (player1Wins == 2 ? "Player 1 wins the match!\n" : "Player 2 wins the match!\n");
 }
 
+//commit modificari functie
 void Game::resetRound() {
     board.reset();
     player1.resetCards();
     player2.resetCards();
-
+   
     player1UsedIllusion = false;
     player2UsedIllusion = false;
 
-    // The player who won the previous round starts the next round
     if (player1Wins > player2Wins) {
         currentPlayerId = 1;
     }
@@ -31,42 +33,45 @@ void Game::resetRound() {
         currentPlayerId = 2;
     }
     else {
-        currentPlayerId = 1; // Default to Player 1 if it's the first round or if there's a tie
+        currentPlayerId = 1;
     }
 
     firstCardPlaced = false;
     std::cout << "NEW ROUND STARTED!\n";
-}
+}//commit
 
 void Game::playRound() {
-    while (true) {
+    while (true) {        
+        //eliminare if
+
         Player& currentPlayer = (currentPlayerId == 1) ? player1 : player2;
+        //eliminare
         currentPlayer.displayAvailableCards();
 
-        // Afișăm opțiunea pentru iluzie doar dacă jucătorul nu a folosit-o
+        //modificare if
         if ((currentPlayerId == 1 && !player1UsedIllusion) || (currentPlayerId == 2 && !player2UsedIllusion)) {
             std::cout << "Player " << currentPlayerId << ", select a card (or enter -1 to use your illusion): ";
         }
         else {
             std::cout << "Player " << currentPlayerId << ", select a card: ";
-        }
+        }//
+        
 
         int cardValue;
         std::cin >> cardValue;
+        //eliminare
 
+        //modificare if
         if (cardValue == -1) {
-            // Verificăm dacă jucătorul a folosit deja iluzia
             if ((currentPlayerId == 1 && player1UsedIllusion) || (currentPlayerId == 2 && player2UsedIllusion)) {
                 std::cout << "You have already used your illusion this round!\n";
                 continue;
             }
 
-            // Jucătorul selectează o carte pentru iluzie
             std::cout << "Select a card from your hand to use as the illusion: ";
             int illusionCardValue;
             std::cin >> illusionCardValue;
 
-            // Verificăm dacă cartea există în mână
             if (!currentPlayer.hasCard(illusionCardValue)) {
                 std::cout << "Invalid card selection. Try again.\n";
                 continue;
@@ -77,13 +82,12 @@ void Game::playRound() {
             std::cin >> row >> col;
 
             if (board.placeIllusion(row, col, currentPlayerId, illusionCardValue)) {
-                // Marcăm iluzia ca folosită
                 currentPlayer.playCard(illusionCardValue);
                 if (currentPlayerId == 1) player1UsedIllusion = true;
                 else player2UsedIllusion = true;
 
                 std::cout << "Illusion placed successfully.\n";
-                currentPlayerId = (currentPlayerId == 1) ? 2 : 1; // Schimbăm tura
+                currentPlayerId = (currentPlayerId == 1) ? 2 : 1; 
                 board.display();
             }
             else {
@@ -91,10 +95,8 @@ void Game::playRound() {
             }
         }
         else {
-            // Logica pentru plasarea normală a unei cărți
             card currentCard = { currentPlayerId, cardValue };
 
-            // Verificăm dacă cartea există în mână
             if (!currentPlayer.hasCard(cardValue)) {
                 std::cout << "Invalid card selection. Try again.\n";
                 continue;
@@ -106,18 +108,15 @@ void Game::playRound() {
 
             PlaceCardResult result = board.placeCard(row, col, currentCard);
             if (result == PlaceCardResult::CardLost) {
-                // Poziție ocupată de iluzie
                 std::cout << "Your card has been lost due to the illusion.\n";
                 board.display();
-                currentPlayer.playCard(cardValue); // Eliminăm cartea doar dacă a fost pierdută
-                currentPlayerId = (currentPlayerId == 1) ? 2 : 1; // Schimbăm tura
+                currentPlayer.playCard(cardValue); 
+                currentPlayerId = (currentPlayerId == 1) ? 2 : 1; 
             }
             else if (result == PlaceCardResult::Failure) {
-                // Poziție invalidă (nu o iluzie)
-                std::cout << "Invalid position. Try again.\n";
+               std::cout << "Invalid position. Try again.\n";
             }
             else {
-                // Mișcare validă
                 if (currentPlayer.playCard(cardValue)) {
                     board.display();
 
@@ -150,7 +149,7 @@ void Game::playRound() {
                         break;
                     }
 
-                    currentPlayerId = (currentPlayerId == 1) ? 2 : 1; // Schimbăm tura după o mișcare validă
+                    currentPlayerId = (currentPlayerId == 1) ? 2 : 1; 
                 }
             }
         }
@@ -158,9 +157,11 @@ void Game::playRound() {
 }
 
 void Game::displayScore() const {
+    //eliminari
     std::cout << "Score: \nPlayer 1: " << player1Wins << "\nPlayer 2: " << player2Wins << "\n\n";
 }
 
 bool Game::checkWinCondition() {
     return board.checkWinCondition(currentPlayerId);
 }
+//eiminare functie

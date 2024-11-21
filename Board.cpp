@@ -1,43 +1,40 @@
 ﻿#include "Board.h"
-
+//modificare constr
 Board::Board(int boardSize)
     : size(boardSize), grid(boardSize, std::vector<card>(boardSize, { 0, 0 })), firstCardPlaced(false) {
 }
 
 void Board::reset() {
     grid.assign(size, std::vector<card>(size, { 0, 0 }));
+    //eliminare
     firstCardPlaced = false;
 }
-
+//modificare functie tip si parametrii - ~2 commit uri
 PlaceCardResult Board::placeCard(int row, int col, card playCard) {
-    // Only attempt to shift the grid if not all rows and columns are fixed
+
+
     if (!(fixedGridRows() && fixedGridColumns()) && isAdjacent(row, col) && shiftGrid(row, col)) {
         std::cout << "The grid has been shifted to accommodate the new position.\n";
     }
 
-    // Proceed with the card placement logic
     if (row >= 0 && row < size && col >= 0 && col < size) {
-        // Check if the position contains an illusion
         if (isIllusion(row, col)) {
             int illusionCardValue = illusionCards[{row, col}];
 
             if (playCard.second <= illusionCardValue) {
                 std::cout << "Your card is not greater than the illusion. The illusion is now revealed on the board.\n";
 
-                // Actualizează celula pentru a afișa valoarea reală a iluziei
                 grid[row][col].second = illusionCardValue;
 
-                // Elimină iluzia din listele de iluzie
                 illusionCards.erase({ row, col });
                 illusionPositions.erase(
                     std::remove(illusionPositions.begin(), illusionPositions.end(), std::make_pair(row, col)),
                     illusionPositions.end()
                 );
 
-                return PlaceCardResult::CardLost; // Încercarea a eșuat, trece la următorul jucător
+                return PlaceCardResult::CardLost; 
             }
             else {
-                // Înlocuiește iluzia cu cartea nouă
                 grid[row][col] = playCard;
                 illusionCards.erase({ row, col });
                 illusionPositions.erase(
@@ -48,7 +45,6 @@ PlaceCardResult Board::placeCard(int row, int col, card playCard) {
             }
         }
 
-        // Restul logicii pentru plasarea normală a cărților
         if (grid[row][col].second != 0) {
             if (playCard.second > grid[row][col].second) {
                 grid[row][col] = playCard;
@@ -65,7 +61,6 @@ PlaceCardResult Board::placeCard(int row, int col, card playCard) {
             return PlaceCardResult::Failure;
         }
 
-        // Plasează cartea într-o poziție goală
         grid[row][col] = playCard;
         if (!firstCardPlaced) {
             firstCardPlaced = true;
@@ -73,9 +68,10 @@ PlaceCardResult Board::placeCard(int row, int col, card playCard) {
         return PlaceCardResult::Success;
     }
     return PlaceCardResult::Failure;
-}
+}// ~2 commit uri
 
 bool Board::shiftGrid(int& row, int& col) {
+    //eliminare juma functie
     bool shifted = false;
     if (row < 0) {
         grid.insert(grid.begin(), std::vector<card>(size, { 0, 0 }));
@@ -124,16 +120,16 @@ void Board::shiftRows(int& row, int& col) {
 
 void Board::shiftColumns(int& row, int& col) {
     if (col < 0) {
-        for (auto& r : grid) {
-            r.insert(r.begin(), { 0, 0 });
-            r.pop_back();
+        for (auto& current : grid) {
+            current.insert(current.begin(), { 0, 0 });
+            current.pop_back();
         }
         col = 0;
     }
     else if (col >= size) {
-        for (auto& r : grid) {
-            r.push_back({ 0, 0 });
-            r.erase(r.begin());
+        for (auto& current : grid) {
+            current.push_back({ 0, 0 });
+            current.erase(current.begin());
         }
         col = size - 1;
     }
@@ -171,32 +167,19 @@ bool Board::fixedGridColumns() const {
     return true;
 }
 
-bool Board::checkWinCondition(int playerId) const {
-    for (int i = 0; i < size; ++i) {
-        if (checkRow(i, playerId) || checkColumn(i, playerId)) {
-            return true;
-        }
-    }
-    return checkDiagonals(playerId);
-}
+//eliminare functie trycovercard
 
-void Board::display() const {
+bool Board::isFull() const {
     for (const auto& row : grid) {
         for (const auto& cell : row) {
             if (cell.second == 0) {
-                std::cout << "[   ] "; // Empty cell
-            }
-            else if (cell.second == -1) {
-                std::cout << "[" << cell.first << ",?] "; // Illusion
-            }
-            else {
-                std::cout << "[" << cell.first << "," << cell.second << "] ";
-                // cell.first is the playerID, cell.second is the cardValue
+                return false;
             }
         }
-        std::cout << "\n";
     }
+    return true;
 }
+//eliminare revealCard, getsize, getcard
 
 bool Board::isAdjacent(int row, int col) const {
     int directions[8][2] = { {-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1} };
@@ -209,6 +192,32 @@ bool Board::isAdjacent(int row, int col) const {
     }
     return false;
 }
+
+bool Board::checkWinCondition(int playerId) const {
+    for (int i = 0; i < size; ++i) {
+        if (checkRow(i, playerId) || checkColumn(i, playerId)) {
+            return true;
+        }
+    }
+    return checkDiagonals(playerId);
+}
+//modificare display
+void Board::display() const {
+    for (const auto& row : grid) {
+        for (const auto& cell : row) {
+            if (cell.second == 0) {
+                std::cout << "[   ] ";
+            }
+            else if (cell.second == -1) {
+                std::cout << "[" << cell.first << ",?] ";
+            }
+            else {
+                std::cout << "[" << cell.first << "," << cell.second << "] ";
+            }
+        }
+        std::cout << "\n";
+    }
+}//
 
 bool Board::checkRow(int row, int playerId) const {
     for (int col = 0; col < size; ++col) {
@@ -244,37 +253,28 @@ bool Board::checkDiagonals(int playerId) const {
     }
     return mainDiagonal || secondaryDiagonal;
 }
-
+//commit
 int Board::calculateCardValueSum(int playerId) const {
     int sum = 0;
     for (const auto& row : grid) {
         for (const auto& cell : row) {
             if (cell.first == playerId) {
-                sum += cell.second; // Add the cardValue if it belongs to the player
+                sum += cell.second;
             }
         }
     }
     return sum;
-}
+}//commit
 
-bool Board::isFull() const {
-    for (const auto& row : grid) {
-        for (const auto& cell : row) {
-            if (cell.second == 0) { // Check if there's any empty cell
-                return false;
-            }
-        }
-    }
-    return true;
-}
 
+//2 commit uri
 bool Board::placeIllusion(int row, int col, int playerId, int cardValue) {
     if (!(fixedGridRows() && fixedGridColumns()) && isAdjacent(row, col) && shiftGrid(row, col)) {
         std::cout << "The grid has been shifted to accommodate the new position.\n";
     }
 
     if (row >= 0 && row < size && col >= 0 && col < size && grid[row][col].second == 0) {
-        // Enforce adjacency rules if this is not the first card placed
+
         if (firstCardPlaced && !isAdjacent(row, col)) {
             std::cout << "The selected position is not adjacent to an existing card. Try again.\n";
             return false;
@@ -282,26 +282,28 @@ bool Board::placeIllusion(int row, int col, int playerId, int cardValue) {
 
         illusionPositions.push_back({ row, col });
         illusionCards[{row, col}] = cardValue;
-        grid[row][col] = { playerId, -1 }; // Use -1 to indicate an illusion
+        grid[row][col] = { playerId, -1 }; 
 
-        // Set firstCardPlaced to true if this is the first placement
         if (!firstCardPlaced) {
             firstCardPlaced = true;
         }
         return true;
     }
     return false;
-}
+}//2 commit uri
 
+
+//commit
 bool Board::revealIllusion(int row, int col, int opponentCardValue, int& illusionCardValue) {
     if (illusionCards.count({ row, col }) > 0) {
         illusionCardValue = illusionCards[{row, col}];
-        grid[row][col].second = illusionCardValue; // Reveal the illusion
+        grid[row][col].second = illusionCardValue; 
         return illusionCardValue >= opponentCardValue;
     }
     return false;
-}
+}//commit
 
+//adaugare mica
 bool Board::isIllusion(int row, int col) const {
     return std::find(illusionPositions.begin(), illusionPositions.end(), std::make_pair(row, col)) != illusionPositions.end();
-}
+}//

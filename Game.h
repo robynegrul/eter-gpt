@@ -14,8 +14,8 @@ private:
     int player2Wins;
     int currentPlayerId;
     bool firstCardPlaced;//
-    bool player1UsedIllusion;
-    bool player2UsedIllusion;
+    bool player1UsedIllusion;//
+    bool player2UsedIllusion;//
 
 public:
     Game();
@@ -24,6 +24,7 @@ public:
     void resetRound();
     bool checkWinCondition();
     void displayScore() const;
+    //eliminare functie
 };
 
 #endif

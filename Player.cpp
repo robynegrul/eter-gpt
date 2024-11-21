@@ -1,5 +1,5 @@
 #include "Player.h"
-
+//modificare constr
 Player::Player(int playerId)
     : id(playerId), initialCards{ 1, 1, 2, 2, 3, 3, 4 }, cards(initialCards) {
 }
@@ -20,6 +20,7 @@ bool Player::playCard(int cardValue) {
 
 void Player::resetCards() {
     cards = initialCards;
+    //eliminare
 }
 
 bool Player::hasCardsLeft() const {
@@ -34,6 +35,9 @@ void Player::displayAvailableCards() const {
     std::cout << "\n";
 }
 
+//eliminare 2 functii
+
+//commit
 void Player::addCard(int cardValue) {
     cards.push_back(cardValue);
 }
@@ -45,4 +49,6 @@ bool Player::hasCard(int cardValue) const {
         }
     }
     return false;
-}
+}//commit
+
+
