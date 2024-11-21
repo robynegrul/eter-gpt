@@ -8,6 +8,12 @@
 
 using card = std::pair<int, int>;
 
+enum class PlaceCardResult {
+    Success,
+    Failure,
+    CardLost
+};
+
 class Board
 {
 private:
@@ -21,7 +27,7 @@ private:
 public:
     Board(int boardSize);
 
-    bool placeCard(int row, int col, card playCard);//
+    PlaceCardResult placeCard(int row, int col, card playCard);//
 
     bool checkWinCondition(int playerId) const;
 

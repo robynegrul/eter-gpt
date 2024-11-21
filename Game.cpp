@@ -104,14 +104,15 @@ void Game::playRound() {
             int row, col;
             std::cin >> row >> col;
 
-            int result = board.placeCard(row, col, currentCard);
-            if (result == -1) {
+            PlaceCardResult result = board.placeCard(row, col, currentCard);
+            if (result == PlaceCardResult::CardLost) {
                 // Poziție ocupată de iluzie
                 std::cout << "Your card has been lost due to the illusion.\n";
+                board.display();
                 currentPlayer.playCard(cardValue); // Eliminăm cartea doar dacă a fost pierdută
                 currentPlayerId = (currentPlayerId == 1) ? 2 : 1; // Schimbăm tura
             }
-            else if (!result) {
+            else if (result == PlaceCardResult::Failure) {
                 // Poziție invalidă (nu o iluzie)
                 std::cout << "Invalid position. Try again.\n";
             }

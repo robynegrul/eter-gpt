@@ -9,9 +9,9 @@ void Board::reset() {
     firstCardPlaced = false;
 }
 
-bool Board::placeCard(int row, int col, card playCard) {
+PlaceCardResult Board::placeCard(int row, int col, card playCard) {
     // Only attempt to shift the grid if not all rows and columns are fixed
-    if (!(fixedGridRows() && fixedGridColumns()) && isAdjacent(row, col)&& shiftGrid(row, col)) {
+    if (!(fixedGridRows() && fixedGridColumns()) && isAdjacent(row, col) && shiftGrid(row, col)) {
         std::cout << "The grid has been shifted to accommodate the new position.\n";
     }
 
@@ -21,44 +21,58 @@ bool Board::placeCard(int row, int col, card playCard) {
         if (isIllusion(row, col)) {
             int illusionCardValue = illusionCards[{row, col}];
 
-            // If the new card's value is greater, replace the illusion
-            if (playCard.second > illusionCardValue) {
-                grid[row][col] = playCard;
-                illusionCards.erase({ row, col }); // Remove the illusion entry
-                return true;
+            if (playCard.second <= illusionCardValue) {
+                std::cout << "Your card is not greater than the illusion. The illusion is now revealed on the board.\n";
+
+                // Actualizează celula pentru a afișa valoarea reală a iluziei
+                grid[row][col].second = illusionCardValue;
+
+                // Elimină iluzia din listele de iluzie
+                illusionCards.erase({ row, col });
+                illusionPositions.erase(
+                    std::remove(illusionPositions.begin(), illusionPositions.end(), std::make_pair(row, col)),
+                    illusionPositions.end()
+                );
+
+                return PlaceCardResult::CardLost; // Încercarea a eșuat, trece la următorul jucător
             }
             else {
-                std::cout << "Your card is not greater than the illusion. You lose your card, and your turn is over.\n";
-                return -1; // The card is lost, and the turn passes
+                // Înlocuiește iluzia cu cartea nouă
+                grid[row][col] = playCard;
+                illusionCards.erase({ row, col });
+                illusionPositions.erase(
+                    std::remove(illusionPositions.begin(), illusionPositions.end(), std::make_pair(row, col)),
+                    illusionPositions.end()
+                );
+                return PlaceCardResult::Success;
             }
         }
 
-        // If there is a regular card, only replace if the new card's value is greater or equal
+        // Restul logicii pentru plasarea normală a cărților
         if (grid[row][col].second != 0) {
-            if (playCard.second >= grid[row][col].second) {
+            if (playCard.second > grid[row][col].second) {
                 grid[row][col] = playCard;
-                return true;
+                return PlaceCardResult::Success;
             }
             else {
-                std::cout << "You cannot replace a card with a smaller one. Try again.\n";
-                return false;
+                std::cout << "You cannot replace a card with a smaller or equal one. Try again.\n";
+                return PlaceCardResult::Failure;
             }
         }
 
-        // Check adjacency only if this is not the first card placed
         if (firstCardPlaced && !isAdjacent(row, col)) {
             std::cout << "The selected position is not adjacent to an existing card. Try again.\n";
-            return false;
+            return PlaceCardResult::Failure;
         }
 
-        // Place the card on an empty spot
+        // Plasează cartea într-o poziție goală
         grid[row][col] = playCard;
         if (!firstCardPlaced) {
             firstCardPlaced = true;
         }
-        return true;
+        return PlaceCardResult::Success;
     }
-    return false;
+    return PlaceCardResult::Failure;
 }
 
 bool Board::shiftGrid(int& row, int& col) {
