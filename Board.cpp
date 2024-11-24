@@ -12,7 +12,7 @@ void Board::reset() {
     //eliminare
     firstCardPlaced = false;
 }
-
+//rescriere complet functie - 2 commit uri
 PlaceCardResult Board::placeCard(int row, int col, card playCard) {
     if (!(fixedGridRows() && fixedGridColumns()) && isAdjacent(row, col) && shiftGrid(row, col)) {
         std::cout << "The grid has been shifted to accommodate the new position.\n";
@@ -40,7 +40,7 @@ PlaceCardResult Board::placeCard(int row, int col, card playCard) {
                 return PlaceCardResult::Success;
             }
         }
-
+        //
         if (grid[row][col].first == -1 && grid[row][col].second == -1) {
             std::cout << "You cannot place a card on a hole.\n";
             return PlaceCardResult::Failure;
@@ -69,7 +69,7 @@ PlaceCardResult Board::placeCard(int row, int col, card playCard) {
         return PlaceCardResult::Success;
     }
     return PlaceCardResult::Failure;
-}
+}//2 commit uri
 
 bool Board::shiftGrid(int& row, int& col) {
     bool shifted = false;
@@ -166,56 +166,7 @@ bool Board::checkWinCondition(int playerId) const {
     }
     return checkDiagonals(playerId);
 }
-
-Explosion Board::generateExplosionEffects(int explosionRow, int rotation) {
-    Explosion explosion;
-
-    int effectCount;
-    if (size == 3) {
-        effectCount = rand() % 3 + 2; // 2 până la 4 efecte
-    }
-    else {
-        effectCount = rand() % 4 + 3; // Altă dimensiune
-    }
-
-    for (int i = 0; i < effectCount; ++i) {
-        int rowOffset = rand() % size - size / 2;
-        int colOffset = rand() % size - size / 2;
-
-        if (explosionRow + rowOffset >= 0 && explosionRow + rowOffset < size &&
-            explosionRow + colOffset >= 0 && explosionRow + colOffset < size) {
-            explosion.affectedPositions.push_back({ explosionRow + rowOffset, explosionRow + colOffset });
-            explosion.effects.push_back((rand() % 10 == 0) ? ExplosionEffect::CreateHole : ExplosionEffect::RemoveCard);
-        }
-    }
-
-    if (rotation != -1) {
-        for (auto& pos : explosion.affectedPositions) {
-            int temp = pos.first;
-            pos.first = pos.second;
-            pos.second = temp;
-        }
-    }
-
-    return explosion;
-}
-
-void Board::applyExplosionEffects(const Explosion& explosion) {
-    for (size_t i = 0; i < explosion.affectedPositions.size(); ++i) {
-        const auto& [row, col] = explosion.affectedPositions[i];
-        if (row < 0 || row >= size || col < 0 || col >= size) continue;
-
-        switch (explosion.effects[i]) {
-        case ExplosionEffect::RemoveCard:
-            grid[row][col] = { 0, 0 };
-            break;
-        case ExplosionEffect::CreateHole:
-            grid[row][col] = { -1, -1 };
-            break;
-        }
-    }
-}
-
+//commit
 void Board::display() const {
     for (const auto& row : grid) {
         for (const auto& cell : row) {
@@ -234,7 +185,24 @@ void Board::display() const {
         }
         std::cout << "\n";
     }
-}
+}//commit
+
+//commit
+void Board::applyExplosionEffects(const Explosion& explosion) {
+    for (size_t i = 0; i < explosion.affectedPositions.size(); ++i) {
+        const auto& [row, col] = explosion.affectedPositions[i];
+        if (row < 0 || row >= size || col < 0 || col >= size) continue;
+
+        switch (explosion.effects[i]) {
+        case ExplosionEffect::RemoveCard:
+            grid[row][col] = { 0, 0 };
+            break;
+        case ExplosionEffect::CreateHole:
+            grid[row][col] = { -1, -1 };
+            break;
+        }
+    }
+}//commit
 
 bool Board::checkRow(int row, int playerId) const {
     for (int col = 0; col < size; ++col) {
@@ -268,6 +236,7 @@ bool Board::checkDiagonals(int playerId) const {
     return mainDiagonal || secondaryDiagonal;
 }
 
+//commit
 bool Board::placeIllusion(int row, int col, int playerId, int cardValue) {
     if (!(fixedGridRows() && fixedGridColumns()) && isAdjacent(row, col) && shiftGrid(row, col)) {
         std::cout << "The grid has been shifted to accommodate the new position.\n";
@@ -289,64 +258,60 @@ bool Board::placeIllusion(int row, int col, int playerId, int cardValue) {
         return true;
     }
     return false;
-}
+}//commit
 
+//2 commit uri
 void Board::activateExplosion(int playerId, Player& player1, Player& player2) {
     if (!canActivateExplosion(playerId)) return;
 
     srand(time(0));
-    ExplosionPattern explosion(3); // Creare grilă explozie 3x3
+    ExplosionPattern explosion(3); 
 
-    // Afișează modelul inițial (0 grade)
     std::cout << "Generated explosion pattern at 0 degrees:\n";
     explosion.display();
 
-    // Stochează modelul inițial pentru referință
     ExplosionPattern initialExplosion = explosion;
 
-    // Previzualizare rotații (90, 180, 270 grade)
     for (int rotation : {90, 180, 270}) {
-        explosion = initialExplosion; // Resetare la modelul inițial
-        explosion.rotate(rotation);  // Aplică rotația curentă
+        explosion = initialExplosion; 
+        explosion.rotate(rotation);  
         std::cout << "Explosion pattern at " << rotation << " degrees:\n";
         explosion.display();
     }
 
-    // Permite jucătorului să aleagă rotația
+   
     int chosenRotation = -1;
     while (chosenRotation != 0 && chosenRotation != 90 && chosenRotation != 180 && chosenRotation != 270) {
         std::cout << "Choose rotation (0, 90, 180, 270): ";
         std::cin >> chosenRotation;
     }
-
-    // Aplică rotația aleasă
+    //
     explosion = initialExplosion;
     if (chosenRotation > 0) {
         explosion.rotate(chosenRotation);
     }
 
-    // Automată centrăm explozia pe ultima carte plasată
     int centerRow, centerCol;
     findLastPlacedCard(playerId, centerRow, centerCol);
 
-    // Aplicăm efectele exploziei
     for (const auto& [rowOffset, colOffset] : explosion.getAffectedPositions()) {
         int affectedRow = centerRow + rowOffset;
         int affectedCol = centerCol + colOffset;
 
         if (affectedRow >= 0 && affectedRow < size && affectedCol >= 0 && affectedCol < size) {
             if (explosion.isHole(rowOffset + 1, colOffset + 1)) {
-                grid[affectedRow][affectedCol] = { -1, -1 }; // Marchează ca gaură
+                grid[affectedRow][affectedCol] = { -1, -1 }; 
             }
             else {
-                grid[affectedRow][affectedCol] = { 0, 0 }; // Elimină cartea
+                grid[affectedRow][affectedCol] = { 0, 0 }; 
             }
         }
     }
 
-    display(); // Afișează tabla actualizată
-}
+    display();
+}//2 commit uri
 
+//commit
 bool Board::canActivateExplosion(int playerId) const {
     int filledRows = 0, filledCols = 0;
 
@@ -370,8 +335,9 @@ bool Board::canActivateExplosion(int playerId) const {
     }
 
     return (filledRows >= 2) || (filledCols >= 2) || (filledRows >= 1 && filledCols >= 1);
-}
-
+}//commit
+//-------------------
+//commit
 void Board::findLastPlacedCard(int playerId, int& row, int& col) const {
     for (int i = size - 1; i >= 0; --i) {
         for (int j = size - 1; j >= 0; --j) {
@@ -384,8 +350,9 @@ void Board::findLastPlacedCard(int playerId, int& row, int& col) const {
     }
     row = -1;
     col = -1;
-}
+}//commit
 
+//commit
 int Board::calculateCardValueSum(int playerId) const {
     int sum = 0;
     for (const auto& row : grid) {
@@ -398,6 +365,7 @@ int Board::calculateCardValueSum(int playerId) const {
     return sum;
 }
 
+
 bool Board::isIllusion(int row, int col) const {
     return std::find(illusionPositions.begin(), illusionPositions.end(), std::make_pair(row, col)) != illusionPositions.end();
-}
+}//commit

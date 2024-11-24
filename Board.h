@@ -83,7 +83,7 @@ private:
 
     void applyExplosionEffects(const Explosion& explosion);//adaugare
 
-    Explosion generateExplosionEffects(int explosionRow, int rotation = -1);//adaugare
+    
 };
 
 #endif

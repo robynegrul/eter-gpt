@@ -77,7 +77,7 @@ void Game::playRound() {
 
         int cardValue;
         std::cin >> cardValue;
-        //adaugare variabila
+        //eliminare variabila
 
         //pana la final multe modificari si stergeri ~2 commit uri 
 
@@ -113,6 +113,7 @@ void Game::playRound() {
                 std::cout << "The selected position is not valid. Try again.\n";
             }
         }
+        //
         else {
             card currentCard = { currentPlayerId, cardValue };
 
