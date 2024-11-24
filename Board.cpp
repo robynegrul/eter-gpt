@@ -1,7 +1,5 @@
 ﻿#include "Board.h"
 
-
-//modifcare constructor
 Board::Board(int boardSize)
     : size(boardSize), grid(boardSize, std::vector<card>(boardSize, { 0, 0 })), firstCardPlaced(false) {
 }
