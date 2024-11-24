@@ -1,67 +1,72 @@
 ﻿#include "Game.h"
 #include <iostream>
 
-Game::Game()//adaugari constructor
-    : board(3), player1(1), player2(2), player1Wins(0), player2Wins(0), currentPlayerId(1), firstCardPlaced(false),
-    player1UsedIllusion(false), player2UsedIllusion(false) {
+Game::Game()
+    : board(3), player1(1), player2(2), player1Wins(0), player2Wins(0), currentPlayerId(1),
+    firstCardPlaced(false), player1UsedIllusion(false), player2UsedIllusion(false), explosionTriggered(false) {
 }
 
 void Game::start() {
     while (player1Wins < 2 && player2Wins < 2) {
         resetRound();
         playRound();
-        //elminari
     }
-    //schimbare afisare ro
     std::cout << "Game Over!\n";
     std::cout << (player1Wins == 2 ? "Player 1 wins the match!\n" : "Player 2 wins the match!\n");
 }
 
-//commit modificari functie
 void Game::resetRound() {
     board.reset();
     player1.resetCards();
     player2.resetCards();
-   
+
+    explosionTriggered = false;
+
     player1UsedIllusion = false;
     player2UsedIllusion = false;
 
-    if (player1Wins > player2Wins) {
+    if (player1Wins == 0 && player2Wins == 0) {
         currentPlayerId = 1;
     }
-    else if (player2Wins > player1Wins) {
-        currentPlayerId = 2;
+    else if (player1Wins > player2Wins) {
+        currentPlayerId = 1;
     }
     else {
-        currentPlayerId = 1;
+        currentPlayerId = 2;
     }
 
     firstCardPlaced = false;
+
     std::cout << "NEW ROUND STARTED!\n";
-}//commit
+}
 
 void Game::playRound() {
-    while (true) {        
-        //eliminare if
-
+    while (true) {
         Player& currentPlayer = (currentPlayerId == 1) ? player1 : player2;
-        //eliminare
+
         currentPlayer.displayAvailableCards();
 
-        //modificare if
+        if (board.canActivateExplosion(currentPlayerId) && !explosionTriggered) {
+            std::cout << "Player " << currentPlayerId << ", do you want to activate an explosion? (y/n): ";
+            char choice;
+            std::cin >> choice;
+            if (choice == 'y' || choice == 'Y') {
+                board.activateExplosion(currentPlayerId, player1, player2);
+                explosionTriggered = true;
+                continue;
+            }
+        }
+
         if ((currentPlayerId == 1 && !player1UsedIllusion) || (currentPlayerId == 2 && !player2UsedIllusion)) {
             std::cout << "Player " << currentPlayerId << ", select a card (or enter -1 to use your illusion): ";
         }
         else {
             std::cout << "Player " << currentPlayerId << ", select a card: ";
-        }//
-        
+        }
 
         int cardValue;
         std::cin >> cardValue;
-        //eliminare
 
-        //modificare if
         if (cardValue == -1) {
             if ((currentPlayerId == 1 && player1UsedIllusion) || (currentPlayerId == 2 && player2UsedIllusion)) {
                 std::cout << "You have already used your illusion this round!\n";
@@ -87,7 +92,7 @@ void Game::playRound() {
                 else player2UsedIllusion = true;
 
                 std::cout << "Illusion placed successfully.\n";
-                currentPlayerId = (currentPlayerId == 1) ? 2 : 1; 
+                currentPlayerId = (currentPlayerId == 1) ? 2 : 1;
                 board.display();
             }
             else {
@@ -109,14 +114,13 @@ void Game::playRound() {
             PlaceCardResult result = board.placeCard(row, col, currentCard);
             if (result == PlaceCardResult::CardLost) {
                 std::cout << "Your card has been lost due to the illusion.\n";
-                board.display();
-                currentPlayer.playCard(cardValue); 
-                currentPlayerId = (currentPlayerId == 1) ? 2 : 1; 
+                currentPlayer.playCard(cardValue);
+                currentPlayerId = (currentPlayerId == 1) ? 2 : 1;
             }
             else if (result == PlaceCardResult::Failure) {
-               std::cout << "Invalid position. Try again.\n";
+                std::cout << "Invalid position. Try again.\n";
             }
-            else {
+            else if (result == PlaceCardResult::Success) {
                 if (currentPlayer.playCard(cardValue)) {
                     board.display();
 
@@ -149,7 +153,7 @@ void Game::playRound() {
                         break;
                     }
 
-                    currentPlayerId = (currentPlayerId == 1) ? 2 : 1; 
+                    currentPlayerId = (currentPlayerId == 1) ? 2 : 1;
                 }
             }
         }
@@ -157,11 +161,5 @@ void Game::playRound() {
 }
 
 void Game::displayScore() const {
-    //eliminari
     std::cout << "Score: \nPlayer 1: " << player1Wins << "\nPlayer 2: " << player2Wins << "\n\n";
 }
-
-bool Game::checkWinCondition() {
-    return board.checkWinCondition(currentPlayerId);
-}
-//eiminare functie

@@ -9,7 +9,6 @@ private:
     int id;
     std::vector<int> cards;
     const std::vector<int> initialCards;
-    //eliminare
 
 public:
     Player(int playerId);
@@ -22,12 +21,11 @@ public:
 
     bool hasCardsLeft() const;
 
-    bool hasCard(int cardValue) const; //adaugare
+    bool hasCard(int cardValue) const;
 
     void displayAvailableCards() const;
-    //eliminare
-    //eliminare
-    void addCard(int cardValue);//adaugare
+
+    void addCard(int cardValue);
 };
 
 #endif

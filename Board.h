@@ -5,31 +5,41 @@
 #include <iostream>
 #include <string>
 #include <map>
+#include <utility>
+#include <algorithm>
+#include "Player.h"
+#include "ExplosionPattern.h"
 
 using card = std::pair<int, int>;
 
-//adaugare enum
 enum class PlaceCardResult {
     Success,
     Failure,
     CardLost
 };
 
-class Board
-{
+enum class ExplosionEffect {
+    RemoveCard,
+    CreateHole
+};
+
+struct Explosion {
+    std::vector<std::pair<int, int>> affectedPositions;
+    std::vector<ExplosionEffect> effects;
+};
+
+class Board {
 private:
     std::vector<std::vector<card>> grid;
-    //eliminare
     int size;
     bool firstCardPlaced;
-    std::vector<std::pair<int, int>> illusionPositions; //adaugare
-    std::map<std::pair<int, int>, int> illusionCards; //adaugare
-
+    std::vector<std::pair<int, int>> illusionPositions;
+    std::map<std::pair<int, int>, int> illusionCards;
 
 public:
     Board(int boardSize);
 
-    PlaceCardResult placeCard(int row, int col, card playCard);//modificare functie inclus tip
+    PlaceCardResult placeCard(int row, int col, card playCard);
 
     bool checkWinCondition(int playerId) const;
 
@@ -39,17 +49,19 @@ public:
 
     bool isAdjacent(int row, int col) const;
 
-    int calculateCardValueSum(int playerId) const; //adaugare
+    int calculateCardValueSum(int playerId) const;
 
     bool isFull() const;
 
-    bool placeIllusion(int row, int col, int playerId, int cardValue);//adaugare
+    bool placeIllusion(int row, int col, int playerId, int cardValue);
 
-    bool revealIllusion(int row, int col, int opponentCardValue, int& illusionCardValue);//adaugare
+    bool isIllusion(int row, int col) const;
 
-    bool isIllusion(int row, int col) const;//adaugare
+    bool canActivateExplosion(int playerId) const;
 
-    //eliminare cateva functii
+    void activateExplosion(int playerId, Player& player1, Player& player2);
+
+    void findLastPlacedCard(int playerId, int& row, int& col) const;
 
 private:
     bool checkRow(int row, int playerId) const;
@@ -59,11 +71,14 @@ private:
     bool checkDiagonals(int playerId) const;
 
     bool shiftGrid(int& row, int& col);
-    void shiftRows(int& row, int& col);
-    void shiftColumns(int& row, int& col);
+
     bool fixedGridRows() const;
+
     bool fixedGridColumns() const;
 
+    void applyExplosionEffects(const Explosion& explosion);
+
+    Explosion generateExplosionEffects(int explosionRow, int rotation = -1);
 };
 
 #endif

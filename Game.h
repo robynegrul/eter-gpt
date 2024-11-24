@@ -1,4 +1,3 @@
-
 #ifndef GAME_H
 #define GAME_H
 
@@ -13,18 +12,17 @@ private:
     int player1Wins;
     int player2Wins;
     int currentPlayerId;
-    bool firstCardPlaced;//
-    bool player1UsedIllusion;//
-    bool player2UsedIllusion;//
+    bool firstCardPlaced;
+    bool player1UsedIllusion;
+    bool player2UsedIllusion;
+    bool explosionTriggered;
 
 public:
     Game();
     void start();
     void playRound();
     void resetRound();
-    bool checkWinCondition();
     void displayScore() const;
-    //eliminare functie
 };
 
 #endif
