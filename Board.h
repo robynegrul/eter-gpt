@@ -54,10 +54,16 @@ private:
     bool checkRow(int row, int playerId) const;
     bool checkColumn(int col, int playerId) const;
     bool checkDiagonals(int playerId) const;
-    bool shiftGrid(int& row, int& col);
-    bool fixedGridRows() const;
-    bool fixedGridColumns() const;
-    void applyExplosionEffects(const Explosion& explosion);
+
+    bool shiftGrid(int& row, int& col);//muta la privat
+
+    bool fixedGridRows() const;//muta la privat
+
+    bool fixedGridColumns() const;//muta la privat
+
+    void applyExplosionEffects(const Explosion& explosion);//adaugare
+
+    
 };
 
 #endif
