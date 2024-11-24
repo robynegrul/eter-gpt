@@ -17,7 +17,7 @@ void Game::start() {
     std::cout << (player1Wins == 2 ? "Player 1 wins the match!\n" : "Player 2 wins the match!\n");
 }
 
-//commit modificari functie
+//commit modificari functie 
 void Game::resetRound() {
     board.reset();
     player1.resetCards();
