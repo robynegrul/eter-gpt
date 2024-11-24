@@ -14,9 +14,11 @@ void ExplosionPattern::generateRandomPattern() {
         maxEffects = rand() % 4 + 3;
     }
 
+    int starEffects = rand() % 3 + (maxEffects - 2);
+    starEffects = std::max(2, starEffects);
     int addedEffects = 0;
 
-    while (addedEffects < maxEffects) {
+    while (addedEffects < starEffects) {
         int row = rand() % size;
         int col = rand() % size;
 
@@ -28,7 +30,7 @@ void ExplosionPattern::generateRandomPattern() {
         addedEffects++;
     }
 
-    if (addedEffects < maxEffects && rand() % 2 == 0) {
+    if (addedEffects < maxEffects && rand() % 4 < 3) {
         int handRow, handCol;
         do {
             handRow = rand() % size;
@@ -38,7 +40,7 @@ void ExplosionPattern::generateRandomPattern() {
         addedEffects++;
     }
 
-    if (addedEffects < maxEffects && rand() % 2 == 0) {
+    if (addedEffects < maxEffects && rand() % 4 < 3) {
         int holeRow, holeCol;
         do {
             holeRow = rand() % size;

@@ -41,6 +41,11 @@ PlaceCardResult Board::placeCard(int row, int col, card playCard) {
             }
         }
 
+        if (grid[row][col].first == -1 && grid[row][col].second == -1) {
+            std::cout << "You cannot place a card on a hole.\n";
+            return PlaceCardResult::Failure;
+        }
+
         if (grid[row][col].second != 0) {
             if (playCard.second > grid[row][col].second) {
                 grid[row][col] = playCard;
