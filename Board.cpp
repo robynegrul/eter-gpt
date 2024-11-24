@@ -2,13 +2,14 @@
 #include "ExplosionPattern.h"
 #include <cstdlib>
 #include <ctime>
-
+//modifcare constructor
 Board::Board(int boardSize)
     : size(boardSize), grid(boardSize, std::vector<card>(boardSize, { 0, 0 })), firstCardPlaced(false) {
 }
 
 void Board::reset() {
     grid.assign(size, std::vector<card>(size, { 0, 0 }));
+    //eliminare
     firstCardPlaced = false;
 }
 
@@ -97,7 +98,37 @@ bool Board::shiftGrid(int& row, int& col) {
         shifted = true;
     }
     return shifted;
+    //eliminare juma functie ce a ramas
 }
+
+//eliminare 2 functii
+
+//modificare functie
+bool Board::fixedGridRows() const {
+    for (const auto& row : grid) {
+        if (std::all_of(row.begin(), row.end(), [](const card& c) { return c.second == 0; })) {
+            return false;
+        }
+    }
+    return true;
+}
+bool Board::fixedGridColumns() const {
+    for (int col = 0; col < size; ++col) {
+        bool hasElement = false;
+        for (int row = 0; row < size; ++row) {
+            if (grid[row][col].second != 0) {
+                hasElement = true;
+                break;
+            }
+        }
+        if (!hasElement) {
+            return false;
+        }
+    }
+    return true;
+}
+
+//eliminare functie
 
 bool Board::isFull() const {
     for (const auto& row : grid) {
@@ -109,7 +140,7 @@ bool Board::isFull() const {
     }
     return true;
 }
-
+//eliminare 3 functii
 bool Board::isAdjacent(int row, int col) const {
     int directions[8][2] = { {-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1} };
     for (auto& dir : directions) {
@@ -230,31 +261,6 @@ bool Board::checkDiagonals(int playerId) const {
         }
     }
     return mainDiagonal || secondaryDiagonal;
-}
-
-bool Board::fixedGridRows() const {
-    for (const auto& row : grid) {
-        if (std::all_of(row.begin(), row.end(), [](const card& c) { return c.second == 0; })) {
-            return false;
-        }
-    }
-    return true;
-}
-
-bool Board::fixedGridColumns() const {
-    for (int col = 0; col < size; ++col) {
-        bool hasElement = false;
-        for (int row = 0; row < size; ++row) {
-            if (grid[row][col].second != 0) {
-                hasElement = true;
-                break;
-            }
-        }
-        if (!hasElement) {
-            return false;
-        }
-    }
-    return true;
 }
 
 bool Board::placeIllusion(int row, int col, int playerId, int cardValue) {

@@ -1,6 +1,6 @@
 ﻿#include "Game.h"
 #include <iostream>
-
+//modificare constructor
 Game::Game()
     : board(3), player1(1), player2(2), player1Wins(0), player2Wins(0), currentPlayerId(1),
     firstCardPlaced(false), player1UsedIllusion(false), player2UsedIllusion(false), explosionTriggered(false) {
@@ -10,7 +10,9 @@ void Game::start() {
     while (player1Wins < 2 && player2Wins < 2) {
         resetRound();
         playRound();
+        //eliminare rand si if
     }
+    //traducere ro afisare
     std::cout << "Game Over!\n";
     std::cout << (player1Wins == 2 ? "Player 1 wins the match!\n" : "Player 2 wins the match!\n");
 }
@@ -19,7 +21,9 @@ void Game::resetRound() {
     board.reset();
     player1.resetCards();
     player2.resetCards();
+    //adaugare variabila si afisare
 
+    //commit
     explosionTriggered = false;
 
     player1UsedIllusion = false;
@@ -38,14 +42,21 @@ void Game::resetRound() {
     firstCardPlaced = false;
 
     std::cout << "NEW ROUND STARTED!\n";
+    //commit
+}
+//modificare afisare
+void Game::displayScore() const {
+    std::cout << "Score: \nPlayer 1: " << player1Wins << "\nPlayer 2: " << player2Wins << "\n\n";
 }
 
 void Game::playRound() {
     while (true) {
+        //eliminare if
         Player& currentPlayer = (currentPlayerId == 1) ? player1 : player2;
-
+        //adaugare oponent
         currentPlayer.displayAvailableCards();
 
+        //commit si stergere if vechi
         if (board.canActivateExplosion(currentPlayerId) && !explosionTriggered) {
             std::cout << "Player " << currentPlayerId << ", do you want to activate an explosion? (y/n): ";
             char choice;
@@ -62,10 +73,13 @@ void Game::playRound() {
         }
         else {
             std::cout << "Player " << currentPlayerId << ", select a card: ";
-        }
+        }//commit
 
         int cardValue;
         std::cin >> cardValue;
+        //adaugare variabila
+
+        //pana la final multe modificari si stergeri ~2 commit uri 
 
         if (cardValue == -1) {
             if ((currentPlayerId == 1 && player1UsedIllusion) || (currentPlayerId == 2 && player2UsedIllusion)) {
@@ -157,9 +171,6 @@ void Game::playRound() {
                 }
             }
         }
-    }
+    }// ~2 commit uri
 }
-
-void Game::displayScore() const {
-    std::cout << "Score: \nPlayer 1: " << player1Wins << "\nPlayer 2: " << player2Wins << "\n\n";
-}
+//eliminare functie

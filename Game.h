@@ -12,10 +12,10 @@ private:
     int player1Wins;
     int player2Wins;
     int currentPlayerId;
-    bool firstCardPlaced;
-    bool player1UsedIllusion;
-    bool player2UsedIllusion;
-    bool explosionTriggered;
+    bool firstCardPlaced;//
+    bool player1UsedIllusion;//
+    bool player2UsedIllusion;//
+    bool explosionTriggered;//
 
 public:
     Game();
@@ -23,6 +23,7 @@ public:
     void playRound();
     void resetRound();
     void displayScore() const;
+    //eliminare functii
 };
 
 #endif
