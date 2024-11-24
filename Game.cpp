@@ -47,10 +47,11 @@ void Game::playRound() {
         Player& currentPlayer = (currentPlayerId == 1) ? player1 : player2;
         //eliminare
         currentPlayer.displayAvailableCards();
-
-        //modificare if
-        if ((currentPlayerId == 1 && !player1UsedIllusion) || (currentPlayerId == 2 && !player2UsedIllusion)) {
-            std::cout << "Player " << currentPlayerId << ", select a card (or enter -1 to use your illusion): ";
+        //eliminare afisare
+        
+        //commit ?
+        if (currentPlayer.canUseIllusion()) {
+            std::cout << "Choose a card or type -1 to use an illusion: ";
         }
         else {
             std::cout << "Player " << currentPlayerId << ", select a card: ";
