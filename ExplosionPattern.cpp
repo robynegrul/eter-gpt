@@ -30,7 +30,7 @@ void ExplosionPattern::generateRandomPattern() {
 		pattern[row][col] = '*';
 		addedEffects++;	
 	}
-	//
+	
 	if (addedEffects < maxEffects && rand() % 4 < 3) {
 		int handRow, handCol;
 		do {
@@ -52,7 +52,7 @@ void ExplosionPattern::generateRandomPattern() {
 	}
 }
 
-//commit - vlad
+
 void ExplosionPattern::rotate(int degrees) {
 	int rotations = (degrees / 90) % 4;
 	for (int i = 0; i < rotations; ++i) {
@@ -67,9 +67,9 @@ void ExplosionPattern::display() const {
 		}
 		std::cout << "\n";
 	}
-}//commit-vlad
+}
 
-//commit-vlad
+
 std::vector<std::pair<int, int>> ExplosionPattern::getAffectedPositions() const {
 	std::vector<std::pair<int, int>> affectedPositions;
 	int center = size / 2;
@@ -87,9 +87,8 @@ std::vector<std::pair<int, int>> ExplosionPattern::getAffectedPositions() const 
 bool ExplosionPattern::isHole(int row, int col) const {
 	return pattern[row][col] == 'O';
 }
-//commit-vlad
 
-//commit-vlad
+
 std::vector<std::vector<char>> ExplosionPattern::rotate90(const std::vector<std::vector<char>>& mat) {
 	std::vector<std::vector<char>> rotated(size, std::vector<char>(size, ' '));
 	for (int i = 0; i < size; ++i) {
@@ -102,4 +101,4 @@ std::vector<std::vector<char>> ExplosionPattern::rotate90(const std::vector<std:
 
 bool ExplosionPattern::isHand(int row, int col) const {
 	return pattern[row][col] == 'H';
-}//commit-vlad
+}
