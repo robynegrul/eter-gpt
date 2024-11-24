@@ -1,7 +1,6 @@
 ﻿#include "Board.h"
-#include "ExplosionPattern.h"
-#include <cstdlib>
-#include <ctime>
+
+
 //modifcare constructor
 Board::Board(int boardSize)
     : size(boardSize), grid(boardSize, std::vector<card>(boardSize, { 0, 0 })), firstCardPlaced(false) {
