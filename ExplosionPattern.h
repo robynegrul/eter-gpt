@@ -31,4 +31,3 @@ private:
 };
 
 #endif
-//commit crearea de header plus constructor in cpp - paul

@@ -4,10 +4,8 @@ ExplosionPattern::ExplosionPattern(int gridSize) : size(gridSize) {
 	pattern = std::vector<std::vector<char>>(size, std::vector<char>(size, ' '));
 	generateRandomPattern();
 }
-//commit constructor + creare header - paul
 
 
-//2 commit uri - paul
 void ExplosionPattern::generateRandomPattern() {
 	int maxEffects;
 	if (size == 3) {
@@ -30,7 +28,7 @@ void ExplosionPattern::generateRandomPattern() {
 		}
 
 		pattern[row][col] = '*';
-		addedEffects++;
+		addedEffects++;	
 	}
 	//
 	if (addedEffects < maxEffects && rand() % 4 < 3) {
@@ -52,7 +50,7 @@ void ExplosionPattern::generateRandomPattern() {
 		pattern[holeRow][holeCol] = 'O';
 		addedEffects++;
 	}
-}//2 commit uri - paul
+}
 
 //commit - vlad
 void ExplosionPattern::rotate(int degrees) {
