@@ -13,9 +13,7 @@ Game::Game() :
 	player1UsedIllusion{ false },
 	player2UsedIllusion{ false },
 	explosionTriggered{ false },
-	explosionExpired{ false }
-{
-}
+	explosionExpired{ false } {}
 
 void Game::Start()
 {
@@ -207,9 +205,8 @@ void Game::PlayRound()
 								player2Wins++;
 								winnerId = 2;
 							}
-							else {
-								std::cout << "It's a draw! Both players have the same card sum \n";
-							}
+							else 
+								std::cout << "It's a draw! Both players have the same card sum.\n";
 							break;
 						}
 						currentPlayerId = (currentPlayerId == 1) ? 2 : 1;

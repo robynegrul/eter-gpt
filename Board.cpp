@@ -156,7 +156,6 @@ bool Board::FixedGridColumns() const
 	return true;
 }
 
-
 bool Board::IsFull() const
 {
 	for (const auto& row : grid)
