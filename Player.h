@@ -1,34 +1,25 @@
+#pragma once
 #ifndef PLAYER_H
 #define PLAYER_H
 
 #include <vector>
 #include <iostream>
 
-class Player {
+class Player
+{
 private:
-    int id;
-    std::vector<int> cards;
-    const std::vector<int> initialCards;
-    //eliminare var
+	int id;
+	std::vector<int> cards;
+	const std::vector<int> initialCards;
 
 public:
-    Player(int playerId);
-
-    int getId() const;
-
-    bool playCard(int cardValue);
-
-    void resetCards();
-
-    bool hasCardsLeft() const;
-
-    bool hasCard(int cardValue) const;//adaugare
-
-    void displayAvailableCards() const;
-
-    void addCard(int cardValue);//adaugare
-
-    //eliminare 2 functii
+	Player(int playerId);
+	int GetId() const;
+	bool PlayCard(int cardValue);
+	void ResetCards();
+	bool HasCardsLeft() const;
+	bool HasCard(int cardValue) const;
+	void DisplayAvailableCards() const;
+	void AddCard(int cardValue);
 };
-
 #endif

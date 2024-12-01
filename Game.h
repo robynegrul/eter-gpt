@@ -4,26 +4,28 @@
 #include "Board.h"
 #include "Player.h"
 
-class Game {
+class Game
+{
 private:
-    Board board;
-    Player player1;
-    Player player2;
-    int player1Wins;
-    int player2Wins;
-    int currentPlayerId;
-    bool firstCardPlaced;//
-    bool player1UsedIllusion;//
-    bool player2UsedIllusion;//
-    bool explosionTriggered;//
+	Board board;
+	Player player1;
+	Player player2;
+	int player1Wins;
+	int player2Wins;
+	int currentPlayerId;
+	int winnerId;
+	bool firstCardPlaced;
+	bool player1UsedIllusion;
+	bool player2UsedIllusion;
+	bool explosionTriggered;
+
 
 public:
-    Game();
-    void start();
-    void playRound();
-    void resetRound();
-    void displayScore() const;
-    //eliminare functii
+	Game();
+	void Start();
+	void ResetRound();
+	void DisplayScore() const;
+	void PlayRound();
 };
 
 #endif

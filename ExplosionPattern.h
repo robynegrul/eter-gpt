@@ -8,26 +8,27 @@
 
 class ExplosionPattern {
 private:
-    std::vector<std::vector<char>> pattern;
-    int size;
+	std::vector<std::vector<char>> pattern;
+	int size;
 
 public:
-    ExplosionPattern(int gridSize);
+	ExplosionPattern(int gridSize);
 
-    void generateRandomPattern();
+	void GenerateRandomPattern();
 
-    void rotate(int degrees);
+	void Rotate(int degrees);
 
-    void display() const;
+	void Display() const;
 
-    std::vector<std::pair<int, int>> getAffectedPositions() const;
+	std::vector<std::pair<int, int >> GetAffectedPositions() const;
 
-    bool isHole(int row, int col) const;
+	bool IsHole(int row, int col) const;
 
-    bool isHand(int row, int col) const;
+	bool IsHand(int row, int col) const;
 
 private:
-    std::vector<std::vector<char>> rotate90(const std::vector<std::vector<char>>& mat);
+	std::vector<std::vector< char >> Rotate90(const std::vector<std::vector<char>>& mat);
 };
 
 #endif
+

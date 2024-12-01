@@ -2,11 +2,10 @@
 
 ExplosionPattern::ExplosionPattern(int gridSize) : size(gridSize) {
 	pattern = std::vector<std::vector<char>>(size, std::vector<char>(size, ' '));
-	generateRandomPattern();
+	GenerateRandomPattern();
 }
 
-
-void ExplosionPattern::generateRandomPattern() {
+void ExplosionPattern::GenerateRandomPattern() {
 	int maxEffects;
 	if (size == 3) {
 		maxEffects = rand() % 3 + 2;
@@ -26,11 +25,10 @@ void ExplosionPattern::generateRandomPattern() {
 		if (pattern[row][col] != ' ') {
 			continue;
 		}
-
 		pattern[row][col] = '*';
-		addedEffects++;	
+		addedEffects++;
 	}
-	
+
 	if (addedEffects < maxEffects && rand() % 4 < 3) {
 		int handRow, handCol;
 		do {
@@ -52,15 +50,15 @@ void ExplosionPattern::generateRandomPattern() {
 	}
 }
 
-
-void ExplosionPattern::rotate(int degrees) {
+void ExplosionPattern::Rotate(int degrees) {
 	int rotations = (degrees / 90) % 4;
-	for (int i = 0; i < rotations; ++i) {
-		pattern = rotate90(pattern);
+	for (int i = 0; i < rotations; ++i)
+	{
+		pattern = Rotate90(pattern);
 	}
 }
 
-void ExplosionPattern::display() const {
+void ExplosionPattern::Display() const {
 	for (const auto& row : pattern) {
 		for (const auto& cell : row) {
 			std::cout << cell << " ";
@@ -69,27 +67,27 @@ void ExplosionPattern::display() const {
 	}
 }
 
-
-std::vector<std::pair<int, int>> ExplosionPattern::getAffectedPositions() const {
+std::vector<std::pair<int, int>> ExplosionPattern::GetAffectedPositions() const
+{
 	std::vector<std::pair<int, int>> affectedPositions;
 	int center = size / 2;
 
 	for (int i = 0; i < size; ++i) {
 		for (int j = 0; j < size; ++j) {
 			if (pattern[i][j] != ' ') {
-				affectedPositions.push_back({ i - center, j - center });
+				affectedPositions.push_back({ i - center,j - center });
 			}
 		}
 	}
 	return affectedPositions;
 }
 
-bool ExplosionPattern::isHole(int row, int col) const {
+bool ExplosionPattern::IsHole(int row, int col)const {
 	return pattern[row][col] == 'O';
 }
 
-
-std::vector<std::vector<char>> ExplosionPattern::rotate90(const std::vector<std::vector<char>>& mat) {
+std::vector<std::vector<char>> ExplosionPattern::Rotate90(const std::vector<std::vector<char>>& mat)
+{
 	std::vector<std::vector<char>> rotated(size, std::vector<char>(size, ' '));
 	for (int i = 0; i < size; ++i) {
 		for (int j = 0; j < size; ++j) {
@@ -99,6 +97,6 @@ std::vector<std::vector<char>> ExplosionPattern::rotate90(const std::vector<std:
 	return rotated;
 }
 
-bool ExplosionPattern::isHand(int row, int col) const {
+bool ExplosionPattern::IsHand(int row, int col)const {
 	return pattern[row][col] == 'H';
 }
