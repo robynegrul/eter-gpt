@@ -1,13 +1,13 @@
 ﻿#ifndef BOARD_H
 #define BOARD_H
 
-#include "Player.h"
 #include "ExplosionPattern.h"
-#include <iostream>
-#include <vector>
-#include <string>
-#include <map>
+#include "Player.h"
 #include <algorithm>
+#include <iostream>
+#include <map>
+#include <string>
+#include <vector>
 
 using card = std::pair<int, int>;
 
@@ -54,6 +54,9 @@ private:
 	bool CheckRow(int row, int playerValue) const;
 	bool CheckColumn(int col, int playerValue) const;
 	bool CheckDiagonals(int playerValue) const;
+	bool DiagonalShift(int& row, int& col);
+	bool HorizontalShift(int& row, int& col);
+	bool VerticalShift(int& row, int& col);
 	bool ShiftGrid(int& row, int& col);
 	bool FixedGridRows() const;
 	bool FixedGridColumns() const;

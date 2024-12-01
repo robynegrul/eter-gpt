@@ -11,7 +11,7 @@ void Board::Reset()
 }
 
 PlaceCardResult Board::PlaceCard(int row, int col, card PlayCard) {
-	if (!(FixedGridRows() && FixedGridColumns()) && IsAdjacent(row, col) && ShiftGrid(row, col)) {
+	if (IsAdjacent(row, col) && ShiftGrid(row, col)) {
 		std::cout << "The grid has been shifted.\n";
 	}
 
@@ -78,78 +78,123 @@ PlaceCardResult Board::PlaceCard(int row, int col, card PlayCard) {
 	return PlaceCardResult::Failure;
 }
 
-bool Board::ShiftGrid(int& row, int& col) {
+bool Board::DiagonalShift(int& row, int& col) {
 	bool shifted = false;
-
-	if (row < 0) {
-		grid.insert(grid.begin(), std::vector<card>(size, { 0,0 }));
-		grid.pop_back();
-		row = 0;
-		shifted = true;
-	}
-	else if (row >= size) {
-		grid.push_back(std::vector<card>(size, { 0, 0 }));
-		grid.erase(grid.begin());
-		row = size - 1;
-		shifted = true;
-	}
-
-	if (col < 0) {
-		for (auto& r : grid) {
-			r.insert(r.begin(), { 0,0 });
-			r.pop_back();
+	if (((row == -1 && col == -1) || (row == size && col == size)) && !FixedGridColumns() && !FixedGridRows()) {
+		if (row < 0) {
+			grid.insert(grid.begin(), std::vector<card>(size, { 0, 0 }));
+			grid.pop_back();
+			row = 0;
+			shifted = true;
 		}
-		col = 0;
-		shifted = true;
-	}
-	else if (col >= size) {
-		for (auto& r : grid) {
-			r.push_back({ 0,0 });
-			r.erase(r.begin());
+		else if (row >= size) {
+			grid.push_back(std::vector<card>(size, { 0, 0 }));
+			grid.erase(grid.begin());
+			row = size - 1;
+			shifted = true;
 		}
-		col = size - 1;
-		shifted = true;
-	}
 
+		if (col < 0) {
+			for (auto& r : grid) {
+				r.insert(r.begin(), { 0, 0 });
+				r.pop_back();
+			}
+			col = 0;
+			shifted = true;
+		}
+		else if (col >= size) {
+			for (auto& r : grid) {
+				r.push_back({ 0, 0 });
+				r.erase(r.begin());
+			}
+			col = size - 1;
+			shifted = true;
+		}
+	}
 	return shifted;
 }
 
-bool Board::FixedGridRows() const
-{
-	for (int row = 0; row < size; ++row)
-	{
+bool Board::VerticalShift(int& row, int& col) {
+	bool shifted = false;
+	if ((row == -1 || row == size) && !FixedGridRows()) {
+		if (row == -1) {
+			grid.insert(grid.begin(), std::vector<card>(size, { 0, 0 }));
+			grid.pop_back();
+			row = 0;
+			shifted = true;
+		}
+		else if (row == size) {
+			grid.push_back(std::vector<card>(size, { 0, 0 }));
+			grid.erase(grid.begin());
+			row = size - 1;
+			shifted = true;
+		}
+	}
+	return shifted;
+}
+
+bool Board::HorizontalShift(int& row, int& col) {
+	bool shifted = false;
+	if ((col == -1 || col == size) && !FixedGridColumns()) {
+		if (col == -1) {
+			for (auto& r : grid) {
+				r.insert(r.begin(), { 0, 0 });
+				r.pop_back();
+			}
+			col = 0;
+			shifted = true;
+		}
+		else if (col == size) {
+			for (auto& r : grid) {
+				r.push_back({ 0, 0 });
+				r.erase(r.begin());
+			}
+			col = size - 1;
+			shifted = true;
+		}
+	}
+	return shifted;
+}
+
+bool Board::ShiftGrid(int& row, int& col) {
+	if ((row == -1 && col == -1) || (row == size && col == size)) {
+		return DiagonalShift(row, col);
+	}
+	else if (row == -1 || row == size) {
+		return VerticalShift(row, col);
+	}
+	else if (col == -1 || col == size) {
+		return HorizontalShift(row, col);
+	}
+	return false;
+}
+
+bool Board::FixedGridRows() const {
+	for (int row = 0; row < size; ++row) {
 		bool hasElement = false;
-		for (int col = 0; col < size; ++col)
-		{
-			if (grid[row][col].second != 0)
-			{
+		for (int col = 0; col < size; ++col) {
+			if (grid[row][col].second != 0) {
 				hasElement = true;
 				break;
 			}
 		}
-		if (!hasElement)
-		{
+		if (!hasElement) {
 			return false;
 		}
 	}
 	return true;
 }
 
-bool Board::FixedGridColumns() const
-{
-	for (int col = 0; col < size; ++col)
-	{
+bool Board::FixedGridColumns() const {
+	for (int col = 0; col < size; ++col) {
 		bool hasElement = false;
-		for (int row = 0; row < size; ++row)
-		{
-			if (grid[row][col].second != 0)
-			{
+		for (int row = 0; row < size; ++row) {
+			if (grid[row][col].second != 0) {
 				hasElement = true;
 				break;
 			}
 		}
-		if (!hasElement)
-		{
+		if (!hasElement) {
 			return false;
 		}
 	}
