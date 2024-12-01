@@ -116,9 +116,19 @@ bool Board::ShiftGrid(int& row, int& col) {
 
 bool Board::FixedGridRows() const
 {
-	for (const auto& row : grid)
+	for (int row = 0; row < size; ++row)
 	{
-		if (std::all_of(row.begin(), row.end(), [](const card& c) { return c.second == 0; })) {
+		bool hasElement = false;
+		for (int col = 0; col < size; ++col)
+		{
+			if (grid[row][col].second != 0)
+			{
+				hasElement = true;
+				break;
+			}
+		}
+		if (!hasElement)
+		{
 			return false;
 		}
 	}

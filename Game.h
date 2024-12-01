@@ -18,7 +18,7 @@ private:
 	bool player1UsedIllusion;
 	bool player2UsedIllusion;
 	bool explosionTriggered;
-
+	bool explosionExpired;
 
 public:
 	Game();
