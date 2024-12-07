@@ -1,10 +1,11 @@
+#pragma once
 #ifndef EXPLOSIONPATTERN_H
 #define EXPLOSIONPATTERN_H
 
-#include <iostream>
-#include <vector>
 #include <cstdlib>
 #include <ctime>
+#include <iostream>
+#include <vector>
 
 class ExplosionPattern {
 private:
