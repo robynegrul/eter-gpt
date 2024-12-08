@@ -28,7 +28,7 @@ void ExplosionPattern::GenerateRandomPattern() {
         pattern[row][col] = '*';
         addedEffects++;
     }
-
+    //commit - inclouire 2 if uri in mare parte
     if (addedEffects < maxEffects && rand() % 10 == 0) {
         int holeRow, holeCol;
         do {
@@ -47,7 +47,7 @@ void ExplosionPattern::GenerateRandomPattern() {
         } while (pattern[handRow][handCol] != ' ');
         pattern[handRow][handCol] = 'H';
         addedEffects++;
-    }
+    }//
 }
 
 void ExplosionPattern::Rotate(int degrees) {

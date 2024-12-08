@@ -1,6 +1,7 @@
+//creare cpp ~ 12 cimmit uri
 #include "ElementalBattle.h"
 #include <iostream>
-
+//commit
 ElementalBattle::ElementalBattle() :
     board{ 4 },
     player1{ 1 },
@@ -15,8 +16,9 @@ ElementalBattle::ElementalBattle() :
     explosionTriggered{ false },
     explosionExpired{ false }
 {
-}
+}//
 
+//commit
 void ElementalBattle::StartGame() {
     while (player1Wins < 2 && player2Wins < 2) {
         ResetRound();
@@ -24,8 +26,10 @@ void ElementalBattle::StartGame() {
     }
     std::cout << "Game Over!\n";
     std::cout << (player1Wins == 2 ? "Player 1 wins the match!\n" : "Player 2 wins the match!\n");
-}
+}//
 
+
+//commit
 void ElementalBattle::ResetRound() {
     board.Reset();
     player1.ResetCards(3);
@@ -40,8 +44,9 @@ void ElementalBattle::ResetRound() {
     firstCardPlaced = false;
 
     std::cout << "NEW ROUND STARTED!\n";
-}
+}//
 
+//commit
 void ElementalBattle::PlayRound() {
     currentPlayerId = winnerId;
     while (true) {
@@ -59,8 +64,9 @@ void ElementalBattle::PlayRound() {
     }
 
     DisplayScore();
-}
+}//
 
+//commit
 void ElementalBattle::DisplayScore() const {
     std::cout << "Number of victories : \n";
     std::cout << "Player 1: " << player1Wins << "\n";
@@ -70,8 +76,9 @@ void ElementalBattle::DisplayScore() const {
 void ElementalBattle::ShowAvailableModes() const {
     std::cout << "Available Game Modes: \n";
     std::cout << "1. Training Mode\n";
-}
+}//
 
+//commit
 void ElementalBattle::HandleExplosion(Player& currentPlayer, Player& otherPlayer) {
     currentPlayerId = (currentPlayerId == 1) ? 2 : 1;
     Player& explosionPlayer = (currentPlayerId == 1) ? player1 : player2;
@@ -88,8 +95,9 @@ void ElementalBattle::HandleExplosion(Player& currentPlayer, Player& otherPlayer
         explosionExpired = true;
         currentPlayerId = (currentPlayerId == 1) ? 2 : 1;
     }
-}
+}//
 
+//commit
 bool ElementalBattle::HandleCardSelection(Player& currentPlayer) {
     currentPlayer.DisplayAvailableCards();
     if ((currentPlayerId == 1 && !player1UsedIllusion) || (currentPlayerId == 2 && !player2UsedIllusion))
@@ -111,8 +119,10 @@ bool ElementalBattle::HandleCardSelection(Player& currentPlayer) {
         return(HandleNormalCard(currentPlayer, cardValue));
     }
     return true;
-}
+}//
 
+//commit - 2
+//
 void ElementalBattle::HandleIllusion(Player& currentPlayer) {
     if ((currentPlayerId == 1 && player1UsedIllusion) || (currentPlayerId == 2 && player2UsedIllusion)) {
         std::cout << "You have already used your illusion this round!\n";
@@ -127,7 +137,9 @@ void ElementalBattle::HandleIllusion(Player& currentPlayer) {
         std::cout << "Invalid card selection. Try again.\n";
         return;
     }
+    //
 
+    //
     std::cout << "Choose position (row and column) for your illusion: ";
     int row, col;
     std::cin >> row >> col;
@@ -144,8 +156,10 @@ void ElementalBattle::HandleIllusion(Player& currentPlayer) {
     else {
         std::cout << "The selected position is not valid. Try again.\n";
     }
-}
+}//
 
+//2 commit uri
+//
 bool ElementalBattle::HandleNormalCard(Player& currentPlayer, int cardValue) {
     card currentCard = { currentPlayerId, cardValue };
 
@@ -164,7 +178,9 @@ bool ElementalBattle::HandleNormalCard(Player& currentPlayer, int cardValue) {
         currentPlayer.PlayCard(cardValue);
         currentPlayerId = (currentPlayerId == 1) ? 2 : 1;
         board.Display();
-    }
+    }//
+
+    //
     else if (result == PlaceCardResult::Failure) {
         std::cout << "Invalid position. Try again.\n";
     }
@@ -194,8 +210,9 @@ bool ElementalBattle::HandleNormalCard(Player& currentPlayer, int cardValue) {
     }
 
     return true;
-}
+}//
 
+//commit
 void ElementalBattle::HandleDrawOrWinner() {
     int player1Sum = board.CalculateCardValueSum(1);
     int player2Sum = board.CalculateCardValueSum(2);
@@ -217,4 +234,6 @@ void ElementalBattle::HandleDrawOrWinner() {
     else {
         std::cout << "It's a draw! Both players have the same card sum.\n";
     }
-}
+}//
+
+//

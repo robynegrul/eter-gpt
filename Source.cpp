@@ -1,7 +1,7 @@
 ﻿#include "Game.h"
 #include <iostream>
 
-int main()
+int main()//ce modificari mai sunt 
 {
     Game game;
     std::cout << "Select Game Mode (1 for Training Mode, 2 for Mage Duel, 3 for Elemental Battle): ";

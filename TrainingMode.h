@@ -1,3 +1,4 @@
+//adaugare header
 #pragma once
 #ifndef TRAININGMODE_H
 #define TRAININGMODE_H

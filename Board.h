@@ -48,7 +48,7 @@ public:
 	bool PlaceIllusion(int row, int col, int playerId, int cardValue);
 	bool IsIllusion(int row, int col) const;
 	bool CanActivateExplosion() const;
-	void ActivateExplosion(Player& player, Player& other);
+	void ActivateExplosion(Player& player, Player& other); //adaugare parametru
 
 private:
 	bool CheckRow(int row, int playerValue) const;
@@ -60,7 +60,7 @@ private:
 	bool ShiftGrid(int& row, int& col);
 	bool FixedGridRows() const;
 	bool FixedGridColumns() const;
-	void ApplyExplosionEffects(const Explosion& explosion, Player& player, Player& other);
+	void ApplyExplosionEffects(const Explosion& explosion, Player& player, Player& other); //adaugare parametru
 };
 
 #endif

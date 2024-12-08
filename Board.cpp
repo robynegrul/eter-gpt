@@ -250,8 +250,10 @@ void Board::Display() const
 				std::cout << "[ O ] ";
 			else if (cell.second == -1)
 				std::cout << "[" << cell.first << ",?] ";
+			//adaugare else if
 			else if (cell.second == 5)
 				std::cout << "[" << cell.first << ",E] ";
+			//
 			else
 				std::cout << "[" << cell.first << "," << cell.second << "] ";
 		}
@@ -259,7 +261,7 @@ void Board::Display() const
 		std::cout << "\n";
 	}
 }
-
+//adaugare parametru functie
 void Board::ApplyExplosionEffects(const Explosion& explosion, Player& player, Player& other) {
 	for (size_t i = 0; i < explosion.affectedPositions.size(); ++i) {
 		const auto& [row, col] = explosion.affectedPositions[i];
@@ -273,10 +275,12 @@ void Board::ApplyExplosionEffects(const Explosion& explosion, Player& player, Pl
 			break;
 		case ExplosionEffect::TakeHand:
 			card currentCard = grid[row][col];
+			//adaugare if si else
 			if (currentCard.first == player.GetId())
 				player.AddCard(currentCard.second);
 			else
 				other.AddCard(currentCard.second);
+			//
 			grid[row][col] = { 0,0 };
 			break;
 		}
@@ -347,7 +351,7 @@ bool Board::PlaceIllusion(int row, int col, int playerId, int cardValue) {
 	}
 	return false;
 }
-
+//adaugare parametru functie
 void Board::ActivateExplosion(Player& player, Player& other) {
 	if (!CanActivateExplosion()) return;
 
@@ -400,7 +404,7 @@ void Board::ActivateExplosion(Player& player, Player& other) {
 		}
 	}
 
-	ApplyExplosionEffects(explosionEffect, player, other);
+	ApplyExplosionEffects(explosionEffect, player, other);//adaugare parametru apel functie
 
 	Display();
 }

@@ -1,9 +1,11 @@
 ﻿#include "Game.h"
 #include "MageDuel.h"
 #include <iostream>
-
+//modificare constructor, eliminare aproape tot
 Game::Game() : CurrentMode(nullptr) {}
+//eliminare functii
 
+//commit (poate 2 idk)
 void Game::SetGameMode(int choice) {
     if (choice == 1) {
         CurrentMode = std::make_unique<TrainingMode>();
@@ -23,4 +25,4 @@ void Game::StartGame() {
     else {
         std::cout << "No game mode selected.\n";
     }
-}
+}//

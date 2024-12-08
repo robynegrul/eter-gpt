@@ -1,6 +1,8 @@
-#pragma once
+#pragma once//adaugat
 #ifndef EXPLOSIONPATTERN_H
 #define EXPLOSIONPATTERN_H
+
+//schimbat ordine include
 
 #include <cstdlib>
 #include <ctime>

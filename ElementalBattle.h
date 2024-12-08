@@ -1,3 +1,4 @@
+//creare header - de decis nr commit uri
 #pragma once
 #ifndef ELEMENTALBATTLE_H
 #define ELEMENTALBATTLE_H
@@ -35,3 +36,4 @@ private:
 };
 
 #endif
+//

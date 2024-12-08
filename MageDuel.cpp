@@ -1,6 +1,7 @@
+//creare cpp ~ 11
 #include "MageDuel.h"
 #include <iostream>
-
+//commit
 MageDuel::MageDuel() :
     board{ 4 },
     player1{ 1 },
@@ -15,8 +16,9 @@ MageDuel::MageDuel() :
     explosionTriggered{ false },
     explosionExpired{ false }
 {
-}
+}//
 
+//commit
 void MageDuel::StartGame() {
     while (player1Wins < 2 && player2Wins < 2) {
         ResetRound();
@@ -40,8 +42,9 @@ void MageDuel::ResetRound() {
     firstCardPlaced = false;
 
     std::cout << "NEW ROUND STARTED!\n";
-}
+}//
 
+//commit
 void MageDuel::PlayRound() {
     currentPlayerId = winnerId;
     while (true) {
@@ -59,8 +62,9 @@ void MageDuel::PlayRound() {
     }
 
     DisplayScore();
-}
+}//
 
+//commit
 void MageDuel::DisplayScore() const {
     std::cout << "Number of victories : \n";
     std::cout << "Player 1: " << player1Wins << "\n";
@@ -70,8 +74,9 @@ void MageDuel::DisplayScore() const {
 void MageDuel::ShowAvailableModes() const {
     std::cout << "Available Game Modes: \n";
     std::cout << "1. Training Mode\n";
-}
+}//
 
+//commit
 void MageDuel::HandleExplosion(Player& currentPlayer, Player& otherPlayer) {
     currentPlayerId = (currentPlayerId == 1) ? 2 : 1;
     Player& explosionPlayer = (currentPlayerId == 1) ? player1 : player2;
@@ -88,8 +93,9 @@ void MageDuel::HandleExplosion(Player& currentPlayer, Player& otherPlayer) {
         explosionExpired = true;
         currentPlayerId = (currentPlayerId == 1) ? 2 : 1;
     }
-}
+}//
 
+//commit
 bool MageDuel::HandleCardSelection(Player& currentPlayer) {
     currentPlayer.DisplayAvailableCards();
     if ((currentPlayerId == 1 && !player1UsedIllusion) || (currentPlayerId == 2 && !player2UsedIllusion))
@@ -111,8 +117,11 @@ bool MageDuel::HandleCardSelection(Player& currentPlayer) {
         return(HandleNormalCard(currentPlayer, cardValue));
     }
     return true;
-}
+}//commit
 
+
+//2 commit uri
+//
 void MageDuel::HandleIllusion(Player& currentPlayer) {
     if ((currentPlayerId == 1 && player1UsedIllusion) || (currentPlayerId == 2 && player2UsedIllusion)) {
         std::cout << "You have already used your illusion this round!\n";
@@ -127,7 +136,8 @@ void MageDuel::HandleIllusion(Player& currentPlayer) {
         std::cout << "Invalid card selection. Try again.\n";
         return;
     }
-
+    //
+    //
     std::cout << "Choose position (row and column) for your illusion: ";
     int row, col;
     std::cin >> row >> col;
@@ -144,8 +154,10 @@ void MageDuel::HandleIllusion(Player& currentPlayer) {
     else {
         std::cout << "The selected position is not valid. Try again.\n";
     }
-}
+}//
 
+//2 commit uri
+//
 bool MageDuel::HandleNormalCard(Player& currentPlayer, int cardValue) {
     card currentCard = { currentPlayerId, cardValue };
 
@@ -165,6 +177,8 @@ bool MageDuel::HandleNormalCard(Player& currentPlayer, int cardValue) {
         currentPlayerId = (currentPlayerId == 1) ? 2 : 1;
         board.Display();
     }
+    //
+    //
     else if (result == PlaceCardResult::Failure) {
         std::cout << "Invalid position. Try again.\n";
     }
@@ -194,8 +208,9 @@ bool MageDuel::HandleNormalCard(Player& currentPlayer, int cardValue) {
     }
 
     return true;
-}
+}//
 
+//commit
 void MageDuel::HandleDrawOrWinner() {
     int player1Sum = board.CalculateCardValueSum(1);
     int player2Sum = board.CalculateCardValueSum(2);
@@ -217,4 +232,4 @@ void MageDuel::HandleDrawOrWinner() {
     else {
         std::cout << "It's a draw! Both players have the same card sum.\n";
     }
-}
+}//

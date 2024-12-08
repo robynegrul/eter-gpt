@@ -2,8 +2,11 @@
 #ifndef GAMEMODE_H
 #define GAMEMODE_H
 
+//eliminare enum, adaugare include
+
 #include <string>
 
+//creare clasa gamemode
 class GameMode {
 public:
     virtual ~GameMode() = default;
