@@ -3,6 +3,7 @@
 #define PLAYER_H
 
 #include <iostream>
+#include <algorithm>
 #include <vector>
 
 class Player

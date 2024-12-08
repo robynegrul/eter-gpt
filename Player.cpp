@@ -68,6 +68,7 @@ bool Player::HasCard(int cardValue) const
 void Player::AddCard(int cardValue)
 {
 	cards.push_back(cardValue);
+	std::sort(cards.begin(), cards.end());
 }
 //commit
 Player& Player::operator=(const Player& other) {
