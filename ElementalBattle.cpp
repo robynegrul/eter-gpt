@@ -97,7 +97,7 @@ void ElementalBattle::HandleExplosion(Player& currentPlayer, Player& otherPlayer
     }
 }//
 
-//commit
+//commit - vlad
 bool ElementalBattle::HandleCardSelection(Player& currentPlayer) {
     currentPlayer.DisplayAvailableCards();
     if ((currentPlayerId == 1 && !player1UsedIllusion) || (currentPlayerId == 2 && !player2UsedIllusion))
@@ -121,7 +121,7 @@ bool ElementalBattle::HandleCardSelection(Player& currentPlayer) {
     return true;
 }//
 
-//commit - 2
+//commit - 2 - vlad
 //
 void ElementalBattle::HandleIllusion(Player& currentPlayer) {
     if ((currentPlayerId == 1 && player1UsedIllusion) || (currentPlayerId == 2 && player2UsedIllusion)) {
@@ -158,7 +158,7 @@ void ElementalBattle::HandleIllusion(Player& currentPlayer) {
     }
 }//
 
-//2 commit uri
+//2 commit uri - vlad
 //
 bool ElementalBattle::HandleNormalCard(Player& currentPlayer, int cardValue) {
     card currentCard = { currentPlayerId, cardValue };
@@ -212,7 +212,7 @@ bool ElementalBattle::HandleNormalCard(Player& currentPlayer, int cardValue) {
     return true;
 }//
 
-//commit
+//commit - vlad
 void ElementalBattle::HandleDrawOrWinner() {
     int player1Sum = board.CalculateCardValueSum(1);
     int player2Sum = board.CalculateCardValueSum(2);
