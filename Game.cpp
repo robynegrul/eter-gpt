@@ -5,7 +5,7 @@
 Game::Game() : CurrentMode(nullptr) {}
 //eliminare functii
 
-//commit (poate 2 idk)
+//commit
 void Game::SetGameMode(int choice) {
     if (choice == 1) {
         CurrentMode = std::make_unique<TrainingMode>();

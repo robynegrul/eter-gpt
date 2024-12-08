@@ -1,4 +1,4 @@
-//creare cpp ~ 11
+//creare cpp ~ 12
 #include "MageDuel.h"
 #include <iostream>
 //commit
@@ -26,8 +26,9 @@ void MageDuel::StartGame() {
     }
     std::cout << "Game Over!\n";
     std::cout << (player1Wins == 2 ? "Player 1 wins the match!\n" : "Player 2 wins the match!\n");
-}
+}//
 
+//commit
 void MageDuel::ResetRound() {
     board.Reset();
     player1.ResetCards(2);
