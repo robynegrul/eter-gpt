@@ -156,8 +156,6 @@ void ElementalBattle::HandleIllusion(Player& currentPlayer) {
     }
 }
 
-//2 commit uri - vlad
-//
 bool ElementalBattle::HandleNormalCard(Player& currentPlayer, int cardValue) {
     card currentCard = { currentPlayerId, cardValue };
 
@@ -176,7 +174,7 @@ bool ElementalBattle::HandleNormalCard(Player& currentPlayer, int cardValue) {
         currentPlayer.PlayCard(cardValue);
         currentPlayerId = (currentPlayerId == 1) ? 2 : 1;
         board.Display();
-    }//
+    }
 
     //
     else if (result == PlaceCardResult::Failure) {
