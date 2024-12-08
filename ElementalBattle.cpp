@@ -206,9 +206,9 @@ bool ElementalBattle::HandleNormalCard(Player& currentPlayer, int cardValue) {
     }
 
     return true;
-}//
+}
 
-//commit - vlad
+
 void ElementalBattle::HandleDrawOrWinner() {
     int player1Sum = board.CalculateCardValueSum(1);
     int player2Sum = board.CalculateCardValueSum(2);
@@ -230,6 +230,6 @@ void ElementalBattle::HandleDrawOrWinner() {
     else {
         std::cout << "It's a draw! Both players have the same card sum.\n";
     }
-}//
+}
 
 //
