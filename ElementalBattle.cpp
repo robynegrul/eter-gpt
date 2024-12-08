@@ -120,8 +120,7 @@ bool ElementalBattle::HandleCardSelection(Player& currentPlayer) {
     return true;
 }
 
-//commit - 2 - vlad
-//
+
 void ElementalBattle::HandleIllusion(Player& currentPlayer) {
     if ((currentPlayerId == 1 && player1UsedIllusion) || (currentPlayerId == 2 && player2UsedIllusion)) {
         std::cout << "You have already used your illusion this round!\n";
@@ -155,7 +154,7 @@ void ElementalBattle::HandleIllusion(Player& currentPlayer) {
     else {
         std::cout << "The selected position is not valid. Try again.\n";
     }
-}//
+}
 
 //2 commit uri - vlad
 //
