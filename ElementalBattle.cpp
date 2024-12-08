@@ -1,7 +1,7 @@
 //creare cpp ~ 12 cimmit uri
 #include "ElementalBattle.h"
 #include <iostream>
-//commit
+//commit - paul
 ElementalBattle::ElementalBattle() :
     board{ 4 },
     player1{ 1 },
@@ -18,7 +18,7 @@ ElementalBattle::ElementalBattle() :
 {
 }//
 
-//commit
+//commit - paul
 void ElementalBattle::StartGame() {
     while (player1Wins < 2 && player2Wins < 2) {
         ResetRound();
@@ -29,7 +29,7 @@ void ElementalBattle::StartGame() {
 }//
 
 
-//commit
+//commit - paul
 void ElementalBattle::ResetRound() {
     board.Reset();
     player1.ResetCards(3);
@@ -46,7 +46,7 @@ void ElementalBattle::ResetRound() {
     std::cout << "NEW ROUND STARTED!\n";
 }//
 
-//commit
+//commit - paul
 void ElementalBattle::PlayRound() {
     currentPlayerId = winnerId;
     while (true) {
@@ -66,7 +66,7 @@ void ElementalBattle::PlayRound() {
     DisplayScore();
 }//
 
-//commit
+//commit - paul
 void ElementalBattle::DisplayScore() const {
     std::cout << "Number of victories : \n";
     std::cout << "Player 1: " << player1Wins << "\n";
@@ -78,7 +78,7 @@ void ElementalBattle::ShowAvailableModes() const {
     std::cout << "1. Training Mode\n";
 }//
 
-//commit
+//commit - paul
 void ElementalBattle::HandleExplosion(Player& currentPlayer, Player& otherPlayer) {
     currentPlayerId = (currentPlayerId == 1) ? 2 : 1;
     Player& explosionPlayer = (currentPlayerId == 1) ? player1 : player2;
