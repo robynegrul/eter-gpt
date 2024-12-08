@@ -97,7 +97,6 @@ void ElementalBattle::HandleExplosion(Player& currentPlayer, Player& otherPlayer
     }
 }//
 
-//commit - vlad
 bool ElementalBattle::HandleCardSelection(Player& currentPlayer) {
     currentPlayer.DisplayAvailableCards();
     if ((currentPlayerId == 1 && !player1UsedIllusion) || (currentPlayerId == 2 && !player2UsedIllusion))
@@ -119,7 +118,7 @@ bool ElementalBattle::HandleCardSelection(Player& currentPlayer) {
         return(HandleNormalCard(currentPlayer, cardValue));
     }
     return true;
-}//
+}
 
 //commit - 2 - vlad
 //
