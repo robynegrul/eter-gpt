@@ -112,6 +112,8 @@ bool ElementalBattle::HandleCardSelection(Player& currentPlayer) {
     return true;
 }
 
+//commit - 2
+//
 void ElementalBattle::HandleIllusion(Player& currentPlayer) {
     if ((currentPlayerId == 1 && player1UsedIllusion) || (currentPlayerId == 2 && player2UsedIllusion)) {
         std::cout << "You have already used your illusion this round!\n";
