@@ -1,4 +1,5 @@
-﻿#ifndef BOARD_H
+﻿#pragma once
+#ifndef BOARD_H
 #define BOARD_H
 
 #include "ExplosionPattern.h"
@@ -38,17 +39,15 @@ private:
 
 public:
 	Board(int boardSize);
-	void Reset();
 	PlaceCardResult PlaceCard(int row, int col, card PlayCard);
-	bool CheckWinCondition(int playerId) const;
+	void Reset();
+	void ActivateExplosion(Player& player, Player& other);
 	void Display() const;
-	bool IsAdjacent(int row, int col) const;
-	int CalculateCardValueSum(int playerId) const;
-	bool IsFull() const;
-	bool PlaceIllusion(int row, int col, int playerId, int cardValue);
-	bool IsIllusion(int row, int col) const;
 	bool CanActivateExplosion() const;
-	void ActivateExplosion(Player& player, Player& other); //adaugare parametru
+	bool PlaceIllusion(int row, int col, int playerId, int cardValue);
+	bool CheckWinCondition(int playerId) const;
+	bool IsFull() const;
+	int CalculateCardValueSum(int playerId) const;
 
 private:
 	bool CheckRow(int row, int playerValue) const;
@@ -60,7 +59,11 @@ private:
 	bool ShiftGrid(int& row, int& col);
 	bool FixedGridRows() const;
 	bool FixedGridColumns() const;
-	void ApplyExplosionEffects(const Explosion& explosion, Player& player, Player& other); //adaugare parametru
+	bool IsAdjacent(int row, int col) const;
+	bool IsIllusion(int row, int col) const;
+	bool IsIllusionValue(card cell) const;
+	void ApplyExplosionEffects(const Explosion& explosion, Player& player, Player& other);
+	void EliminateIllusions();
 };
 
 #endif

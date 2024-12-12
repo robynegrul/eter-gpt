@@ -6,11 +6,12 @@ Board::Board(int boardSize)
 
 void Board::Reset()
 {
+	EliminateIllusions();
 	grid.assign(size, std::vector<card>(size, { 0,0 }));
 	firstCardPlaced = false;
 }
 
-PlaceCardResult Board::PlaceCard(int row, int col, card PlayCard) {
+PlaceCardResult Board::PlaceCard(int row, int col, card playCard) {
 	if (IsAdjacent(row, col) && ShiftGrid(row, col)) {
 		std::cout << "The grid has been shifted.\n";
 	}
@@ -19,31 +20,30 @@ PlaceCardResult Board::PlaceCard(int row, int col, card PlayCard) {
 		if (IsIllusion(row, col)) {
 			int illusionCardValue = illusionCards[{row, col}];
 
-			if (PlayCard.second <= illusionCardValue) {
+			if (playCard.second <= illusionCardValue) {
 				std::cout << "Your card is not greater than the illusion. The illusion is now revealed on the board.\n";
+				card cell = { row,col };
 				grid[row][col].second = illusionCardValue;
-				illusionCards.erase({ row,col });
-				illusionPositions.erase(
-					std::remove(
-						illusionPositions.begin(),
-						illusionPositions.end(),
-						std::make_pair(row, col)),
-					illusionPositions.end()
-				);
+				EliminateIllusions();
 				return PlaceCardResult::CardLost;
 			}
 			else {
-				grid[row][col] = PlayCard;
-				illusionCards.erase({ row,col });
-				illusionPositions.erase(
-					std::remove(
-						illusionPositions.begin(),
-						illusionPositions.end(),
-						std::make_pair(row, col)),
-					illusionPositions.end()
-				);
+				grid[row][col] = playCard;
+				EliminateIllusions();
 				return PlaceCardResult::Success;
 			}
+		}
+
+		if (playCard.second == 5 && grid[row][col].second != 0)
+		{
+			std::cout << "You cannot place the Eter card on a non-empty cell.\n";
+			return PlaceCardResult::Failure;
+		}
+
+		if (grid[row][col].second == 5)
+		{
+			std::cout << "You cannot replace the Eter card.\n";
+			return PlaceCardResult::Failure;
 		}
 
 		if (grid[row][col].first == -1 && grid[row][col].second == -1) {
@@ -52,8 +52,8 @@ PlaceCardResult Board::PlaceCard(int row, int col, card PlayCard) {
 		}
 
 		if (grid[row][col].second != 0) {
-			if (PlayCard.second > grid[row][col].second) {
-				grid[row][col] = PlayCard;
+			if (playCard.second > grid[row][col].second) {
+				grid[row][col] = playCard;
 				return PlaceCardResult::Success;
 			}
 			else {
@@ -67,7 +67,7 @@ PlaceCardResult Board::PlaceCard(int row, int col, card PlayCard) {
 			return PlaceCardResult::Failure;
 		}
 
-		grid[row][col] = PlayCard;
+		grid[row][col] = playCard;
 		if (!firstCardPlaced) {
 			firstCardPlaced = true;
 		}
@@ -250,10 +250,8 @@ void Board::Display() const
 				std::cout << "[ O ] ";
 			else if (cell.second == -1)
 				std::cout << "[" << cell.first << ",?] ";
-			//adaugare else if
 			else if (cell.second == 5)
 				std::cout << "[" << cell.first << ",E] ";
-			//
 			else
 				std::cout << "[" << cell.first << "," << cell.second << "] ";
 		}
@@ -261,7 +259,7 @@ void Board::Display() const
 		std::cout << "\n";
 	}
 }
-//adaugare parametru functie
+
 void Board::ApplyExplosionEffects(const Explosion& explosion, Player& player, Player& other) {
 	for (size_t i = 0; i < explosion.affectedPositions.size(); ++i) {
 		const auto& [row, col] = explosion.affectedPositions[i];
@@ -275,12 +273,10 @@ void Board::ApplyExplosionEffects(const Explosion& explosion, Player& player, Pl
 			break;
 		case ExplosionEffect::TakeHand:
 			card currentCard = grid[row][col];
-			//adaugare if si else
 			if (currentCard.first == player.GetId())
 				player.AddCard(currentCard.second);
 			else
 				other.AddCard(currentCard.second);
-			//
 			grid[row][col] = { 0,0 };
 			break;
 		}
@@ -351,12 +347,11 @@ bool Board::PlaceIllusion(int row, int col, int playerId, int cardValue) {
 	}
 	return false;
 }
-//adaugare parametru functie
+
 void Board::ActivateExplosion(Player& player, Player& other) {
 	if (!CanActivateExplosion()) return;
 
-	srand(time(0));
-	ExplosionPattern explosion(3);
+	ExplosionPattern explosion(size);
 
 	std::cout << "Generated explosion pattern at 0 degrees:\n";
 	explosion.Display();
@@ -369,7 +364,6 @@ void Board::ActivateExplosion(Player& player, Player& other) {
 		std::cout << "Explosion pattern at " << rotation << " degrees:\n";
 		explosion.Display();
 	}
-
 
 	int chosenRotation = -1;
 	while (chosenRotation != 0 && chosenRotation != 90 && chosenRotation != 180 && chosenRotation != 270) {
@@ -404,7 +398,7 @@ void Board::ActivateExplosion(Player& player, Player& other) {
 		}
 	}
 
-	ApplyExplosionEffects(explosionEffect, player, other);//adaugare parametru apel functie
+	ApplyExplosionEffects(explosionEffect, player, other);
 
 	Display();
 }
@@ -441,7 +435,13 @@ int Board::CalculateCardValueSum(int playerId) const
 	{
 		for (const auto& cell : row)
 		{
-			if (cell.first == playerId) sum += cell.second;
+			if (cell.first == playerId)
+			{
+				if (IsIllusionValue(cell) || cell.second == 5)
+					sum++;
+				else
+					sum += cell.second;
+			}
 		}
 	}
 	return sum;
@@ -450,4 +450,24 @@ int Board::CalculateCardValueSum(int playerId) const
 bool Board::IsIllusion(int row, int col) const
 {
 	return std::find(illusionPositions.begin(), illusionPositions.end(), std::make_pair(row, col)) != illusionPositions.end();
+}
+
+bool Board::IsIllusionValue(card cell) const {
+	return std::find(illusionPositions.begin(), illusionPositions.end(), std::make_pair(cell.first, cell.second)) != illusionPositions.end();
+}
+
+void Board::EliminateIllusions() {
+	for (const auto& row : grid)
+		for (const auto& cell : row)
+			if (IsIllusionValue(cell))
+			{
+				illusionCards.erase(cell);
+				illusionPositions.erase(
+					std::remove(
+						illusionPositions.begin(),
+						illusionPositions.end(),
+						cell),
+					illusionPositions.end()
+				);
+			}
 }

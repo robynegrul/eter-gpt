@@ -1,4 +1,3 @@
-//creare header - de decis nr commit uri
 #pragma once
 #ifndef ELEMENTALBATTLE_H
 #define ELEMENTALBATTLE_H
@@ -11,17 +10,17 @@
 class ElementalBattle : public GameModeStrategy
 {
 public:
+    ElementalBattle();
+
+private:
+    void HandleExplosion(Player& currentPlayer);
+    void HandleIllusion(Player& currentPlayer);
+    void HandleDrawOrWinner();
     void StartGame() override;
     void ResetRound() override;
     void PlayRound() override;
     void DisplayScore() const override;
     void ShowAvailableModes() const override;
-    ElementalBattle();
-
-private:
-    void HandleExplosion(Player& currentPlayer, Player& otherPlayer);
-    void HandleIllusion(Player& currentPlayer);
-    void HandleDrawOrWinner();
     bool HandleCardSelection(Player& currentPlayer);
     bool HandleNormalCard(Player& currentPlayer, int cardValue);
 
@@ -36,4 +35,3 @@ private:
 };
 
 #endif
-//

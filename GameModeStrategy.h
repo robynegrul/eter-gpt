@@ -1,4 +1,3 @@
-//creare header
 #pragma once
 #ifndef GAMEMODESTRATEGY_H
 #define GAMEMODESTRATEGY_H

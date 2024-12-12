@@ -1,4 +1,3 @@
-//adaugare header
 #pragma once
 #ifndef TRAININGMODE_H
 #define TRAININGMODE_H
@@ -10,18 +9,17 @@
 
 class TrainingMode : public GameModeStrategy {
 public:
+    TrainingMode();
+
+private:
+    void HandleExplosion(Player& currentPlayer);
+    void HandleIllusion(Player& currentPlayer);
+    void HandleDrawOrWinner();
     void StartGame() override;
     void ResetRound() override;
     void PlayRound() override;
     void DisplayScore() const override;
     void ShowAvailableModes() const override;
-    TrainingMode();
-
-private:
-
-    void HandleExplosion(Player& currentPlayer, Player& otherPlayer);
-    void HandleIllusion(Player& currentPlayer);
-    void HandleDrawOrWinner();
     bool HandleCardSelection(Player& currentPlayer);
     bool HandleNormalCard(Player& currentPlayer, int cardValue);
 

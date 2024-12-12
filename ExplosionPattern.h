@@ -1,8 +1,6 @@
-#pragma once//adaugat
+#pragma once
 #ifndef EXPLOSIONPATTERN_H
 #define EXPLOSIONPATTERN_H
-
-//schimbat ordine include
 
 #include <cstdlib>
 #include <ctime>
@@ -16,21 +14,16 @@ private:
 
 public:
 	ExplosionPattern(int gridSize);
-
-	void GenerateRandomPattern();
-
-	void Rotate(int degrees);
-
 	void Display() const;
-
+	void Rotate(int degrees);
 	std::vector<std::pair<int, int >> GetAffectedPositions() const;
-
 	bool IsHole(int row, int col) const;
-
 	bool IsHand(int row, int col) const;
 
 private:
 	std::vector<std::vector< char >> Rotate90(const std::vector<std::vector<char>>& mat);
+	void GenerateRandomPattern();
+
 };
 
 #endif

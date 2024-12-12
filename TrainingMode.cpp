@@ -1,7 +1,5 @@
-//adaugare cpp ~ 12
 #include "TrainingMode.h"
-#include <iostream>
-//commit
+
 TrainingMode::TrainingMode() :
     board{ 3 },
     player1{ 1 },
@@ -16,9 +14,8 @@ TrainingMode::TrainingMode() :
     explosionTriggered{ false },
     explosionExpired{ false }
 {
-}//commit
+}
 
-//commit
 void TrainingMode::StartGame() {
     while (player1Wins < 2 && player2Wins < 2) {
         ResetRound();
@@ -26,9 +23,8 @@ void TrainingMode::StartGame() {
     }
     std::cout << "Game Over!\n";
     std::cout << (player1Wins == 2 ? "Player 1 wins the match!\n" : "Player 2 wins the match!\n");
-}//
+}
 
-//commit
 void TrainingMode::ResetRound() {
     board.Reset();
     player1.ResetCards(1);
@@ -43,17 +39,15 @@ void TrainingMode::ResetRound() {
     firstCardPlaced = false;
 
     std::cout << "NEW ROUND STARTED!\n";
-}//
+}
 
-//commit
 void TrainingMode::PlayRound() {
     currentPlayerId = winnerId;
     while (true) {
         Player& currentPlayer = (currentPlayerId == 1) ? player1 : player2;
-        Player& otherPlayer = (currentPlayerId == 1) ? player2 : player1;
 
         if (board.CanActivateExplosion() && !explosionTriggered && !explosionExpired) {
-            HandleExplosion(currentPlayer, otherPlayer);
+            HandleExplosion(currentPlayer);
         }
         else {
             if (!HandleCardSelection(currentPlayer)) {
@@ -63,9 +57,8 @@ void TrainingMode::PlayRound() {
     }
 
     DisplayScore();
-}//
+}
 
-//commit
 void TrainingMode::DisplayScore() const {
     std::cout << "Number of victories : \n";
     std::cout << "Player 1: " << player1Wins << "\n";
@@ -75,12 +68,12 @@ void TrainingMode::DisplayScore() const {
 void TrainingMode::ShowAvailableModes() const {
     std::cout << "Available Game Modes: \n";
     std::cout << "1. Training Mode\n";
-}//commit
+}
 
-//commit
-void TrainingMode::HandleExplosion(Player& currentPlayer, Player& otherPlayer) {
+void TrainingMode::HandleExplosion(Player& currentPlayer) {
     currentPlayerId = (currentPlayerId == 1) ? 2 : 1;
     Player& explosionPlayer = (currentPlayerId == 1) ? player1 : player2;
+    Player& otherPlayer = (currentPlayerId == 1) ? player2 : player1;
 
     std::cout << "Player" << currentPlayerId << ", do you want to activate an explosion? (y/n): ";
     char choice;
@@ -94,9 +87,8 @@ void TrainingMode::HandleExplosion(Player& currentPlayer, Player& otherPlayer) {
         explosionExpired = true;
         currentPlayerId = (currentPlayerId == 1) ? 2 : 1;
     }
-}//commit
+}
 
-//commit
 bool TrainingMode::HandleCardSelection(Player& currentPlayer) {
     currentPlayer.DisplayAvailableCards();
     if ((currentPlayerId == 1 && !player1UsedIllusion) || (currentPlayerId == 2 && !player2UsedIllusion))
@@ -118,9 +110,8 @@ bool TrainingMode::HandleCardSelection(Player& currentPlayer) {
         return(HandleNormalCard(currentPlayer, cardValue));
     }
     return true;
-}//
+}
 
-//2 commit uri
 void TrainingMode::HandleIllusion(Player& currentPlayer) {
     if ((currentPlayerId == 1 && player1UsedIllusion) || (currentPlayerId == 2 && player2UsedIllusion)) {
         std::cout << "You have already used your illusion this round!\n";
@@ -135,8 +126,7 @@ void TrainingMode::HandleIllusion(Player& currentPlayer) {
         std::cout << "Invalid card selection. Try again.\n";
         return;
     }
-    //
-    //
+
     std::cout << "Choose position (row and column) for your illusion: ";
     int row, col;
     std::cin >> row >> col;
@@ -153,10 +143,8 @@ void TrainingMode::HandleIllusion(Player& currentPlayer) {
     else {
         std::cout << "The selected position is not valid. Try again.\n";
     }
-}//
+}
 
-//2 commit uri
-//
 bool TrainingMode::HandleNormalCard(Player& currentPlayer, int cardValue) {
     card currentCard = { currentPlayerId, cardValue };
 
@@ -176,8 +164,7 @@ bool TrainingMode::HandleNormalCard(Player& currentPlayer, int cardValue) {
         currentPlayerId = (currentPlayerId == 1) ? 2 : 1;
         board.Display();
     }
-    //
-    //
+    
     else if (result == PlaceCardResult::Failure) {
         std::cout << "Invalid position. Try again.\n";
     }
@@ -207,9 +194,8 @@ bool TrainingMode::HandleNormalCard(Player& currentPlayer, int cardValue) {
     }
 
     return true;
-}//
+}
 
-//commit
 void TrainingMode::HandleDrawOrWinner() {
     int player1Sum = board.CalculateCardValueSum(1);
     int player2Sum = board.CalculateCardValueSum(2);
@@ -231,4 +217,4 @@ void TrainingMode::HandleDrawOrWinner() {
     else {
         std::cout << "It's a draw! Both players have the same card sum.\n";
     }
-}//
+}

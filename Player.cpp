@@ -1,5 +1,5 @@
 #include "Player.h"
-//modificare constructor  vechi + unul nou - commit
+
 Player::Player(int playerId) :
 	id{ playerId },
 	initialCards{ { 1,1,2,2,3,3,4 } },
@@ -11,7 +11,7 @@ Player::Player(const Player& other) :
 	id{ other.id },
 	cards{ other.cards },
 	initialCards{ other.initialCards } {
-}//
+}
 
 
 int Player::GetId() const
@@ -30,7 +30,7 @@ bool Player::PlayCard(int cardValue)
 	}
 	return false;
 }
-//adaugare parametru + modificari mici
+
 void Player::ResetCards(int gameMode)
 {
 	if (gameMode == 1)
@@ -49,7 +49,6 @@ void Player::DisplayAvailableCards() const
 	std::cout << "Available cards for Player" << id << ": ";
 	for (int card : cards)
 	{
-		//adaugare if
 		if (card == 5)
 			std::cout << "ETER";
 		else
@@ -70,7 +69,7 @@ void Player::AddCard(int cardValue)
 	cards.push_back(cardValue);
 	std::sort(cards.begin(), cards.end());
 }
-//commit
+
 Player& Player::operator=(const Player& other) {
 	if (this == &other) {
 		return *this;
@@ -79,4 +78,4 @@ Player& Player::operator=(const Player& other) {
 	cards = other.cards;
 
 	return *this;
-}//
+}
