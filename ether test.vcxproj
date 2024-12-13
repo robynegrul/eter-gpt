@@ -135,6 +135,7 @@
     <ClCompile Include="MageDuel.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="SpeedMode.cpp" />
     <ClCompile Include="TrainingMode.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -146,6 +147,7 @@
     <ClInclude Include="GameModeStrategy.h" />
     <ClInclude Include="MageDuel.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="SpeedMode.h" />
     <ClInclude Include="TrainingMode.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

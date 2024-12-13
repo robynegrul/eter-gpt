@@ -273,10 +273,13 @@ void Board::ApplyExplosionEffects(const Explosion& explosion, Player& player, Pl
 			break;
 		case ExplosionEffect::TakeHand:
 			card currentCard = grid[row][col];
-			if (currentCard.first == player.GetId() && currentCard.second!=0)
-				player.AddCard(currentCard.second);
-			else
-				other.AddCard(currentCard.second);
+			if(currentCard.second != 0)
+			{
+				if (currentCard.first == player.GetId())
+					player.AddCard(currentCard.second);
+				else
+					other.AddCard(currentCard.second);
+			}
 			grid[row][col] = { 0,0 };
 			break;
 		}
@@ -351,6 +354,7 @@ bool Board::PlaceIllusion(int row, int col, int playerId, int cardValue) {
 void Board::ActivateExplosion(Player& player, Player& other) {
 	if (!CanActivateExplosion()) return;
 
+	srand(time(0));
 	ExplosionPattern explosion(size);
 
 	std::cout << "Generated explosion pattern at 0 degrees:\n";
