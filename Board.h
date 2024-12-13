@@ -1,4 +1,4 @@
-﻿#pragma once //adaugat
+﻿#pragma once
 #ifndef BOARD_H
 #define BOARD_H
 
@@ -38,7 +38,6 @@ private:
 	std::map<card, int> illusionCards;
 
 public:
-	//schimba ordine functii si muta in private cateva
 	Board(int boardSize);
 	PlaceCardResult PlaceCard(int row, int col, card PlayCard);
 	void Reset();
@@ -64,7 +63,7 @@ private:
 	bool IsIllusion(int row, int col) const;
 	bool IsIllusionValue(card cell) const;
 	void ApplyExplosionEffects(const Explosion& explosion, Player& player, Player& other);
-	void EliminateIllusions();//adauga functie
+	void EliminateIllusions();
 };
 
 #endif
