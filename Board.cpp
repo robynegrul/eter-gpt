@@ -273,7 +273,7 @@ void Board::ApplyExplosionEffects(const Explosion& explosion, Player& player, Pl
 			break;
 		case ExplosionEffect::TakeHand:
 			card currentCard = grid[row][col];
-			if (currentCard.first == player.GetId())
+			if (currentCard.first == player.GetId() && currentCard.second!=0)
 				player.AddCard(currentCard.second);
 			else
 				other.AddCard(currentCard.second);
