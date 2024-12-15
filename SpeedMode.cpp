@@ -1,5 +1,4 @@
-﻿//commit
-#include "SpeedMode.h"
+﻿#include "SpeedMode.h"
 #include "TrainingMode.h"
 #include "ElementalBattle.h"
 #include "MageDuel.h"
@@ -14,9 +13,8 @@ void SpeedMode::ShowAvailableModes() const {
     std::cout << "1. Training Mode\n";
     std::cout << "2. Elemental Battle\n";
     std::cout << "3. Mage Duel\n";
-}//commit
+}
 
-//commit
 void SpeedMode::SetMode(int choice) {
     switch (choice) {
     case 1:
@@ -32,9 +30,8 @@ void SpeedMode::SetMode(int choice) {
         std::cout << "Invalid choice!\n";
         return;
     }
-}//commit
+}
 
-//commit
 void SpeedMode::StartGame() {
     ShowAvailableModes();
 
@@ -51,7 +48,7 @@ void SpeedMode::StartGame() {
         SetTimer(timeChoice);
         PlayRoundWithTimer();
     }
-}//commit
+}
 
 //commit
 void SpeedMode::SetTimer(int timeChoice) {
