@@ -6,7 +6,7 @@
 #include "GameModeStrategy.h"
 #include "Player.h"
 #include <iostream>
-
+//reanjare ordine functii
 class ElementalBattle : public GameModeStrategy
 {
 public:

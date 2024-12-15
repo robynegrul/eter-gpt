@@ -6,7 +6,7 @@
 #include <ctime>
 #include <iostream>
 #include <vector>
-
+//rearanjare functii
 class ExplosionPattern {
 private:
 	std::vector<std::vector<char>> pattern;
@@ -22,7 +22,7 @@ public:
 
 private:
 	std::vector<std::vector< char >> Rotate90(const std::vector<std::vector<char>>& mat);
-	void GenerateRandomPattern();
+	void GenerateRandomPattern();//muta din public in pv
 
 };
 

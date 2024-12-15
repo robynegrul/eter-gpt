@@ -6,7 +6,7 @@
 #include "GameModeStrategy.h"
 #include "Player.h"
 #include <iostream>
-
+//modificare ordine
 class TrainingMode : public GameModeStrategy {
 public:
     TrainingMode();

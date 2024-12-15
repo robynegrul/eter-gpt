@@ -5,7 +5,7 @@
 #include <iostream>
 #include <algorithm>
 #include <vector>
-
+//schimba ordine
 class Player
 {
 private:
@@ -25,7 +25,7 @@ public:
 	bool HasCard(int cardValue) const;
 
 private:
-	Player& operator=(const Player& other);
+	Player& operator=(const Player& other);//muta din public in private
 	bool HasCardsLeft() const;
 };
 #endif

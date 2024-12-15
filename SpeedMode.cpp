@@ -1,4 +1,5 @@
-﻿#include "SpeedMode.h"
+﻿//commit
+#include "SpeedMode.h"
 #include "TrainingMode.h"
 #include "ElementalBattle.h"
 #include "MageDuel.h"
@@ -13,8 +14,9 @@ void SpeedMode::ShowAvailableModes() const {
     std::cout << "1. Training Mode\n";
     std::cout << "2. Elemental Battle\n";
     std::cout << "3. Mage Duel\n";
-}
+}//commit
 
+//commit
 void SpeedMode::SetMode(int choice) {
     switch (choice) {
     case 1:
@@ -30,8 +32,9 @@ void SpeedMode::SetMode(int choice) {
         std::cout << "Invalid choice!\n";
         return;
     }
-}
+}//commit
 
+//commit
 void SpeedMode::StartGame() {
     ShowAvailableModes();
 
@@ -48,8 +51,9 @@ void SpeedMode::StartGame() {
         SetTimer(timeChoice);
         PlayRoundWithTimer();
     }
-}
+}//commit
 
+//commit
 void SpeedMode::SetTimer(int timeChoice) {
     switch (timeChoice) {
     case 60:
@@ -66,8 +70,9 @@ void SpeedMode::SetTimer(int timeChoice) {
         roundDurationInSeconds = 60;
         break;
     }
-}
+}//commit
 
+//commit
 void SpeedMode::PlayRoundWithTimer() {
     auto roundStartTime = std::chrono::steady_clock::now();
 
@@ -93,8 +98,9 @@ void SpeedMode::PlayRoundWithTimer() {
 
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
-}
+}//
 
+//commit
 void SpeedMode::ResetRound() {
     std::cout << "Round reset.\n";
 }
@@ -106,3 +112,4 @@ void SpeedMode::PlayRound() {
 void SpeedMode::DisplayScore() const {
     std::cout << "Displaying score...\n";
 }
+//

@@ -6,7 +6,7 @@
 #include "TrainingMode.h"
 #include "MageDuel.h"
 #include "ElementalBattle.h"
-#include "SpeedMode.h"
+#include "SpeedMode.h"//adauga
 #include <iostream>
 
 class Game {
@@ -17,7 +17,7 @@ public:
     void SetGameMode(int choice);
 
 private:
-    std::unique_ptr<GameModeStrategy> currentMode;
+    std::unique_ptr<GameModeStrategy> currentMode;//nu cu C, cu c mic
 };
 
 #endif

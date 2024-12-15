@@ -8,7 +8,6 @@ ExplosionPattern::ExplosionPattern(int gridSize) : size(gridSize) {
 void ExplosionPattern::GenerateRandomPattern() {
 	int maxEffects = (size == 3) ? rand() % 3 + 2 : rand() % 4 + 3;
 	int addedEffects = 0;
-
 	while (addedEffects < maxEffects) {
 		int row, col;
 		do {
