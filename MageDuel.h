@@ -5,7 +5,6 @@
 #include "Board.h"
 #include "GameModeStrategy.h"
 #include <iostream>
-//modifica ordine functii
 class MageDuel : public GameModeStrategy
 {
 public:

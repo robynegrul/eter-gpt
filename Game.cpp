@@ -1,7 +1,6 @@
 ﻿#include "Game.h"
 
 Game::Game() : currentMode(nullptr) {}
-//sterge if si foloseste switch - commit
 void Game::SetGameMode(int choice) {
     switch (choice) {
     case 1:
@@ -23,7 +22,6 @@ void Game::SetGameMode(int choice) {
 }
 
 void Game::StartGame() {
-    //currentMode, nu CurrentMode, schimba nume variabila
     if (currentMode) {
         currentMode->StartGame();
     }

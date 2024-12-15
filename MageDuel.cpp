@@ -73,7 +73,7 @@ void MageDuel::ShowAvailableModes() const {
 void MageDuel::HandleExplosion(Player& currentPlayer) {
     currentPlayerId = (currentPlayerId == 1) ? 2 : 1;
     Player& explosionPlayer = (currentPlayerId == 1) ? player1 : player2;
-    Player& otherPlayer = (currentPlayerId == 1) ? player2 : player1;//adauga
+    Player& otherPlayer = (currentPlayerId == 1) ? player2 : player1;
 
     std::cout << "Player" << currentPlayerId << ", do you want to activate an explosion? (y/n): ";
     char choice;

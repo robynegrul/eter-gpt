@@ -22,4 +22,4 @@ private:
     int roundDurationInSeconds;
 };
 
-#endif  // SPEEDMODE_H
+#endif
