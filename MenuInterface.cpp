@@ -1,5 +1,4 @@
-﻿//commit 4
-#include "menuinterface.h"
+﻿#include "menuinterface.h"
 #include <QPushButton>
 #include <QPixmap>
 #include <QLabel>
@@ -33,7 +32,6 @@ MenuInterface::MenuInterface(QWidget* parent)
 
     setupMenu();
 }
-//sfarsit commit 4
 
 //commit 5
 void MenuInterface::setupMenu() {
