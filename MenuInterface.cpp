@@ -85,7 +85,6 @@ void MenuInterface::SetupMenu() {
 
 }
 
-    // commit 8
 void MenuInterface::SwitchToNewGameScreen() {
     QLayoutItem* item;
     while ((item = layout->takeAt(0)) != nullptr) {
@@ -101,9 +100,6 @@ void MenuInterface::SwitchToNewGameScreen() {
     selectGamemodeLabel->setStyleSheet("QLabel { color: white; }");
     layout->addWidget(selectGamemodeLabel);
 
-        //sfarsit commit 8
-    
-        //commit 9
     QVBoxLayout* buttonLayout = new QVBoxLayout();
 
     QPushButton* trainingButton = new QPushButton("Training", this);
@@ -121,16 +117,12 @@ void MenuInterface::SwitchToNewGameScreen() {
     timeAttackButton->setFont(cinzelFont);
     backButton->setFont(cinzelFont);
 
-    //sfarsit commit 9
-
-        //commit 10
     trainingButton->setFixedSize(200, 50);
     mageDuelButton->setFixedSize(200, 50);
     elementalBattleButton->setFixedSize(200, 50);
     tournamentButton->setFixedSize(200, 50);
     timeAttackButton->setFixedSize(200, 50);
     backButton->setFixedSize(200, 50);
-    //sfarsit commit 10
 
 	//commit 11
 
