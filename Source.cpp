@@ -1,5 +1,4 @@
-﻿//commit 2
-#include <QApplication>
+﻿#include <QApplication>
 #include "menuinterface.h"
 
 int main(int argc, char* argv[]) {
@@ -9,4 +8,3 @@ int main(int argc, char* argv[]) {
 
     return app.exec();
 }
-//sfarsit commit 2

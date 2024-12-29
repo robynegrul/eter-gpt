@@ -1,5 +1,4 @@
-﻿//commit 3
-#ifndef MENUINTERFACE_H
+﻿#ifndef MENUINTERFACE_H
 #define MENUINTERFACE_H
 
 #include <QWidget>
@@ -21,4 +20,3 @@ private:
 };
 
 #endif
-//sfarsit commit 3
