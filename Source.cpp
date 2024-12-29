@@ -1,4 +1,4 @@
-﻿//commit 1
+﻿//commit 2
 #include <QApplication>
 #include "menuinterface.h"
 
@@ -9,4 +9,4 @@ int main(int argc, char* argv[]) {
 
     return app.exec();
 }
-//sfarsit commit 1
+//sfarsit commit 2
