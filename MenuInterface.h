@@ -1,3 +1,4 @@
+﻿//commit 2
 #ifndef MENUINTERFACE_H
 #define MENUINTERFACE_H
 
@@ -13,6 +14,11 @@ public:
 
 private:
     void setupMenu();
+    void switchToNewGameScreen();
+    void resetMenu();
+
+    QVBoxLayout* layout;
 };
 
-#endif // MENUINTERFACE_H
+#endif
+//sfarsit commit 2
