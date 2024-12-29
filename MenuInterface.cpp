@@ -16,7 +16,7 @@ MenuInterface::MenuInterface(QWidget* parent)
 
     QPixmap background("resources/MainScreen.png");
     if (background.isNull()) {
-        qWarning("Imaginea nu a putut fi încărcată.");
+        qWarning("The image could not be loaded.");
     }
     else {
         QPixmap scaledBackground = background.scaled(this->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
@@ -27,14 +27,13 @@ MenuInterface::MenuInterface(QWidget* parent)
 
     int fontId = QFontDatabase::addApplicationFont("resources/Cinzel.ttf");
     if (fontId == -1) {
-        qWarning() << "Fontul nu a fost încărcat corect!";
+        qWarning() << "The font was not loaded correctly!";
     }
 
-    setupMenu();
+    SetupMenu();
 }
 
-//commit 5
-void MenuInterface::setupMenu() {
+void MenuInterface::SetupMenu() {
     QLayoutItem* item;
     while ((item = layout->takeAt(0)) != nullptr) {
         delete item->widget();
@@ -58,10 +57,6 @@ void MenuInterface::setupMenu() {
     loadButton->setFont(cinzelFont);
     exitButton->setFont(cinzelFont);
 
-    //sfarsit commit 5
-
-        //commit 6
-
     layout->setAlignment(Qt::AlignCenter);
     layout->setSpacing(10);
 
@@ -78,23 +73,20 @@ void MenuInterface::setupMenu() {
         "    background-color: rgba(255, 255, 255, 0.1);"
         "} ";
 
-    //sfarsit commit 6
-
-    //commit 7
     startButton->setStyleSheet(buttonStyle);
     loadButton->setStyleSheet(buttonStyle);
     exitButton->setStyleSheet(buttonStyle);
 
-    QObject::connect(startButton, &QPushButton::clicked, this, &MenuInterface::switchToNewGameScreen);
+    QObject::connect(startButton, &QPushButton::clicked, this, &MenuInterface::SwitchToNewGameScreen);
     QObject::connect(loadButton, &QPushButton::clicked, this, [&]() {
-        QMessageBox::information(this, "Load Game", "Jocul va fi încărcat!");
+        QMessageBox::information(this, "Load Game", "The game is loading!");
         });
     QObject::connect(exitButton, &QPushButton::clicked, this, &QWidget::close);
+
 }
-//sfarsit commit 7
 
     // commit 8
-void MenuInterface::switchToNewGameScreen() {
+void MenuInterface::SwitchToNewGameScreen() {
     QLayoutItem* item;
     while ((item = layout->takeAt(0)) != nullptr) {
         delete item->widget();
@@ -102,7 +94,7 @@ void MenuInterface::switchToNewGameScreen() {
     }
     layout->addSpacerItem(new QSpacerItem(0, 300, QSizePolicy::Minimum, QSizePolicy::Expanding));
 
-    QLabel* selectGamemodeLabel = new QLabel("Select a gamemode:", this);
+    QLabel* selectGamemodeLabel = new QLabel("Select a game mode:", this);
     QFont labelFont("Cinzel", 30);
     selectGamemodeLabel->setFont(labelFont);
     selectGamemodeLabel->setAlignment(Qt::AlignCenter);
@@ -138,8 +130,9 @@ void MenuInterface::switchToNewGameScreen() {
     tournamentButton->setFixedSize(200, 50);
     timeAttackButton->setFixedSize(200, 50);
     backButton->setFixedSize(200, 50);
+    //sfarsit commit 10
 
-    
+	//commit 11
 
     QString buttonStyle =
         "QPushButton {"
@@ -154,9 +147,9 @@ void MenuInterface::switchToNewGameScreen() {
         "    background-color: rgba(255, 255, 255, 0.1);"
         "} ";
 
-    //sfarsit commit 10
+    //sfarsit commit 11
 
-    //commit 11
+    //commit 12
 
     trainingButton->setStyleSheet(buttonStyle);
     mageDuelButton->setStyleSheet(buttonStyle);
@@ -173,18 +166,18 @@ void MenuInterface::switchToNewGameScreen() {
     layout->addWidget(timeAttackButton);
     layout->addWidget(backButton);
 
-    //sfarsit commit 11
+    //sfarsit commit 12
 
-    //commit 12 
+    //commit 13
     layout->setSpacing(10);
 
-    QObject::connect(backButton, &QPushButton::clicked, this, &MenuInterface::resetMenu);
+    QObject::connect(backButton, &QPushButton::clicked, this, &MenuInterface::ResetMenu);
     layout->addSpacerItem(new QSpacerItem(0, 100, QSizePolicy::Minimum, QSizePolicy::Expanding));
 }
 
 
-void MenuInterface::resetMenu() {
-    setupMenu();
+void MenuInterface::ResetMenu() {
+    SetupMenu();
 }
 
-//sfarsit commit 12
+//sfarsit commit 13

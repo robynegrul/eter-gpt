@@ -12,9 +12,9 @@ public:
     explicit MenuInterface(QWidget* parent = nullptr);
 
 private:
-    void setupMenu();
-    void switchToNewGameScreen();
-    void resetMenu();
+    void SetupMenu();
+    void SwitchToNewGameScreen();
+    void ResetMenu();
 
     QVBoxLayout* layout;
 };
