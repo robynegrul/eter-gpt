@@ -124,7 +124,6 @@ void MenuInterface::SwitchToNewGameScreen() {
     timeAttackButton->setFixedSize(200, 50);
     backButton->setFixedSize(200, 50);
 
-	//commit 11
 
     QString buttonStyle =
         "QPushButton {"
@@ -139,9 +138,7 @@ void MenuInterface::SwitchToNewGameScreen() {
         "    background-color: rgba(255, 255, 255, 0.1);"
         "} ";
 
-    //sfarsit commit 11
 
-    //commit 12
 
     trainingButton->setStyleSheet(buttonStyle);
     mageDuelButton->setStyleSheet(buttonStyle);
@@ -158,9 +155,6 @@ void MenuInterface::SwitchToNewGameScreen() {
     layout->addWidget(timeAttackButton);
     layout->addWidget(backButton);
 
-    //sfarsit commit 12
-
-    //commit 13
     layout->setSpacing(10);
 
     QObject::connect(backButton, &QPushButton::clicked, this, &MenuInterface::ResetMenu);
@@ -171,5 +165,3 @@ void MenuInterface::SwitchToNewGameScreen() {
 void MenuInterface::ResetMenu() {
     SetupMenu();
 }
-
-//sfarsit commit 13
