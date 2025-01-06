@@ -33,13 +33,37 @@ void MenuInterface::setupUi() {
     mainLayout->setSpacing(10);
 
     startButton = new QPushButton("START NEW GAME", this);
-    startButton->setStyleSheet("font-size: 20px; color: white; border: 2.5px solid white; padding: 9px 78px; border-radius: 5px;");
+    startButton->setStyleSheet(R"(
+        QPushButton {
+            font-size: 20px;
+            color: white;
+            border: 2.5px solid white;
+            padding: 9px 78px;
+            border-radius: 5px;
+            background-color: transparent;
+        }
+        QPushButton:hover {
+            background-color: rgba(255, 255, 255, 50);
+        }
+    )");
     startButton->setFont(regularFont);
     startButton->setMinimumWidth(200);
     mainLayout->addWidget(startButton);
 
     loadButton = new QPushButton("LOAD GAME", this);
-    loadButton->setStyleSheet("font-size: 20px; color: white; border: 2.5px solid white; padding: 9px 78px; border-radius: 5px;");
+    loadButton->setStyleSheet(R"(
+        QPushButton {
+            font-size: 20px;
+            color: white;
+            border: 2.5px solid white;
+            padding: 9px 78px;
+            border-radius: 5px;
+            background-color: transparent;
+        }
+        QPushButton:hover {
+            background-color: rgba(255, 255, 255, 50);
+        }
+    )");
     loadButton->setFont(regularFont);
     loadButton->setMinimumWidth(200);
     mainLayout->addWidget(loadButton);
@@ -48,8 +72,8 @@ void MenuInterface::setupUi() {
 
     connect(startButton, &QPushButton::clicked, this, &MenuInterface::switchToGameMenu);
 
-
     connect(loadButton, &QPushButton::clicked, this, []() {
+        qDebug() << "Load Game button clicked!";
         });
 
     setScaledBackground();
@@ -63,7 +87,6 @@ void MenuInterface::keyPressEvent(QKeyEvent* event) {
         QWidget::keyPressEvent(event);
     }
 }
-
 
 void MenuInterface::resizeEvent(QResizeEvent* event) {
     QWidget::resizeEvent(event);
@@ -87,5 +110,4 @@ void MenuInterface::setScaledBackground() {
         qDebug() << "Failed to load background image!";
     }
     this->setAutoFillBackground(true);
-
 }
