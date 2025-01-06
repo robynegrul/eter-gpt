@@ -163,6 +163,7 @@
     <ClCompile Include="MageDuel.cpp" />
     <ClCompile Include="MenuInterface.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="SelectGameModeInterface.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="SpeedMode.cpp" />
     <ClCompile Include="TrainingMode.cpp" />
@@ -177,6 +178,7 @@
     <ClInclude Include="MageDuel.h" />
     <QtMoc Include="MenuInterface.h" />
     <ClInclude Include="Player.h" />
+    <QtMoc Include="SelectGameModeInterface.h" />
     <ClInclude Include="SpeedMode.h" />
     <ClInclude Include="TrainingMode.h" />
   </ItemGroup>

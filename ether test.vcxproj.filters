@@ -45,6 +45,9 @@
     <ClCompile Include="MenuInterface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SelectGameModeInterface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.h">
@@ -80,6 +83,9 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="MenuInterface.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="SelectGameModeInterface.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

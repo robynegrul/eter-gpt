@@ -1,5 +1,5 @@
-﻿#ifndef MENUINTERFACE_H
-#define MENUINTERFACE_H
+#ifndef SELECTGAMEMODEINTERFACE_H
+#define SELECTGAMEMODEINTERFACE_H
 
 #include <QWidget>
 #include <QPushButton>
@@ -8,13 +8,13 @@
 #include <QFontDatabase>
 #include <QVBoxLayout>
 
-class MenuInterface : public QWidget
+class SelectGameModeInterface : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit MenuInterface(QWidget* parent = nullptr);
-    ~MenuInterface();
+    explicit SelectGameModeInterface(QWidget* parent = nullptr);
+    ~SelectGameModeInterface();
 
 protected:
     void keyPressEvent(QKeyEvent* event) override;
@@ -25,12 +25,16 @@ private:
     void setupUi();
     void setScaledBackground();
 
-    QPushButton* startButton;
-    QPushButton* loadButton;
+    QPushButton* Training;
+    QPushButton* MageDuel;
+    QPushButton* ElementalBattle;
+    QPushButton* Tournament;
+    QPushButton* TimeAttack;
+    QPushButton* BackButton;
     QVBoxLayout* layout;
 
 signals:
-    void switchToGameMenu();
+    void switchToMenu();
     void exitApplication();
 };
 
