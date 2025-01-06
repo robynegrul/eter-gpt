@@ -3,6 +3,8 @@
 #include <QPalette>
 #include <QPixmap>
 #include <QFontDatabase>
+#include <QLabel>
+
 
 SelectGameModeInterface::SelectGameModeInterface(QWidget* parent) : QWidget(parent) {
     setupUi();
@@ -22,14 +24,29 @@ void SelectGameModeInterface::setupUi() {
 
     QFont regularFont(regularFontFamily);
 
+
     QVBoxLayout* outerLayout = new QVBoxLayout(this);
     outerLayout->setContentsMargins(0, 100, 0, 0);
     outerLayout->setSpacing(0);
 
     QVBoxLayout* mainLayout = new QVBoxLayout();
     mainLayout->setAlignment(Qt::AlignCenter);
-    mainLayout->setContentsMargins(0, 300, 0, 0);
+    mainLayout->setContentsMargins(0, 260, 0, 0);
     mainLayout->setSpacing(10);
+
+
+    QLabel* titleLabel = new QLabel("SELECT GAMEMODE:", this);
+    titleLabel->setStyleSheet(R"(
+    QLabel {
+        font-size: 18px;
+        color: white;
+        background-color: transparent;
+    }
+)");
+    titleLabel->setFont(regularFont);
+    titleLabel->setAlignment(Qt::AlignCenter);
+    mainLayout->addWidget(titleLabel);
+
 
     Training = new QPushButton("TRAINING", this);
     Training->setStyleSheet(R"(
