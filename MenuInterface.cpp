@@ -17,7 +17,7 @@ MenuInterface::~MenuInterface() {
 }
 
 void MenuInterface::setupUi() {
-    int regularFontId = QFontDatabase::addApplicationFont("C:/Users/paulj/eter-gpt/resources/Cinzel.ttf");
+    int regularFontId = QFontDatabase::addApplicationFont("resources/Cinzel.ttf");
     if (regularFontId == -1) {
         qDebug() << "Failed to load regular font!";
     }
@@ -76,7 +76,7 @@ void MenuInterface::showEvent(QShowEvent* event) {
 }
 
 void MenuInterface::setScaledBackground() {
-    QPixmap background("C:/Users/paulj/eter-gpt/resources/MainScreen.png");
+    QPixmap background("resources/MainScreen.png");
     if (!background.isNull()) {
         background = background.scaled(this->size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
         QPalette palette;

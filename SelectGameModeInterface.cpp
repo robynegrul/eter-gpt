@@ -96,8 +96,6 @@ void SelectGameModeInterface::keyPressEvent(QKeyEvent* event) {
     }
 }
 
-
-
 void SelectGameModeInterface::resizeEvent(QResizeEvent* event) {
     QWidget::resizeEvent(event);
     setScaledBackground();

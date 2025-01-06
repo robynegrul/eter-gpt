@@ -12,8 +12,8 @@ int main(int argc, char* argv[]) {
 
     // Creare StackedWidget
     QStackedWidget stackedWidget;
-    stackedWidget.addWidget(menu);              // Index 0
-    stackedWidget.addWidget(selectGameMode);    // Index 1
+    stackedWidget.addWidget(menu);             
+    stackedWidget.addWidget(selectGameMode); 
     stackedWidget.showFullScreen();
 
     // Conectare semnale pentru schimbarea paginilor

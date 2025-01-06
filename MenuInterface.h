@@ -7,6 +7,8 @@
 #include <QResizeEvent>
 #include <QFontDatabase>
 #include <QVBoxLayout>
+#include <QShowEvent>
+
 
 class MenuInterface : public QWidget
 {

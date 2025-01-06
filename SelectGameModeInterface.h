@@ -7,6 +7,7 @@
 #include <QResizeEvent>
 #include <QFontDatabase>
 #include <QVBoxLayout>
+#include <QShowEvent>
 
 class SelectGameModeInterface : public QWidget
 {
