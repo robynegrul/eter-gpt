@@ -43,7 +43,8 @@ void MenuInterface::setupUi() {
             background-color: transparent;
         }
         QPushButton:hover {
-            background-color: rgba(255, 255, 255, 50);
+            background-color: rgba(0, 0, 0, 100);
+
         }
     )");
     startButton->setFont(regularFont);
@@ -61,7 +62,8 @@ void MenuInterface::setupUi() {
             background-color: transparent;
         }
         QPushButton:hover {
-            background-color: rgba(255, 255, 255, 50);
+           background-color: rgba(0, 0, 0, 100);
+
         }
     )");
     loadButton->setFont(regularFont);

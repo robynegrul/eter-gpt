@@ -42,7 +42,7 @@ void SelectGameModeInterface::setupUi() {
             background-color: transparent;
         }
         QPushButton:hover {
-            background-color: rgba(255, 255, 255, 50);
+            background-color: rgba(0, 0, 0, 100);
         }
     )");
     Training->setFont(regularFont);
@@ -60,7 +60,8 @@ void SelectGameModeInterface::setupUi() {
             background-color: transparent;
         }
         QPushButton:hover {
-            background-color: rgba(255, 255, 255, 50);
+            background-color: rgba(0, 0, 0, 100);
+
         }
     )");
     MageDuel->setFont(regularFont);
@@ -78,7 +79,8 @@ void SelectGameModeInterface::setupUi() {
             background-color: transparent;
         }
         QPushButton:hover {
-            background-color: rgba(255, 255, 255, 50);
+            background-color: rgba(0, 0, 0, 100);
+
         }
     )");
     ElementalBattle->setFont(regularFont);
@@ -96,7 +98,8 @@ void SelectGameModeInterface::setupUi() {
             background-color: transparent;
         }
         QPushButton:hover {
-            background-color: rgba(255, 255, 255, 50);
+            background-color: rgba(0, 0, 0, 100);
+
         }
     )");
     Tournament->setFont(regularFont);
@@ -114,7 +117,8 @@ void SelectGameModeInterface::setupUi() {
             background-color: transparent;
         }
         QPushButton:hover {
-            background-color: rgba(255, 255, 255, 50);
+            background-color: rgba(0, 0, 0, 100);
+
         }
     )");
     TimeAttack->setFont(regularFont);
@@ -138,7 +142,8 @@ void SelectGameModeInterface::setupUi() {
             background-color: transparent;
         }
         QPushButton:hover {
-            background-color: rgba(255, 255, 255, 50);
+            background-color: rgba(0, 0, 0, 100);
+
         }
     )");
     BackButton->setFont(regularFont);
