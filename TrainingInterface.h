@@ -7,26 +7,30 @@
 #include <QResizeEvent>
 #include <QPalette>
 #include <QPixmap>
+#include "Game.h"
+#include "TrainingMode.h"
 
 class TrainingInterface : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit TrainingInterface(QWidget* parent = nullptr);
-	~TrainingInterface();
+    explicit TrainingInterface(QWidget* parent = nullptr);
+    ~TrainingInterface();
+    void startGame();
 
 protected:
-	void resizeEvent(QResizeEvent* event) override;
-	void showEvent(QShowEvent* event) override;
-	void keyPressEvent(QKeyEvent* event) override;
+    void resizeEvent(QResizeEvent* event) override;
+    void showEvent(QShowEvent* event) override;
+    void keyPressEvent(QKeyEvent* event) override;
 
 private:
-	void setupUi();
-	void setScaledBackground();
+    void setupUi();
+    void setScaledBackground();
+    Game gameInstance;
 
 signals:
-	void exitApplication();
+    void exitApplication();
 };
 
 #endif

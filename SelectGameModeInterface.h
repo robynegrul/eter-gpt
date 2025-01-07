@@ -8,6 +8,7 @@
 #include <QFontDatabase>
 #include <QVBoxLayout>
 #include <QShowEvent>
+#include "Game.h"
 
 class SelectGameModeInterface : public QWidget
 {
@@ -25,6 +26,7 @@ protected:
 private:
     void setupUi();
     void setScaledBackground();
+    Game gameInstance;
 
     QPushButton* Training;
     QPushButton* MageDuel;

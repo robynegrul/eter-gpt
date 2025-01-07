@@ -49,3 +49,8 @@ void TrainingInterface::setScaledBackground() {
 	}
 	this->setAutoFillBackground(true);
 }
+
+void TrainingInterface::startGame() {
+	gameInstance.SetGameMode(1); // 1 pentru Training Mode
+	gameInstance.StartGame();
+}
