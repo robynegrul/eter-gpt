@@ -1,4 +1,5 @@
 ﻿#include "SelectGameModeInterface.h"
+#include "TrainingInterface.h"
 #include <QDebug>
 #include <QPalette>
 #include <QPixmap>
@@ -170,6 +171,10 @@ void SelectGameModeInterface::setupUi() {
     outerLayout->addLayout(backButtonLayout);
 
     setLayout(outerLayout);
+
+    connect(Training, &QPushButton::clicked, this, [this]() {
+        emit switchToTraining();
+        });
 
     connect(BackButton, &QPushButton::clicked, this, &SelectGameModeInterface::switchToMenu);
 

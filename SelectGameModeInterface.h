@@ -37,6 +37,7 @@ private:
 signals:
     void switchToMenu();
     void exitApplication();
+    void switchToTraining();    
 };
 
 #endif 

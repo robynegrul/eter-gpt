@@ -166,6 +166,7 @@
     <ClCompile Include="SelectGameModeInterface.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="SpeedMode.cpp" />
+    <ClCompile Include="TrainingInterface.cpp" />
     <ClCompile Include="TrainingMode.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -180,6 +181,7 @@
     <ClInclude Include="Player.h" />
     <QtMoc Include="SelectGameModeInterface.h" />
     <ClInclude Include="SpeedMode.h" />
+    <QtMoc Include="TrainingInterface.h" />
     <ClInclude Include="TrainingMode.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
