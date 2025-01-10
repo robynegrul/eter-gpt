@@ -48,6 +48,9 @@
     <ClCompile Include="SelectGameModeInterface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TrainingInterface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.h">
@@ -86,6 +89,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="SelectGameModeInterface.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="TrainingInterface.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

@@ -1,13 +1,13 @@
 ﻿#include "Board.h"
 
 Board::Board(int boardSize)
-	: size{ boardSize }, grid(boardSize, std::vector<card>(boardSize, { 0,0 })), firstCardPlaced{ false } {
+	: size{ boardSize }, grid(boardSize, std::vector<std::optional<std::stack<card>>>(boardSize, std::nullopt)), firstCardPlaced{ false } {
 }
 
 void Board::Reset()
 {
 	EliminateIllusions();
-	grid.assign(size, std::vector<card>(size, { 0,0 }));
+	grid.assign(size, std::vector<std::optional<std::stack<card>>>(size, std::nullopt));
 	firstCardPlaced = false;
 }
 
@@ -22,37 +22,39 @@ PlaceCardResult Board::PlaceCard(int row, int col, card playCard) {
 
 			if (playCard.second <= illusionCardValue) {
 				std::cout << "Your card is not greater than the illusion. The illusion is now revealed on the board.\n";
-				grid[row][col].second = illusionCardValue;
+				grid[row][col] = std::make_optional<std::stack<card>>(std::stack<card>{});
+				grid[row][col]->top().second = illusionCardValue;
 				EliminateIllusions();
 				return PlaceCardResult::CardLost;
 			}
 			else {
-				grid[row][col] = playCard;
+				if (!grid[row][col].has_value()) {
+					grid[row][col] = std::make_optional<std::stack<card>>();
+				}
+				grid[row][col]->push(playCard);
 				EliminateIllusions();
 				return PlaceCardResult::Success;
 			}
 		}
 
-		if (playCard.second == 5 && grid[row][col].second != 0)
-		{
+		if (playCard.second == 5 && grid[row][col].has_value()) {
 			std::cout << "You cannot place the Eter card on a non-empty cell.\n";
 			return PlaceCardResult::Failure;
 		}
 
-		if (grid[row][col].second == 5)
-		{
+		if (grid[row][col].has_value() && !grid[row][col]->empty() && grid[row][col]->top().second == 5) {
 			std::cout << "You cannot replace the Eter card.\n";
 			return PlaceCardResult::Failure;
 		}
 
-		if (grid[row][col].first == -1 && grid[row][col].second == -1) {
+		if (grid[row][col].has_value() && grid[row][col]->empty()) {
 			std::cout << "You cannot place a card on a hole.\n";
 			return PlaceCardResult::Failure;
 		}
 
-		if (grid[row][col].second != 0) {
-			if (playCard.second > grid[row][col].second) {
-				grid[row][col] = playCard;
+		if (grid[row][col].has_value() && !grid[row][col]->empty()) {
+			if (playCard.second > grid[row][col]->top().second) {
+				grid[row][col]->push(playCard);
 				return PlaceCardResult::Success;
 			}
 			else {
@@ -66,7 +68,11 @@ PlaceCardResult Board::PlaceCard(int row, int col, card playCard) {
 			return PlaceCardResult::Failure;
 		}
 
-		grid[row][col] = playCard;
+		if (!grid[row][col].has_value()) {
+			grid[row][col] = std::make_optional<std::stack<card>>();
+		}
+		grid[row][col]->push(playCard);
+
 		if (!firstCardPlaced) {
 			firstCardPlaced = true;
 		}
@@ -81,13 +87,13 @@ bool Board::DiagonalShift(int& row, int& col) {
 	bool shifted = false;
 	if (((row == -1 && col == -1) || (row == size && col == size)) && !FixedGridColumns() && !FixedGridRows()) {
 		if (row < 0) {
-			grid.insert(grid.begin(), std::vector<card>(size, { 0, 0 }));
+			grid.insert(grid.begin(), std::vector<std::optional<std::stack<card>>>(size, std::nullopt));
 			grid.pop_back();
 			row = 0;
 			shifted = true;
 		}
 		else if (row >= size) {
-			grid.push_back(std::vector<card>(size, { 0, 0 }));
+			grid.push_back(std::vector<std::optional<std::stack<card>>>(size, std::nullopt));
 			grid.erase(grid.begin());
 			row = size - 1;
 			shifted = true;
@@ -95,7 +101,7 @@ bool Board::DiagonalShift(int& row, int& col) {
 
 		if (col < 0) {
 			for (auto& r : grid) {
-				r.insert(r.begin(), { 0, 0 });
+				r.insert(r.begin(), std::nullopt);
 				r.pop_back();
 			}
 			col = 0;
@@ -103,7 +109,7 @@ bool Board::DiagonalShift(int& row, int& col) {
 		}
 		else if (col >= size) {
 			for (auto& r : grid) {
-				r.push_back({ 0, 0 });
+				r.push_back(std::nullopt);
 				r.erase(r.begin());
 			}
 			col = size - 1;
@@ -117,13 +123,13 @@ bool Board::VerticalShift(int& row, int& col) {
 	bool shifted = false;
 	if ((row == -1 || row == size) && !FixedGridRows()) {
 		if (row == -1) {
-			grid.insert(grid.begin(), std::vector<card>(size, { 0, 0 }));
+			grid.insert(grid.begin(), std::vector<std::optional<std::stack<card>>>(size, std::nullopt));
 			grid.pop_back();
 			row = 0;
 			shifted = true;
 		}
 		else if (row == size) {
-			grid.push_back(std::vector<card>(size, { 0, 0 }));
+			grid.push_back(std::vector<std::optional<std::stack<card>>>(size, std::nullopt));
 			grid.erase(grid.begin());
 			row = size - 1;
 			shifted = true;
@@ -137,7 +143,7 @@ bool Board::HorizontalShift(int& row, int& col) {
 	if ((col == -1 || col == size) && !FixedGridColumns()) {
 		if (col == -1) {
 			for (auto& r : grid) {
-				r.insert(r.begin(), { 0, 0 });
+				r.insert(r.begin(), std::nullopt);
 				r.pop_back();
 			}
 			col = 0;
@@ -145,7 +151,7 @@ bool Board::HorizontalShift(int& row, int& col) {
 		}
 		else if (col == size) {
 			for (auto& r : grid) {
-				r.push_back({ 0, 0 });
+				r.push_back(std::nullopt);
 				r.erase(r.begin());
 			}
 			col = size - 1;
@@ -172,7 +178,7 @@ bool Board::FixedGridRows() const {
 	for (int row = 0; row < size; ++row) {
 		bool hasElement = false;
 		for (int col = 0; col < size; ++col) {
-			if (grid[row][col].second != 0) {
+			if (grid[row][col].has_value() && !grid[row][col]->empty()) {
 				hasElement = true;
 				break;
 			}
@@ -188,7 +194,7 @@ bool Board::FixedGridColumns() const {
 	for (int col = 0; col < size; ++col) {
 		bool hasElement = false;
 		for (int row = 0; row < size; ++row) {
-			if (grid[row][col].second != 0) {
+			if (grid[row][col].has_value() && !grid[row][col]->empty()) {
 				hasElement = true;
 				break;
 			}
@@ -200,12 +206,10 @@ bool Board::FixedGridColumns() const {
 	return true;
 }
 
-bool Board::IsFull() const
-{
-	for (const auto& row : grid)
-	{
+bool Board::IsFull() const {
+	for (const auto& row : grid) {
 		for (const auto& cell : row) {
-			if (cell.second == 0) {
+			if (!cell.has_value() || cell->empty()) {
 				return false;
 			}
 		}
@@ -213,16 +217,15 @@ bool Board::IsFull() const
 	return true;
 }
 
-bool Board::IsAdjacent(int row, int col) const
-{
-	int directions[8][2] = { {-1,-1},{-1,0},{-1,1},{0,-1},{0,1},{1,-1},{1,0},{1,1} };
-	for (auto& dir : directions)
-	{
+bool Board::IsAdjacent(int row, int col) const {
+	int directions[8][2] = { {-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1} };
+	for (auto& dir : directions) {
 		int newRow = row + dir[0];
 		int newCol = col + dir[1];
-		if (newRow >= 0 && newRow < size && newCol >= 0 && newCol < size && grid[newRow][newCol].second != 0)
-		{
-			return true;
+		if (newRow >= 0 && newRow < size && newCol >= 0 && newCol < size) {
+			if (grid[newRow][newCol].has_value() && !grid[newRow][newCol]->empty()) {
+				return true;
+			}
 		}
 	}
 	return false;
@@ -238,23 +241,28 @@ bool Board::CheckWinCondition(int playerId) const
 	return CheckDiagonals(playerId);
 }
 
-void Board::Display() const
-{
-	for (const auto& row : grid)
-	{
+void Board::Display() const {
+	for (const auto& row : grid) {
 		for (const auto& cell : row) {
-			if (cell.second == 0)
+			if (!cell.has_value()) {
 				std::cout << "[   ] ";
-			else if (cell.second == -1 && cell.first == -1)
+			}
+			else if (cell->empty()) {
 				std::cout << "[ O ] ";
-			else if (cell.second == -1)
-				std::cout << "[" << cell.first << ",?] ";
-			else if (cell.second == 5)
-				std::cout << "[" << cell.first << ",E] ";
-			else
-				std::cout << "[" << cell.first << "," << cell.second << "] ";
+			}
+			else {
+				const card& topCard = cell->top();
+				if (topCard.second == -1) {
+					std::cout << "[" << topCard.first << ",?] ";
+				}
+				else if (topCard.second == 5) {
+					std::cout << "[" << topCard.first << ",E] ";
+				}
+				else {
+					std::cout << "[" << topCard.first << "," << topCard.second << "] ";
+				}
+			}
 		}
-
 		std::cout << "\n";
 	}
 }
@@ -265,63 +273,69 @@ void Board::ApplyExplosionEffects(const Explosion& explosion, Player& player, Pl
 
 		switch (explosion.effects[i]) {
 		case ExplosionEffect::RemoveCard:
-			grid[row][col] = { 0,0 };
+			if (grid[row][col].has_value() && !grid[row][col]->empty()) {
+				grid[row][col]->pop();
+				if (grid[row][col]->empty()) {
+					grid[row][col].reset();  // Reset to nullopt if the stack is empty
+				}
+			}
 			break;
 		case ExplosionEffect::CreateHole:
-			grid[row][col] = { -1,-1 };
+			grid[row][col] = std::make_optional<std::stack<card>>();
 			break;
 		case ExplosionEffect::TakeHand:
-			card currentCard = grid[row][col];
-			if(currentCard.second != 0)
-			{
-				if (currentCard.first == player.GetId())
+			if (grid[row][col].has_value() && !grid[row][col]->empty()) {
+				card currentCard = grid[row][col]->top();
+				grid[row][col]->pop();
+				if (grid[row][col]->empty()) {
+					grid[row][col].reset();
+				}
+				if (currentCard.first == player.GetId()) {
 					player.AddCard(currentCard.second);
-				else
+				}
+				else {
 					other.AddCard(currentCard.second);
+				}
 			}
-			grid[row][col] = { 0,0 };
 			break;
 		}
 	}
 }
 
-bool Board::CheckRow(int row, int playerId) const
-{
-	for (int col = 0; col < size; ++col)
-	{
-		if (grid[row][col].first != playerId)
-		{
+bool Board::CheckRow(int row, int playerId) const {
+	for (int col = 0; col < size; ++col) {
+		if (!grid[row][col].has_value() || grid[row][col]->empty() || grid[row][col]->top().first != playerId) {
 			return false;
 		}
 	}
 	return true;
 }
 
-bool Board::CheckColumn(int col, int playerId) const
-{
-	for (int row = 0; row < size; ++row)
-	{
-		if (grid[row][col].first != playerId)
+bool Board::CheckColumn(int col, int playerId) const {
+	for (int row = 0; row < size; ++row) {
+		if (!grid[row][col].has_value() || grid[row][col]->empty() || grid[row][col]->top().first != playerId) {
 			return false;
+		}
 	}
 	return true;
 }
 
-bool Board::CheckDiagonals(int playerId) const
-{
+bool Board::CheckDiagonals(int playerId) const {
 	bool mainDiagonal = true;
 	bool secondaryDiagonal = true;
 
-	for (int i = 0; i < size; ++i)
-	{
-		if (grid[i][i].first != playerId)
+	for (int i = 0; i < size; ++i) {
+		if (!grid[i][i].has_value() || grid[i][i]->empty() || grid[i][i]->top().first != playerId) {
 			mainDiagonal = false;
+		}
 
-		if (grid[i][size - i - 1].first != playerId)
+		if (!grid[i][size - i - 1].has_value() || grid[i][size - i - 1]->empty() || grid[i][size - i - 1]->top().first != playerId) {
 			secondaryDiagonal = false;
+		}
 
-		if (!mainDiagonal && !secondaryDiagonal)
+		if (!mainDiagonal && !secondaryDiagonal) {
 			return false;
+		}
 	}
 
 	return mainDiagonal || secondaryDiagonal;
@@ -332,7 +346,12 @@ bool Board::PlaceIllusion(int row, int col, int playerId, int cardValue) {
 		std::cout << "The grid has been shifted to accommodate the new position.\n";
 	}
 
-	if (row >= 0 && row < size && col >= 0 && col < size && grid[row][col].second == 0) {
+	if (row >= 0 && row < size && col >= 0 && col < size) {
+		if (grid[row][col].has_value() && !grid[row][col]->empty()) {
+			std::cout << "The selected position is already occupied. Try again.\n";
+			return false;
+		}
+
 		if (firstCardPlaced && !IsAdjacent(row, col)) {
 			std::cout << "The selected position is not adjacent to an existing card. Try again.\n";
 			return false;
@@ -340,7 +359,9 @@ bool Board::PlaceIllusion(int row, int col, int playerId, int cardValue) {
 
 		illusionPositions.push_back({ row, col });
 		illusionCards[{row, col}] = cardValue;
-		grid[row][col] = { playerId, -1 };
+
+		grid[row][col] = std::make_optional<std::stack<card>>();
+		grid[row][col]->push({ playerId, -1 });
 
 		if (!firstCardPlaced) {
 			firstCardPlaced = true;
@@ -410,7 +431,9 @@ bool Board::CanActivateExplosion() const {
 	int filledRows = 0, filledCols = 0;
 
 	for (int i = 0; i < size; ++i) {
-		if (std::all_of(grid[i].begin(), grid[i].end(), [](const card& c) { return c.second != 0; })) {
+		if (std::all_of(grid[i].begin(), grid[i].end(), [](const std::optional<std::stack<card>>& cell) {
+			return cell.has_value() && !cell->empty() && cell->top().second != 0;
+			})) {
 			filledRows++;
 		}
 	}
@@ -418,7 +441,7 @@ bool Board::CanActivateExplosion() const {
 	for (int col = 0; col < size; ++col) {
 		bool columnFilled = true;
 		for (int row = 0; row < size; ++row) {
-			if (grid[row][col].second == 0) {
+			if (!grid[row][col].has_value() || grid[row][col]->empty() || grid[row][col]->top().second == 0) {
 				columnFilled = false;
 				break;
 			}
@@ -431,22 +454,23 @@ bool Board::CanActivateExplosion() const {
 	return (filledRows == 2) || (filledCols == 2) || (filledRows == 1 && filledCols == 1);
 }
 
-int Board::CalculateCardValueSum(int playerId) const
-{
+int Board::CalculateCardValueSum(int playerId) const {
 	int sum = 0;
-	for (const auto& row : grid)
-	{
-		for (const auto& cell : row)
-		{
-			if (cell.first == playerId)
-			{
-				if (IsIllusionValue(cell) || cell.second == 5)
+
+	for (const auto& row : grid) {
+		for (const auto& cell : row) {
+			if (cell.has_value() && !cell->empty() && cell->top().first == playerId) {
+				const card& topCard = cell->top();
+				if (IsIllusionValue(topCard) || topCard.second == 5) {
 					sum++;
-				else
-					sum += cell.second;
+				}
+				else {
+					sum += topCard.second;
+				}
 			}
 		}
 	}
+
 	return sum;
 }
 
@@ -460,17 +484,21 @@ bool Board::IsIllusionValue(card cell) const {
 }
 
 void Board::EliminateIllusions() {
-	for (const auto& row : grid)
-		for (const auto& cell : row)
-			if (IsIllusionValue(cell))
-			{
-				illusionCards.erase(cell);
+	for (int row = 0; row < size; ++row) {
+		for (int col = 0; col < size; ++col) {
+			if (grid[row][col].has_value() && !grid[row][col]->empty() && IsIllusionValue(grid[row][col]->top())) {
+				illusionCards.erase({ row, col });
+
 				illusionPositions.erase(
 					std::remove(
 						illusionPositions.begin(),
 						illusionPositions.end(),
-						cell),
+						std::make_pair(row, col)),
 					illusionPositions.end()
 				);
+
+				grid[row][col].reset();
 			}
+		}
+	}
 }

@@ -9,6 +9,7 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <stack>
 
 using card = std::pair<int, int>;
 
@@ -31,7 +32,7 @@ struct Explosion {
 
 class Board {
 private:
-	std::vector<std::vector<card>> grid;
+	std::vector<std::vector<std::optional<std::stack<card>>>> grid;
 	int size;
 	bool firstCardPlaced;
 	std::vector<card>illusionPositions;

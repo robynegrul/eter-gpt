@@ -64,7 +64,7 @@
   </PropertyGroup>
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <QtModules>core;widgets</QtModules>
-    <QtInstall>6.5.7_msvc2019_64</QtInstall>
+    <QtInstall>qt</QtInstall>
   </PropertyGroup>
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <QtModules>core</QtModules>
