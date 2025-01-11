@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <iostream>
 #include <map>
+#include <optional>
 #include <string>
 #include <vector>
 #include <stack>
@@ -23,6 +24,17 @@ enum class ExplosionEffect {
 	RemoveCard,
 	CreateHole,
 	TakeHand
+};
+
+enum class MagicPower {
+    RemoveOpponentCard,
+    RemoveRow,
+    CoverOpponentCard,
+    CreatePit,
+    MoveStack,
+    GainEterCard,
+    MoveOpponentStack,
+    ShiftRowToEdge
 };
 
 struct Explosion {
@@ -49,6 +61,16 @@ public:
 	bool CheckWinCondition(int playerId) const;
 	bool IsFull() const;
 	int CalculateCardValueSum(int playerId) const;
+
+	bool ActivateMagicPower(MagicPower power, int row, int col, int playerId, card optionalCard = {});
+	bool RemoveOpponentCard(int row, int col, int currentPlayerId);
+	void RemoveRow(int row);
+	void CoverOpponentCard(int row, int col, card weakerCard);
+	void CreatePit(int row, int col);
+	void MoveStack(int srcRow, int srcCol, int destRow, int destCol);
+	bool GainEterCard(int row, int col, int playerId);
+	void MoveOpponentStack(int srcRow, int srcCol, int destRow, int destCol);
+	void ShiftRowToEdge(int row, bool isHorizontal);
 
 private:
 	bool CheckRow(int row, int playerValue) const;

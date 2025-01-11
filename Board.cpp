@@ -502,3 +502,137 @@ void Board::EliminateIllusions() {
 		}
 	}
 }
+
+// Activează o putere magică specifică
+bool Board::ActivateMagicPower(MagicPower power, int row, int col, int playerId, card optionalCard) {
+	switch (power) {
+	case MagicPower::RemoveOpponentCard:
+		return RemoveOpponentCard(row, col, playerId);
+	case MagicPower::RemoveRow:
+		RemoveRow(row);
+		return true;
+	case MagicPower::CoverOpponentCard:
+		CoverOpponentCard(row, col, optionalCard);
+		return true;
+	case MagicPower::CreatePit:
+		CreatePit(row, col);
+		return true;
+	case MagicPower::MoveStack:
+		MoveStack(row, col, optionalCard.first, optionalCard.second); // srcRow, srcCol, destRow, destCol
+		return true;
+	case MagicPower::GainEterCard:
+		return GainEterCard(row, col, playerId);
+	case MagicPower::MoveOpponentStack:
+		MoveOpponentStack(row, col, optionalCard.first, optionalCard.second); // srcRow, srcCol, destRow, destCol
+		return true;
+	case MagicPower::ShiftRowToEdge:
+		ShiftRowToEdge(row, col == 1); // col == 1 -> orizontal
+		return true;
+	default:
+		return false;
+	}
+}
+
+// Elimină o carte a adversarului
+bool Board::RemoveOpponentCard(int row, int col, int currentPlayerId) {
+	// Verificăm dacă poziția este validă
+	if (row < 0 || row >= size || col < 0 || col >= size) {
+		std::cout << "Invalid position! Out of bounds.\n";
+		return false;
+	}
+
+	// Verificăm dacă există un teanc pe poziția specificată
+	if (!grid[row][col].has_value() || grid[row][col]->empty()) {
+		std::cout << "No stack present at the specified position.\n";
+		return false;
+	}
+
+	std::stack<card>& stack = grid[row][col].value();
+	card topCard = stack.top();
+
+	// Verificăm dacă cartea de deasupra aparține adversarului
+	int opponentId = (currentPlayerId == 1) ? 2 : 1;
+	if (topCard.first != opponentId) {
+		std::cout << "The top card does not belong to the opponent.\n";
+		return false;
+	}
+
+	// Verificăm dacă există o carte proprie sub cartea adversarului
+	stack.pop(); // Eliminăm temporar cartea adversarului pentru verificare
+	bool ownsCardBelow = false;
+	card belowCard = stack.top();
+	if (belowCard.first == currentPlayerId)
+		ownsCardBelow = true;
+	
+
+	// Restaurăm teancul dacă nu am găsit o carte proprie
+	if (!ownsCardBelow) {
+		std::cout << "No own card found below the opponent's card.\n";
+		// Adăugăm cartea adversarului înapoi
+		stack.push(topCard);
+		return false;
+	}
+
+	std::cout << "Opponent's card removed successfully!\n";
+	return true;
+}
+
+// Elimină un rând întreg de pe tablă
+void Board::RemoveRow(int row) {
+	for (int col = 0; col < size; ++col) {
+		if (grid[row][col].has_value()) {
+			grid[row][col].reset();
+		}
+	}
+}
+
+// Acoperă o carte a adversarului cu o carte proprie mai slabă
+void Board::CoverOpponentCard(int row, int col, card weakerCard) {
+	if (grid[row][col].has_value() && !grid[row][col]->empty()) {
+		grid[row][col]->push(weakerCard);
+	}
+}
+
+// Creează o groapă
+void Board::CreatePit(int row, int col) {
+	if (grid[row][col].has_value() && grid[row][col]->empty()) {
+		grid[row][col] = std::make_optional<std::stack<card>>();
+	}
+}
+
+// Mută un teanc de pe o poziție pe alta
+void Board::MoveStack(int srcRow, int srcCol, int destRow, int destCol) {
+	if (grid[srcRow][srcCol].has_value() && !grid[srcRow][srcCol]->empty() && !grid[destRow][destCol].has_value()) {
+		grid[destRow][destCol] = grid[srcRow][srcCol];
+		grid[srcRow][srcCol].reset();
+	}
+}
+
+// Adaugă o carte Eter pe tablă
+bool Board::GainEterCard(int row, int col, int playerId) {
+	if (!grid[row][col].has_value() || grid[row][col]->empty()) {
+		grid[row][col] = std::make_optional<std::stack<card>>();
+		grid[row][col]->push({ playerId, 5 });
+		return true;
+	}
+	return false;
+}
+
+// Mută un teanc al adversarului pe o altă poziție
+void Board::MoveOpponentStack(int srcRow, int srcCol, int destRow, int destCol) {
+	MoveStack(srcRow, srcCol, destRow, destCol);
+}
+
+// Mută un rând de pe margine pe o altă margine
+void Board::ShiftRowToEdge(int row, bool isHorizontal) {
+	if (isHorizontal) {
+		for (int col = 0; col < size; ++col) {
+			grid[row][col].reset();
+		}
+	}
+	else {
+		for (int i = 0; i < size; ++i) {
+			grid[i][row].reset();
+		}
+	}
+}
