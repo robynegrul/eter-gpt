@@ -15,7 +15,7 @@ MageDuel::MageDuel() :
 	mageCards = {
 	MageCard(MageType::Fire, "Remove Opponent Card", "Remove Line"),
 	MageCard(MageType::Earth, "Cover Opponent Card", "Create Pit"),
-	MageCard(MageType::Air, "Move Stack", "Gain Eter Card"),
+	MageCard(MageType::Air, "Move Stack", "Extra Eter Card"),
 	MageCard(MageType::Water, "Move Opponent Stack", "Shift Row to Edge")
 	};
 }
@@ -127,6 +127,7 @@ bool MageDuel::HandleCardSelection(Player& currentPlayer) {
 		<< ", select an action:\n"
 		<< "- Enter -1 for Illusion\n"
 		<< "- Enter 0 for Magic Power\n"
+		<< "- Enter 5 for Eter Card\n"
 		<< "- Enter the value of a card to place it on the board: ";
 
 	int choice;
@@ -293,18 +294,18 @@ void MageDuel::HandleMagicPower(Player& currentPlayer) {
 			currentPlayerId = 1;
 		}
 	}
+
+	board.Display();
 }
 
 bool MageDuel::HandleFireMagePower(Player& currentPlayer) {
-	std::string currentPlayerActivePower = (currentPlayerId == 1) ? player1ActivePower : player2ActivePower;
-	std::cout << "Fire Mage active power: " << currentPlayerActivePower << "\n";
+	std::cout << "Fire Mage active power: " << player1ActivePower << "\n";
 
-	if (currentPlayerActivePower == "Remove Opponent Card") {
+	if (player1ActivePower == "Remove Opponent Card") {
 		int row, col;
 		std::cout << "Enter position (row, col): ";
 		std::cin >> row >> col;
 		if (board.ActivateMagicPower(MagicPower::RemoveOpponentCard, row, col, currentPlayerId)) {
-			std::cout << "Power 1 (Remove Opponent Card) activated successfully!\n";
 			return true;
 		}
 		else {
@@ -312,7 +313,7 @@ bool MageDuel::HandleFireMagePower(Player& currentPlayer) {
 			return false;
 		}
 	}
-	else if (currentPlayerActivePower == "Remove Line") {
+	else if (player1ActivePower == "Remove Row or Column") {
 		int index;
 		char choice;
 
@@ -327,7 +328,7 @@ bool MageDuel::HandleFireMagePower(Player& currentPlayer) {
 				return true;
 			}
 			else {
-				std::cout << "Failed to remove the row. Ensure it's fully occupied and has at least one of your cards.\n";
+				std::cout << "Failed to remove the row.\n";
 				return false;
 			}
 		}
@@ -339,7 +340,7 @@ bool MageDuel::HandleFireMagePower(Player& currentPlayer) {
 				return true;
 			}
 			else {
-				std::cout << "Failed to remove the column. Ensure it's fully occupied and has at least one of your cards.\n";
+				std::cout << "Failed to remove the column.\n";
 				return false;
 			}
 		}
@@ -358,90 +359,139 @@ bool MageDuel::HandleEarthMagePower(Player& currentPlayer) {
 	std::string currentPlayerActivePower = (currentPlayerId == 1) ? player1ActivePower : player2ActivePower;
 
 	std::cout << "Earth Mage active power: " << currentPlayerActivePower << "\n";
-	if (currentPlayerActivePower == "Power 1") {
-		int row;
-		std::cout << "Enter row to remove: ";
-		std::cin >> row;
-		if (board.ActivateMagicPower(MagicPower::RemoveLine, row, 0, currentPlayerId)) {
-			std::cout << "Power 1 (Remove Row) activated successfully!\n";
+
+	if (currentPlayerActivePower == "Cover Opponent Card") {
+		// Handle the first power (already implemented)
+		int row, col, weakerCardValue;
+		std::cout << "Enter position (row, col) of opponent's card: ";
+		std::cin >> row >> col;
+
+		std::cout << "Enter value of your weaker card: ";
+		std::cin >> weakerCardValue;
+
+		if (!currentPlayer.HasCard(weakerCardValue)) {
+			std::cout << "You don't have a card with the specified value.\n";
+			return false;
+		}
+
+		if (board.ActivateMagicPower(MagicPower::CoverOpponentCard, row, col, currentPlayerId, { currentPlayerId, weakerCardValue })) {
+			currentPlayer.PlayCard(weakerCardValue);
+			return true;
 		}
 		else {
-			std::cout << "Failed to remove row! Try again.\n";
+			std::cout << "Failed to cover opponent's card.\n";
+			return false;
 		}
 	}
-	else if (currentPlayerActivePower == "Power 2") {
+	else if (currentPlayerActivePower == "Create Pit") {
+		// Handle the second power
 		int row, col;
+
 		std::cout << "Enter position (row, col) to create a pit: ";
 		std::cin >> row >> col;
+
 		if (board.ActivateMagicPower(MagicPower::CreatePit, row, col, currentPlayerId)) {
-			std::cout << "Power 2 (Create Pit) activated successfully!\n";
+			return true;
 		}
 		else {
-			std::cout << "Failed to create a pit! Try again.\n";
+			std::cout << "Failed to create a pit.\n";
+			return false;
 		}
 	}
 
-	return true;
+	std::cout << "Invalid active power for Earth Mage.\n";
+	return false;
 }
 
 bool MageDuel::HandleAirMagePower(Player& currentPlayer) {
 	std::string currentPlayerActivePower = (currentPlayerId == 1) ? player1ActivePower : player2ActivePower;
 
 	std::cout << "Air Mage active power: " << currentPlayerActivePower << "\n";
-	if (currentPlayerActivePower == "Power 1") {
-		int row, direction;
-		std::cout << "Enter row to shift and direction (1 for horizontal, 0 for vertical): ";
-		std::cin >> row >> direction;
-		if (board.ActivateMagicPower(MagicPower::ShiftRowToEdge, row, direction, currentPlayerId)) {
-			std::cout << "Power 1 (Shift Row to Edge) activated successfully!\n";
+
+	if (currentPlayerActivePower == "Move Stack") {
+		int srcRow, srcCol, destRow, destCol;
+
+		std::cout << "Enter source position (row, col) of the stack: ";
+		std::cin >> srcRow >> srcCol;
+
+		std::cout << "Enter destination position (row, col): ";
+		std::cin >> destRow >> destCol;
+
+		if (board.ActivateMagicPower(MagicPower::MoveStack, srcRow, srcCol, currentPlayerId, { destRow, destCol })) {
+			return true;
 		}
 		else {
-			std::cout << "Failed to shift row! Try again.\n";
+			std::cout << "Failed to move the stack.\n";
+			return false;
 		}
 	}
-	else if (currentPlayerActivePower == "Power 2") {
-		int row, col, destRow, destCol;
-		std::cout << "Enter source position (row, col) and destination (destRow, destCol) to move opponent's stack: ";
-		std::cin >> row >> col >> destRow >> destCol;
-		if (board.ActivateMagicPower(MagicPower::MoveOpponentStack, row, col, currentPlayerId, { destRow, destCol })) {
-			std::cout << "Power 2 (Move Opponent Stack) activated successfully!\n";
+	else if (currentPlayerActivePower == "Gain Eter Card") {
+		int row, col;
+
+		std::cout << "Enter position (row, col) to place your Eter card: ";
+		std::cin >> row >> col;
+
+		if (board.ActivateMagicPower(MagicPower::ExtraEterCard, row, col, currentPlayerId)) {
+			std::cout << "Eter card successfully placed at (" << row << ", " << col << ").\n";
+			return true;
 		}
 		else {
-			std::cout << "Failed to move opponent's stack! Try again.\n";
+			std::cout << "Failed to place the Eter card.\n";
+			return false;
 		}
 	}
 
-	return true;
+	std::cout << "Invalid active power for Air Mage.\n";
+	return false;
 }
 
 bool MageDuel::HandleWaterMagePower(Player& currentPlayer) {
 	std::string currentPlayerActivePower = (currentPlayerId == 1) ? player1ActivePower : player2ActivePower;
 
 	std::cout << "Water Mage active power: " << currentPlayerActivePower << "\n";
-	if (currentPlayerActivePower == "Power 1") {
-		int row, col, weakerCardValue;
-		std::cout << "Enter position (row, col) and weaker card value to cover opponent's card: ";
-		std::cin >> row >> col >> weakerCardValue;
-		if (board.ActivateMagicPower(MagicPower::CoverOpponentCard, row, col, currentPlayerId, { currentPlayerId, weakerCardValue })) {
-			std::cout << "Power 1 (Cover Opponent Card) activated successfully!\n";
+
+	if (currentPlayerActivePower == "Move Opponent Stack") {
+		// Logic for the first power (already implemented)
+		int srcRow, srcCol, destRow, destCol;
+
+		std::cout << "Enter source position (row, col) of the opponent's stack: ";
+		std::cin >> srcRow >> srcCol;
+
+		std::cout << "Enter destination position (row, col): ";
+		std::cin >> destRow >> destCol;
+
+		if (board.ActivateMagicPower(MagicPower::MoveOpponentStack, srcRow, srcCol, currentPlayerId, { destRow, destCol })) {
+			return true;
 		}
 		else {
-			std::cout << "Failed to cover opponent's card! Try again.\n";
+			std::cout << "Failed to move the opponent's stack.\n";
+			return false;
 		}
 	}
-	else if (currentPlayerActivePower == "Power 2") {
-		int row, col, destRow, destCol;
-		std::cout << "Enter source position (row, col) and destination (destRow, destCol) to move your stack: ";
-		std::cin >> row >> col >> destRow >> destCol;
-		if (board.ActivateMagicPower(MagicPower::MoveStack, row, col, currentPlayerId, { destRow, destCol })) {
-			std::cout << "Power 2 (Move Stack) activated successfully!\n";
+	else if (currentPlayerActivePower == "Shift Row to Edge") {
+		// Logic for the second power
+		char choice;
+		int index;
+
+		std::cout << "Do you want to move a row or column? (r/c): ";
+		std::cin >> choice;
+
+		std::cout << "Enter the index of the row or column to move: ";
+		std::cin >> index;
+
+		bool isRow = (choice == 'r');
+		if (board.ActivateMagicPower(MagicPower::ShiftRowToEdge, index, isRow ? 1 : 0, currentPlayerId)) {
+			std::cout << "Successfully moved " << (isRow ? "row" : "column") << " " << index << " to the opposite edge.\n";
+			return true;
 		}
 		else {
-			std::cout << "Failed to move stack! Try again.\n";
+			std::cout << "Failed to move the " << (isRow ? "row" : "column") << ".\n";
+			return false;
 		}
 	}
 
-	return true;
+	std::cout << "Invalid active power for Water Mage.\n";
+	return false;
 }
 
 std::string MageDuel::MageTypeToString(MageType type) {

@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 #include <stack>
+#include <queue>
 
 using card = std::pair<int, int>;
 
@@ -32,7 +33,7 @@ enum class MagicPower {
     CoverOpponentCard,
     CreatePit,
     MoveStack,
-    GainEterCard,
+    ExtraEterCard,
     MoveOpponentStack,
     ShiftRowToEdge
 };
@@ -61,17 +62,7 @@ public:
 	bool CheckWinCondition(int playerId) const;
 	bool IsFull() const;
 	int CalculateCardValueSum(int playerId) const;
-
 	bool ActivateMagicPower(MagicPower power, int row, int col, int playerId, card optionalCard = {});
-	bool RemoveOpponentCard(int row, int col, int currentPlayerId);
-	bool RemoveRow(int row, int currentPlayerId);
-	bool RemoveColumn(int col, int currentPlayerId);
-	void CoverOpponentCard(int row, int col, card weakerCard);
-	void CreatePit(int row, int col);
-	void MoveStack(int srcRow, int srcCol, int destRow, int destCol);
-	bool GainEterCard(int row, int col, int playerId);
-	void MoveOpponentStack(int srcRow, int srcCol, int destRow, int destCol);
-	void ShiftRowToEdge(int row, bool isHorizontal);
 
 private:
 	bool CheckRow(int row, int playerValue) const;
@@ -88,6 +79,17 @@ private:
 	bool IsIllusionValue(card cell) const;
 	void ApplyExplosionEffects(const Explosion& explosion, Player& player, Player& other);
 	void EliminateIllusions();
+	
+	bool RemoveOpponentCard(int row, int col, int currentPlayerId);
+	bool RemoveRow(int row, int currentPlayerId);
+	bool RemoveColumn(int col, int currentPlayerId);
+	void CoverOpponentCard(int row, int col, card weakerCard);
+	void CreatePit(int row, int col);
+	bool MoveStack(int srcRow, int srcCol, int destRow, int destCol, int currentPlayerId);
+	bool ExtraEterCard(int row, int col, int playerId);
+	bool MoveOpponentStack(int srcRow, int srcCol, int destRow, int destCol, int currentPlayerId);
+	bool ShiftRowToEdge(int row, bool isHorizontal);
+	bool IsBoardConnected() const;
 };
 
 #endif

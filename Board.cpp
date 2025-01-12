@@ -513,7 +513,7 @@ bool Board::ActivateMagicPower(MagicPower power, int row, int col, int playerId,
 			return RemoveRow(row, playerId);
 		}
 		else {
- 			return RemoveColumn(col, playerId);
+			return RemoveColumn(col, playerId);
 		}
 	}
 	case MagicPower::CoverOpponentCard:
@@ -523,16 +523,13 @@ bool Board::ActivateMagicPower(MagicPower power, int row, int col, int playerId,
 		CreatePit(row, col);
 		return true;
 	case MagicPower::MoveStack:
-		MoveStack(row, col, optionalCard.first, optionalCard.second); // srcRow, srcCol, destRow, destCol
-		return true;
-	case MagicPower::GainEterCard:
-		return GainEterCard(row, col, playerId);
+		return MoveStack(row, col, optionalCard.first, optionalCard.second, playerId); // srcRow, srcCol, destRow, destCol
+	case MagicPower::ExtraEterCard:
+		return ExtraEterCard(row, col, playerId);
 	case MagicPower::MoveOpponentStack:
-		MoveOpponentStack(row, col, optionalCard.first, optionalCard.second); // srcRow, srcCol, destRow, destCol
-		return true;
+		return MoveOpponentStack(row, col, optionalCard.first, optionalCard.second, playerId); // srcRow, srcCol, destRow, destCol
 	case MagicPower::ShiftRowToEdge:
-		ShiftRowToEdge(row, col == 1); // col == 1 -> orizontal
-		return true;
+		return ShiftRowToEdge(row, col == 1); // col == 1 -> orizontal
 	default:
 		return false;
 	}
@@ -568,7 +565,7 @@ bool Board::RemoveOpponentCard(int row, int col, int currentPlayerId) {
 	card belowCard = stack.top();
 	if (belowCard.first == currentPlayerId)
 		ownsCardBelow = true;
-	
+
 
 	// Restaurăm teancul dacă nu am găsit o carte proprie
 	if (!ownsCardBelow) {
@@ -643,51 +640,304 @@ bool Board::RemoveColumn(int col, int currentPlayerId) {
 
 // Acoperă o carte a adversarului cu o carte proprie mai slabă
 void Board::CoverOpponentCard(int row, int col, card weakerCard) {
-	if (grid[row][col].has_value() && !grid[row][col]->empty()) {
-		grid[row][col]->push(weakerCard);
+	// Validate the position
+	if (row < 0 || row >= size || col < 0 || col >= size) {
+		std::cout << "Invalid position! Out of bounds.\n";
+		return;
 	}
+
+	// Check if the position has a stack
+	if (!grid[row][col].has_value() || grid[row][col]->empty()) {
+		std::cout << "No card to cover at the specified position.\n";
+		return;
+	}
+
+	// Get the top card of the stack
+	card topCard = grid[row][col]->top();
+
+	// Ensure the top card belongs to the opponent
+	int opponentId = (weakerCard.first == 1) ? 2 : 1;
+	if (topCard.first != opponentId) {
+		std::cout << "The top card does not belong to the opponent.\n";
+		return;
+	}
+
+	// Ensure the weaker card has a lower value
+	if (weakerCard.second >= topCard.second) {
+		std::cout << "Your card is not weaker than the opponent's card.\n";
+		return;
+	}
+
+	// Push the weaker card onto the stack
+	grid[row][col]->push(weakerCard);
+	std::cout << "Your weaker card successfully covered the opponent's card!\n";
 }
 
 // Creează o groapă
 void Board::CreatePit(int row, int col) {
-	if (grid[row][col].has_value() && grid[row][col]->empty()) {
-		grid[row][col] = std::make_optional<std::stack<card>>();
+	// Check if the position is valid
+	if (row < 0 || row >= size || col < 0 || col >= size) {
+		std::cout << "Invalid position! Out of bounds.\n";
+		return;
 	}
-}
 
-// Mută un teanc de pe o poziție pe alta
-void Board::MoveStack(int srcRow, int srcCol, int destRow, int destCol) {
-	if (grid[srcRow][srcCol].has_value() && !grid[srcRow][srcCol]->empty() && !grid[destRow][destCol].has_value()) {
-		grid[destRow][destCol] = grid[srcRow][srcCol];
-		grid[srcRow][srcCol].reset();
+	// Ensure the cell is empty before creating a hole
+	if (grid[row][col].has_value() && !grid[row][col]->empty()) {
+		std::cout << "Cannot create a hole on an occupied space.\n";
+		return;
 	}
+
+	// Mark the cell as a "hole"
+	grid[row][col] = std::make_optional<std::stack<card>>();
+	std::cout << "Hole created successfully at (" << row << ", " << col << ").\n";
+}
+// Mută un teanc de pe o poziție pe alta
+bool Board::MoveStack(int srcRow, int srcCol, int destRow, int destCol, int currentPlayerId) {
+	// Verificăm dacă poziția sursă este validă
+	if (srcRow < 0 || srcRow >= size || srcCol < 0 || srcCol >= size) {
+		std::cout << "Invalid source position! Out of bounds.\n";
+		return false;
+	}
+
+	// Verificăm dacă poziția sursă conține un teanc și dacă jucătorul este proprietarul cărții de sus
+	if (!grid[srcRow][srcCol].has_value() || grid[srcRow][srcCol]->empty()) {
+		std::cout << "No stack at the source position.\n";
+		return false;
+	}
+
+	if (grid[srcRow][srcCol]->top().first != currentPlayerId) {
+		std::cout << "The top card does not belong to you.\n";
+		return false;
+	}
+
+	// Verificăm dacă poziția destinație este validă
+	if (destRow < 0 || destRow >= size || destCol < 0 || destCol >= size) {
+		std::cout << "Invalid destination position! Out of bounds.\n";
+		return false;
+	}
+
+	// Verificăm dacă poziția destinație este goală
+	if (grid[destRow][destCol].has_value() && !grid[destRow][destCol]->empty()) {
+		std::cout << "Destination position is not empty.\n";
+		return false;
+	}
+
+	// Mutăm teancul la destinație
+	grid[destRow][destCol] = std::move(grid[srcRow][srcCol]);
+	grid[srcRow][srcCol].reset();
+
+	// Check if the board is still connected
+	if (!IsBoardConnected()) {
+		// Revert the move if the board becomes disconnected
+		grid[srcRow][srcCol] = std::move(grid[destRow][destCol]);
+		grid[destRow][destCol].reset();
+		std::cout << "Move failed: it would isolate parts of the board.\n";
+		return false;
+	}
+
+	std::cout << "Stack moved successfully from (" << srcRow << ", " << srcCol
+		<< ") to (" << destRow << ", " << destCol << ").\n";
+
+	return true;
 }
 
 // Adaugă o carte Eter pe tablă
-bool Board::GainEterCard(int row, int col, int playerId) {
-	if (!grid[row][col].has_value() || grid[row][col]->empty()) {
-		grid[row][col] = std::make_optional<std::stack<card>>();
-		grid[row][col]->push({ playerId, 5 });
-		return true;
+bool Board::ExtraEterCard(int row, int col, int playerId) {
+	if (row < 0 || row >= size || col < 0 || col >= size) {
+		std::cout << "Invalid position! Out of bounds.\n";
+		return false;
 	}
-	return false;
+
+	// Ensure the cell is empty
+	if (grid[row][col].has_value() && !grid[row][col]->empty()) {
+		std::cout << "Cannot place an Eter card on an occupied space.\n";
+		return false;
+	}
+
+	// Place the Eter card
+	if (!grid[row][col].has_value()) {
+		grid[row][col] = std::make_optional<std::stack<card>>();
+	}
+
+	grid[row][col]->push({ playerId, 5 }); // 5 represents the Eter card value
+	std::cout << "Eter card placed successfully at (" << row << ", " << col << ").\n";
+	return true;
 }
 
 // Mută un teanc al adversarului pe o altă poziție
-void Board::MoveOpponentStack(int srcRow, int srcCol, int destRow, int destCol) {
-	MoveStack(srcRow, srcCol, destRow, destCol);
+bool Board::MoveOpponentStack(int srcRow, int srcCol, int destRow, int destCol, int currentPlayerId) {
+	// Check if the source position is valid
+	if (srcRow < 0 || srcRow >= size || srcCol < 0 || srcCol >= size) {
+		std::cout << "Invalid source position! Out of bounds.\n";
+		return false;
+	}
+
+	// Check if the source contains a stack
+	if (!grid[srcRow][srcCol].has_value() || grid[srcRow][srcCol]->empty()) {
+		std::cout << "No stack at the source position.\n";
+		return false;
+	}
+
+	// Check if the top card belongs to the opponent
+	int opponentId = (currentPlayerId == 1) ? 2 : 1;
+	if (grid[srcRow][srcCol]->top().first != opponentId) {
+		std::cout << "The top card does not belong to the opponent.\n";
+		return false;
+	}
+
+	// Check if the destination position is valid
+	if (destRow < 0 || destRow >= size || destCol < 0 || destCol >= size) {
+		std::cout << "Invalid destination position! Out of bounds.\n";
+		return false;
+	}
+
+	// Check if the destination is empty
+	if (grid[destRow][destCol].has_value() && !grid[destRow][destCol]->empty()) {
+		std::cout << "Destination position is not empty.\n";
+		return false;
+	}
+
+	// Perform the move temporarily
+	grid[destRow][destCol] = std::move(grid[srcRow][srcCol]);
+	grid[srcRow][srcCol].reset();
+
+	// Check if the board is still connected
+	if (!IsBoardConnected()) {
+		// Revert the move if the board becomes disconnected
+		grid[srcRow][srcCol] = std::move(grid[destRow][destCol]);
+		grid[destRow][destCol].reset();
+		std::cout << "Move failed: it would isolate parts of the board.\n";
+		return false;
+	}
+
+	std::cout << "Stack moved successfully from (" << srcRow << ", " << srcCol
+		<< ") to (" << destRow << ", " << destCol << ").\n";
+	return true;
 }
 
 // Mută un rând de pe margine pe o altă margine
-void Board::ShiftRowToEdge(int row, bool isHorizontal) {
+bool Board::ShiftRowToEdge(int index, bool isHorizontal) {
+	// Validate index
+	if (index < 0 || index >= size) {
+		std::cout << "Invalid index! Out of bounds.\n";
+		return false;
+	}
+
+	// Check if the row/column has at least 3 cards
+	int count = 0;
+	for (int i = 0; i < size; ++i) {
+		if (isHorizontal) {
+			if (grid[index][i].has_value() && !grid[index][i]->empty()) {
+				count++;
+			}
+		}
+		else {
+			if (grid[i][index].has_value() && !grid[i][index]->empty()) {
+				count++;
+			}
+		}
+	}
+
+	if (count < 3) {
+		std::cout << "The selected row or column does not have at least 3 cards.\n";
+		return false;
+	}
+
+	// Move the row/column to the opposite edge
 	if (isHorizontal) {
-		for (int col = 0; col < size; ++col) {
-			grid[row][col].reset();
+		std::vector<std::optional<std::stack<card>>> temp = grid[index];
+		grid.erase(grid.begin() + index);
+		if (index == 0) {
+			grid.push_back(temp); // Move to the bottom edge
+		}
+		else {
+			grid.insert(grid.begin(), temp); // Move to the top edge
 		}
 	}
 	else {
+		std::vector<std::optional<std::stack<card>>> temp(size);
 		for (int i = 0; i < size; ++i) {
-			grid[i][row].reset();
+			temp[i] = grid[i][index];
+			grid[i].erase(grid[i].begin() + index);
+		}
+
+		if (index == 0) {
+			for (int i = 0; i < size; ++i) {
+				grid[i].push_back(temp[i]); // Move to the right edge
+			}
+		}
+		else {
+			for (int i = 0; i < size; ++i) {
+				grid[i].insert(grid[i].begin(), temp[i]); // Move to the left edge
+			}
 		}
 	}
+
+	std::cout << "Row/column " << index << " successfully moved to the opposite edge.\n";
+
+	return true;
+}
+
+bool Board::IsBoardConnected() const {
+	// Găsim prima celulă ocupată pentru a începe flood-fill
+	std::pair<int, int> start = { -1, -1 };
+	for (int row = 0; row < size; ++row) {
+		for (int col = 0; col < size; ++col) {
+			if (grid[row][col].has_value() && !grid[row][col]->empty()) {
+				start = { row, col };
+				break;
+			}
+		}
+		if (start.first != -1) break;
+	}
+
+	if (start.first == -1) {
+		// Tabla este goală
+		return true;
+	}
+
+	// Inițializăm o matrice vizitată pentru flood-fill
+	std::vector<std::vector<bool>> visited(size, std::vector<bool>(size, false));
+	std::queue<std::pair<int, int>> q;
+	q.push(start);
+	visited[start.first][start.second] = true;
+
+	int connectedCells = 0;
+	int totalCells = 0;
+
+	// Calculăm numărul total de celule ocupate
+	for (int row = 0; row < size; ++row) {
+		for (int col = 0; col < size; ++col) {
+			if (grid[row][col].has_value() && !grid[row][col]->empty()) {
+				totalCells++;
+			}
+		}
+	}
+
+	// Flood-fill (adăugăm direcțiile diagonale)
+	int directions[8][2] = {
+		{-1, 0}, {1, 0}, {0, -1}, {0, 1}, // sus, jos, stânga, dreapta
+		{-1, -1}, {-1, 1}, {1, -1}, {1, 1} // diagonale
+	};
+
+	while (!q.empty()) {
+		auto [row, col] = q.front();
+		q.pop();
+		connectedCells++;
+
+		for (auto& dir : directions) {
+			int newRow = row + dir[0];
+			int newCol = col + dir[1];
+
+			if (newRow >= 0 && newRow < size && newCol >= 0 && newCol < size &&
+				!visited[newRow][newCol] &&
+				grid[newRow][newCol].has_value() && !grid[newRow][newCol]->empty()) {
+				visited[newRow][newCol] = true;
+				q.push({ newRow, newCol });
+			}
+		}
+	}
+
+	// Dacă toate celulele ocupate sunt conectate, returnăm true
+	return connectedCells == totalCells;
 }
