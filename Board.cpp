@@ -503,7 +503,7 @@ void Board::EliminateIllusions() {
 	}
 }
 
-//de adaugat pe viitor, nu momentan? alin decide
+// Activează o putere magică specifică
 bool Board::ActivateMagicPower(MagicPower power, int row, int col, int playerId, card optionalCard) {
 	switch (power) {
 	case MagicPower::RemoveOpponentCard:
@@ -536,53 +536,53 @@ bool Board::ActivateMagicPower(MagicPower power, int row, int col, int playerId,
 	default:
 		return false;
 	}
-}//
+}
 
-//commit - alin
+// Elimină o carte a adversarului
 bool Board::RemoveOpponentCard(int row, int col, int currentPlayerId) {
+	// Verificăm dacă poziția este validă
 	if (row < 0 || row >= size || col < 0 || col >= size) {
 		std::cout << "Invalid position! Out of bounds.\n";
 		return false;
 	}
 
+	// Verificăm dacă există un teanc pe poziția specificată
 	if (!grid[row][col].has_value() || grid[row][col]->empty()) {
 		std::cout << "No stack present at the specified position.\n";
 		return false;
-	}//commit
+	}
 
-	//commit - alin
 	std::stack<card>& stack = grid[row][col].value();
 	card topCard = stack.top();
 
+	// Verificăm dacă cartea de deasupra aparține adversarului
 	int opponentId = (currentPlayerId == 1) ? 2 : 1;
 	if (topCard.first != opponentId) {
 		std::cout << "The top card does not belong to the opponent.\n";
 		return false;
-	}//commit
+	}
 
-	//commit - alin
-	stack.pop();
+	// Verificăm dacă există o carte proprie sub cartea adversarului
+	stack.pop(); // Eliminăm temporar cartea adversarului pentru verificare
 	bool ownsCardBelow = false;
 	card belowCard = stack.top();
-
 	if (belowCard.first == currentPlayerId)
-	{
 		ownsCardBelow = true;
-	}//commit
 	
-	//commit - vlad
+
+	// Restaurăm teancul dacă nu am găsit o carte proprie
 	if (!ownsCardBelow) {
 		std::cout << "No own card found below the opponent's card.\n";
+		// Adăugăm cartea adversarului înapoi
 		stack.push(topCard);
 		return false;
 	}
 
 	std::cout << "Opponent's card removed successfully!\n";
 	return true;
-	//commit
 }
 
-// commit - vlad
+// Elimină un rând întreg de pe tablă
 bool Board::RemoveRow(int row, int currentPlayerId) {
 	for (int col = 0; col < size; ++col) {
 		if (!grid[row][col].has_value() || grid[row][col]->empty()) {
@@ -598,9 +598,8 @@ bool Board::RemoveRow(int row, int currentPlayerId) {
 			hasPlayerCard = true;
 			break;
 		}
-	}//commit
+	}
 
-	//commit - vlad
 	if (!hasPlayerCard) {
 		std::cout << "The row cannot be removed because none of the top cards belong to you.\n";
 		return false;
@@ -611,9 +610,8 @@ bool Board::RemoveRow(int row, int currentPlayerId) {
 	}
 
 	return true;
-}//commit
+}
 
-//commit - paul
 bool Board::RemoveColumn(int col, int currentPlayerId) {
 	for (int row = 0; row < size; ++row) {
 		if (!grid[row][col].has_value() || grid[row][col]->empty()) {
@@ -629,9 +627,8 @@ bool Board::RemoveColumn(int col, int currentPlayerId) {
 			hasPlayerCard = true;
 			break;
 		}
-	}//commit
+	}
 
-	//commit - paul
 	if (!hasPlayerCard) {
 		std::cout << "The column cannot be removed because none of the top cards belong to you.\n";
 		return false;
@@ -642,23 +639,23 @@ bool Board::RemoveColumn(int col, int currentPlayerId) {
 	}
 
 	return true;
-}//commit
+}
 
-//commit - paul
+// Acoperă o carte a adversarului cu o carte proprie mai slabă
 void Board::CoverOpponentCard(int row, int col, card weakerCard) {
 	if (grid[row][col].has_value() && !grid[row][col]->empty()) {
 		grid[row][col]->push(weakerCard);
 	}
 }
 
-
+// Creează o groapă
 void Board::CreatePit(int row, int col) {
 	if (grid[row][col].has_value() && grid[row][col]->empty()) {
 		grid[row][col] = std::make_optional<std::stack<card>>();
 	}
-}//commit
+}
 
-//commit - vlad
+// Mută un teanc de pe o poziție pe alta
 void Board::MoveStack(int srcRow, int srcCol, int destRow, int destCol) {
 	if (grid[srcRow][srcCol].has_value() && !grid[srcRow][srcCol]->empty() && !grid[destRow][destCol].has_value()) {
 		grid[destRow][destCol] = grid[srcRow][srcCol];
@@ -666,12 +663,7 @@ void Board::MoveStack(int srcRow, int srcCol, int destRow, int destCol) {
 	}
 }
 
-void Board::MoveOpponentStack(int srcRow, int srcCol, int destRow, int destCol) {
-	MoveStack(srcRow, srcCol, destRow, destCol);
-}
-//commit
-
-//commit - v;ad
+// Adaugă o carte Eter pe tablă
 bool Board::GainEterCard(int row, int col, int playerId) {
 	if (!grid[row][col].has_value() || grid[row][col]->empty()) {
 		grid[row][col] = std::make_optional<std::stack<card>>();
@@ -679,9 +671,14 @@ bool Board::GainEterCard(int row, int col, int playerId) {
 		return true;
 	}
 	return false;
-}//commit
+}
 
-//commit - vlad
+// Mută un teanc al adversarului pe o altă poziție
+void Board::MoveOpponentStack(int srcRow, int srcCol, int destRow, int destCol) {
+	MoveStack(srcRow, srcCol, destRow, destCol);
+}
+
+// Mută un rând de pe margine pe o altă margine
 void Board::ShiftRowToEdge(int row, bool isHorizontal) {
 	if (isHorizontal) {
 		for (int col = 0; col < size; ++col) {
@@ -693,4 +690,4 @@ void Board::ShiftRowToEdge(int row, bool isHorizontal) {
 			grid[i][row].reset();
 		}
 	}
-}//commit
+}

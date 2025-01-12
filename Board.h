@@ -25,7 +25,7 @@ enum class ExplosionEffect {
 	CreateHole,
 	TakeHand
 };
-//adauga
+
 enum class MagicPower {
     RemoveOpponentCard,
     RemoveLine,
@@ -35,7 +35,7 @@ enum class MagicPower {
     GainEterCard,
     MoveOpponentStack,
     ShiftRowToEdge
-};//
+};
 
 struct Explosion {
 	std::vector<card> affectedPositions;
@@ -62,7 +62,6 @@ public:
 	bool IsFull() const;
 	int CalculateCardValueSum(int playerId) const;
 
-	//adaugare antete functii cand se construiesc in cpp
 	bool ActivateMagicPower(MagicPower power, int row, int col, int playerId, card optionalCard = {});
 	bool RemoveOpponentCard(int row, int col, int currentPlayerId);
 	bool RemoveRow(int row, int currentPlayerId);
@@ -73,7 +72,6 @@ public:
 	bool GainEterCard(int row, int col, int playerId);
 	void MoveOpponentStack(int srcRow, int srcCol, int destRow, int destCol);
 	void ShiftRowToEdge(int row, bool isHorizontal);
-	//
 
 private:
 	bool CheckRow(int row, int playerValue) const;
