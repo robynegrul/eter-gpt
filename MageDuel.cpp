@@ -109,7 +109,7 @@ void MageDuel::HandleExplosion(Player& currentPlayer) {
 	Player& explosionPlayer = (currentPlayerId == 1) ? player1 : player2;
 	Player& otherPlayer = (currentPlayerId == 1) ? player2 : player1;
 
-	std::cout << "Player " << currentPlayerId << ", do you want to activate an explosion? (y/n): "//pune pauza dupa player la afisare
+	std::cout << "Player " << currentPlayerId << ", do you want to activate an explosion? (y/n): ";//pune pauza dupa player la afisare
 	char choice;
 	std::cin >> choice;
 	if (choice == 'y' || choice == 'Y') {

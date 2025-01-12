@@ -82,7 +82,7 @@ private:
 	
 	//atentie noile functii de mai jos sa fie create in private
 	bool RemoveOpponentCard(int row, int col, int currentPlayerId);
-	bool RemoveRow(int row, int currentPlayerId)
+	bool RemoveRow(int row, int currentPlayerId);
 	bool RemoveColumn(int col, int currentPlayerId);
 	void CoverOpponentCard(int row, int col, card weakerCard);
 	void CreatePit(int row, int col);

@@ -22,7 +22,6 @@ PlaceCardResult Board::PlaceCard(int row, int col, card playCard) {
 
 			if (playCard.second <= illusionCardValue) {
 				std::cout << "Your card is not greater than the illusion. The illusion is now revealed on the board.\n";
-				grid[row][col] = std::make_optional<std::stack<card>>(std::stack<card>{});
 				grid[row][col]->top().second = illusionCardValue;
 				EliminateIllusions();
 				return PlaceCardResult::CardLost;
