@@ -508,9 +508,14 @@ bool Board::ActivateMagicPower(MagicPower power, int row, int col, int playerId,
 	switch (power) {
 	case MagicPower::RemoveOpponentCard:
 		return RemoveOpponentCard(row, col, playerId);
-	case MagicPower::RemoveRow:
-		RemoveRow(row);
-		return true;
+	case MagicPower::RemoveLine: {
+		if (col == -1) {
+			return RemoveRow(row, playerId);
+		}
+		else {
+ 			return RemoveColumn(col, playerId);
+		}
+	}
 	case MagicPower::CoverOpponentCard:
 		CoverOpponentCard(row, col, optionalCard);
 		return true;
@@ -578,12 +583,62 @@ bool Board::RemoveOpponentCard(int row, int col, int currentPlayerId) {
 }
 
 // Elimină un rând întreg de pe tablă
-void Board::RemoveRow(int row) {
+bool Board::RemoveRow(int row, int currentPlayerId) {
 	for (int col = 0; col < size; ++col) {
-		if (grid[row][col].has_value()) {
-			grid[row][col].reset();
+		if (!grid[row][col].has_value() || grid[row][col]->empty()) {
+			std::cout << "The row cannot be removed because not all positions are occupied.\n";
+			return false;
 		}
 	}
+
+	bool hasPlayerCard = false;
+	for (int col = 0; col < size; ++col) {
+		card topCard = grid[row][col]->top();
+		if (topCard.first == currentPlayerId) {
+			hasPlayerCard = true;
+			break;
+		}
+	}
+
+	if (!hasPlayerCard) {
+		std::cout << "The row cannot be removed because none of the top cards belong to you.\n";
+		return false;
+	}
+
+	for (int col = 0; col < size; ++col) {
+		grid[row][col].reset();
+	}
+
+	return true;
+}
+
+bool Board::RemoveColumn(int col, int currentPlayerId) {
+	for (int row = 0; row < size; ++row) {
+		if (!grid[row][col].has_value() || grid[row][col]->empty()) {
+			std::cout << "The column cannot be removed because not all positions are occupied.\n";
+			return false;
+		}
+	}
+
+	bool hasPlayerCard = false;
+	for (int row = 0; row < size; ++row) {
+		card topCard = grid[row][col]->top();
+		if (topCard.first == currentPlayerId) {
+			hasPlayerCard = true;
+			break;
+		}
+	}
+
+	if (!hasPlayerCard) {
+		std::cout << "The column cannot be removed because none of the top cards belong to you.\n";
+		return false;
+	}
+
+	for (int row = 0; row < size; ++row) {
+		grid[row][col].reset();
+	}
+
+	return true;
 }
 
 // Acoperă o carte a adversarului cu o carte proprie mai slabă

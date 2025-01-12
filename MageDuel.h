@@ -46,10 +46,10 @@ private:
     void HandleMagicPower(Player& currentPlayer);
 
     // Funcții pentru fiecare categorie de vrăjitori
-    void HandleFireMagePower(Player& currentPlayer);
-    void HandleEarthMagePower(Player& currentPlayer);
-    void HandleAirMagePower(Player& currentPlayer);
-    void HandleWaterMagePower(Player& currentPlayer);
+    bool HandleFireMagePower(Player& currentPlayer);
+    bool HandleEarthMagePower(Player& currentPlayer);
+    bool HandleAirMagePower(Player& currentPlayer);
+    bool HandleWaterMagePower(Player& currentPlayer);
     std::string MageTypeToString(MageType type); 
 
 private:
