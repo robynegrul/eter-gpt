@@ -11,7 +11,7 @@
 #include <string>
 #include <vector>
 #include <stack>
-#include <queue>
+#include <queue>//adaugat
 
 using card = std::pair<int, int>;
 
@@ -29,11 +29,11 @@ enum class ExplosionEffect {
 
 enum class MagicPower {
     RemoveOpponentCard,
-    RemoveLine,
+    RemoveLine,//modificat
     CoverOpponentCard,
     CreatePit,
     MoveStack,
-    ExtraEterCard,
+    ExtraEterCard,//modificat
     MoveOpponentStack,
     ShiftRowToEdge
 };
@@ -80,8 +80,9 @@ private:
 	void ApplyExplosionEffects(const Explosion& explosion, Player& player, Player& other);
 	void EliminateIllusions();
 	
+	//atentie noile functii de mai jos sa fie create in private
 	bool RemoveOpponentCard(int row, int col, int currentPlayerId);
-	bool RemoveRow(int row, int currentPlayerId);
+	bool RemoveRow(int row, int currentPlayerId)
 	bool RemoveColumn(int col, int currentPlayerId);
 	void CoverOpponentCard(int row, int col, card weakerCard);
 	void CreatePit(int row, int col);

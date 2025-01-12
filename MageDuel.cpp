@@ -9,15 +9,17 @@ MageDuel::MageDuel() :
 	currentPlayerId{ 1 },
 	winnerId{ 1 },
 	firstCardPlaced{ false },
+	//elimina cateva insantieri
+
+	//adauga
 	player1UsedMagic{ false },
 	player2UsedMagic{ false } {
-	// Definim cărțile de vrăjitori și puterile lor
 	mageCards = {
 	MageCard(MageType::Fire, "Remove Opponent Card", "Remove Line"),
 	MageCard(MageType::Earth, "Cover Opponent Card", "Create Pit"),
 	MageCard(MageType::Air, "Move Stack", "Extra Eter Card"),
 	MageCard(MageType::Water, "Move Opponent Stack", "Shift Row to Edge")
-	};
+	};//
 }
 
 void MageDuel::StartGame() {
@@ -36,23 +38,24 @@ void MageDuel::ResetRound() {
 
 	explosionTriggered = false;
 	explosionExpired = false;
+	//eliminat 2 instatieri
+
+	//adauga
 	player1UsedMagic = false;
 	player2UsedMagic = false;
+	//
 
-	// Generăm o copie a cărților disponibile
+	//commit
 	std::vector<MageCard> availableCards = mageCards;
 
-	// Alegem aleatoriu o carte pentru Player 1
-	srand(time(0)); // Inițializăm generatorul de numere aleatoare
+	srand(time(0));
 	int index = rand() % availableCards.size();
 	player1MageCard = availableCards[index];
-	availableCards.erase(availableCards.begin() + index); // Eliminăm cartea aleasă
+	availableCards.erase(availableCards.begin() + index); 
 
-	// Alegem aleatoriu o carte pentru Player 2 din cele rămase
 	index = rand() % availableCards.size();
 	player2MageCard = availableCards[index];
 
-	// Fața activă este asignată aleatoriu
 	bool player1Face1Active = (rand() % 2 == 0);
 	bool player2Face1Active = (rand() % 2 == 0);
 
@@ -64,6 +67,7 @@ void MageDuel::ResetRound() {
 
 	player1ActivePower = player1Face1Active ? player1MageCard.face1Power : player1MageCard.face2Power;
 	player2ActivePower = player2Face1Active ? player2MageCard.face1Power : player2MageCard.face2Power;
+	//commit
 
 	currentPlayerId = (player1Wins == 0 && player2Wins == 0) ? 1 : (player1Wins > player2Wins ? 1 : 2);
 	firstCardPlaced = false;
@@ -105,7 +109,7 @@ void MageDuel::HandleExplosion(Player& currentPlayer) {
 	Player& explosionPlayer = (currentPlayerId == 1) ? player1 : player2;
 	Player& otherPlayer = (currentPlayerId == 1) ? player2 : player1;
 
-	std::cout << "Player " << currentPlayerId << ", do you want to activate an explosion? (y/n): ";
+	std::cout << "Player " << currentPlayerId << ", do you want to activate an explosion? (y/n): "//pune pauza dupa player la afisare
 	char choice;
 	std::cin >> choice;
 	if (choice == 'y' || choice == 'Y') {
@@ -123,11 +127,12 @@ void MageDuel::HandleExplosion(Player& currentPlayer) {
 bool MageDuel::HandleCardSelection(Player& currentPlayer) {
 	currentPlayer.DisplayAvailableCards();
 
+	//sterge interioru functiei si pune ce e aici
 	std::cout << "Player " << currentPlayerId
 		<< ", select an action:\n"
 		<< "- Enter -1 for Illusion\n"
 		<< "- Enter 0 for Magic Power\n"
-		<< "- Enter 5 for Eter Card\n"
+		<< "- Enter 5 for Eter Card\n"//adaugat
 		<< "- Enter the value of a card to place it on the board: ";
 
 	int choice;
@@ -142,7 +147,7 @@ bool MageDuel::HandleCardSelection(Player& currentPlayer) {
 	else {
 		return HandleNormalCard(currentPlayer, choice);
 	}
-
+	//
 	return true;
 }
 
@@ -252,6 +257,7 @@ void MageDuel::HandleDrawOrWinner() {
 	}
 }
 
+//commit
 void MageDuel::HandleMagicPower(Player& currentPlayer) {
 	if ((currentPlayerId == 1 && player1UsedMagic) || (currentPlayerId == 2 && player2UsedMagic)) {
 		std::cout << "You have already used your magic power this match!\n";
@@ -263,7 +269,7 @@ void MageDuel::HandleMagicPower(Player& currentPlayer) {
 
 	std::cout << MageTypeToString(mageType) << " Mage active power: " << activePower << "\n";
 
-	bool powerUsedSuccessfully = false; // Variabilă pentru a urmări succesul utilizării puterii
+	bool powerUsedSuccessfully = false;
 
 	switch (mageType) {
 	case MageType::Fire:
@@ -282,8 +288,6 @@ void MageDuel::HandleMagicPower(Player& currentPlayer) {
 		std::cout << "Unknown Mage Type!\n";
 		break;
 	}
-
-	// Actualizăm variabila doar dacă puterea a fost utilizată cu succes
 	if (powerUsedSuccessfully) {
 		if (currentPlayerId == 1) {
 			player1UsedMagic = true;
@@ -296,8 +300,9 @@ void MageDuel::HandleMagicPower(Player& currentPlayer) {
 	}
 
 	board.Display();
-}
+}//commit
 
+//commit
 bool MageDuel::HandleFireMagePower(Player& currentPlayer) {
 	std::cout << "Fire Mage active power: " << player1ActivePower << "\n";
 
@@ -353,15 +358,15 @@ bool MageDuel::HandleFireMagePower(Player& currentPlayer) {
 		std::cout << "Invalid active power for Fire Mage.\n";
 		return false;
 	}
-}
+}//commit
 
+//commit
 bool MageDuel::HandleEarthMagePower(Player& currentPlayer) {
 	std::string currentPlayerActivePower = (currentPlayerId == 1) ? player1ActivePower : player2ActivePower;
 
 	std::cout << "Earth Mage active power: " << currentPlayerActivePower << "\n";
 
 	if (currentPlayerActivePower == "Cover Opponent Card") {
-		// Handle the first power (already implemented)
 		int row, col, weakerCardValue;
 		std::cout << "Enter position (row, col) of opponent's card: ";
 		std::cin >> row >> col;
@@ -384,7 +389,6 @@ bool MageDuel::HandleEarthMagePower(Player& currentPlayer) {
 		}
 	}
 	else if (currentPlayerActivePower == "Create Pit") {
-		// Handle the second power
 		int row, col;
 
 		std::cout << "Enter position (row, col) to create a pit: ";
@@ -401,8 +405,9 @@ bool MageDuel::HandleEarthMagePower(Player& currentPlayer) {
 
 	std::cout << "Invalid active power for Earth Mage.\n";
 	return false;
-}
+}//commit
 
+//commit
 bool MageDuel::HandleAirMagePower(Player& currentPlayer) {
 	std::string currentPlayerActivePower = (currentPlayerId == 1) ? player1ActivePower : player2ActivePower;
 
@@ -443,8 +448,9 @@ bool MageDuel::HandleAirMagePower(Player& currentPlayer) {
 
 	std::cout << "Invalid active power for Air Mage.\n";
 	return false;
-}
+}//commit
 
+//commit
 bool MageDuel::HandleWaterMagePower(Player& currentPlayer) {
 	std::string currentPlayerActivePower = (currentPlayerId == 1) ? player1ActivePower : player2ActivePower;
 
@@ -469,7 +475,6 @@ bool MageDuel::HandleWaterMagePower(Player& currentPlayer) {
 		}
 	}
 	else if (currentPlayerActivePower == "Shift Row to Edge") {
-		// Logic for the second power
 		char choice;
 		int index;
 
@@ -492,8 +497,9 @@ bool MageDuel::HandleWaterMagePower(Player& currentPlayer) {
 
 	std::cout << "Invalid active power for Water Mage.\n";
 	return false;
-}
+}//commit
 
+//commit
 std::string MageDuel::MageTypeToString(MageType type) {
 	switch (type) {
 	case MageType::Fire: return "Fire";
@@ -502,4 +508,4 @@ std::string MageDuel::MageTypeToString(MageType type) {
 	case MageType::Water: return "Water";
 	default: return "Unknown";
 	}
-}
+}//commit

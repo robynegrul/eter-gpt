@@ -5,6 +5,7 @@
 #include "Board.h"
 #include "GameModeStrategy.h"
 #include <iostream>
+//commit
 #include <vector>
 #include <string>
 
@@ -16,15 +17,15 @@ enum class MageType {
 };
 
 struct MageCard {
-    MageType type;               // Tipul vrăjitorului
-    std::string face1Power;      // Puterea de pe fața 1
-    std::string face2Power;      // Puterea de pe fața 2
+    MageType type;               
+    std::string face1Power;     
+    std::string face2Power;      
 
     MageCard() : type(MageType::Fire), face1Power(""), face2Power("") {}
     MageCard(MageType type, const std::string& power1, const std::string& power2)
         : type(type), face1Power(power1), face2Power(power2) {
     }
-};
+};//commit
 
 
 
@@ -43,14 +44,15 @@ private:
     void ShowAvailableModes() const override;
     bool HandleCardSelection(Player& currentPlayer);
     bool HandleNormalCard(Player& currentPlayer, int cardValue);
-    void HandleMagicPower(Player& currentPlayer);
+    void HandleMagicPower(Player& currentPlayer);//adaugat
 
-    // Funcții pentru fiecare categorie de vrăjitori
+    //adaugat 
     bool HandleFireMagePower(Player& currentPlayer);
     bool HandleEarthMagePower(Player& currentPlayer);
     bool HandleAirMagePower(Player& currentPlayer);
     bool HandleWaterMagePower(Player& currentPlayer);
     std::string MageTypeToString(MageType type); 
+    //
 
 private:
     int player1Wins, player2Wins;
@@ -58,16 +60,17 @@ private:
     bool explosionTriggered, explosionExpired;
     bool firstCardPlaced;
     bool player1UsedIllusion, player2UsedIllusion;
-    bool player1UsedMagic, player2UsedMagic;
+    bool player1UsedMagic, player2UsedMagic;//adaugat
 
-    // Instanțe și membri adăugați
-    Board board;                      // Tablă de joc
-    Player player1, player2;          // Jucători
-    std::vector<MageCard> mageCards;  // Cărți de vrăjitori
-    MageCard player1MageCard;         // Vrăjitorul jucătorului 1
-    MageCard player2MageCard;         // Vrăjitorul jucătorului 2
-    std::string player1ActivePower;   // Puterea activă a jucătorului 1
-    std::string player2ActivePower;   // Puterea activă a jucătorului 2
+    Board board;                      
+    Player player1, player2;   
+    //adaugat
+    std::vector<MageCard> mageCards;  
+    MageCard player1MageCard;         
+    MageCard player2MageCard;        
+    std::string player1ActivePower;   
+    std::string player2ActivePower;   
+    //adaugat
 };
 
 #endif
