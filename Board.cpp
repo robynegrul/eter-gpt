@@ -501,7 +501,6 @@ void Board::EliminateIllusions() {
 	}
 }
 
-//commit
 bool Board::ActivateMagicPower(MagicPower power, int row, int col, int playerId, card optionalCard) {
 	switch (power) {
 	case MagicPower::RemoveOpponentCard:
@@ -521,19 +520,18 @@ bool Board::ActivateMagicPower(MagicPower power, int row, int col, int playerId,
 		CreatePit(row, col);
 		return true;
 	case MagicPower::MoveStack:
-		return MoveStack(row, col, optionalCard.first, optionalCard.second, playerId); // srcRow, srcCol, destRow, destCol
+		return MoveStack(row, col, optionalCard.first, optionalCard.second, playerId);
 	case MagicPower::ExtraEterCard:
 		return ExtraEterCard(row, col, playerId);
 	case MagicPower::MoveOpponentStack:
-		return MoveOpponentStack(row, col, optionalCard.first, optionalCard.second, playerId); // srcRow, srcCol, destRow, destCol
+		return MoveOpponentStack(row, col, optionalCard.first, optionalCard.second, playerId);
 	case MagicPower::ShiftRowToEdge:
-		return ShiftRowToEdge(row, col == 1); // col == 1 -> orizontal
+		return ShiftRowToEdge(row, col == 1);
 	default:
 		return false;
 	}
-}//commit
+}
 
-//commit 2
 bool Board::RemoveOpponentCard(int row, int col, int currentPlayerId) {
 	if (row < 0 || row >= size || col < 0 || col >= size) {
 		std::cout << "Invalid position! Out of bounds.\n";
@@ -569,10 +567,7 @@ bool Board::RemoveOpponentCard(int row, int col, int currentPlayerId) {
 
 	std::cout << "Opponent's card removed successfully!\n";
 	return true;
-}//commit
-
-
-//commit
+}
 
 bool Board::RemoveRow(int row, int currentPlayerId) {
 	for (int col = 0; col < size; ++col) {
@@ -601,9 +596,7 @@ bool Board::RemoveRow(int row, int currentPlayerId) {
 	}
 
 	return true;
-}//commit
-
-//commit
+}
 
 bool Board::RemoveColumn(int col, int currentPlayerId) {
 	for (int row = 0; row < size; ++row) {
@@ -632,10 +625,7 @@ bool Board::RemoveColumn(int col, int currentPlayerId) {
 	}
 
 	return true;
-}//commit
-
-
-//commit
+}
 
 void Board::CoverOpponentCard(int row, int col, card weakerCard) {
 	if (row < 0 || row >= size || col < 0 || col >= size) {
@@ -663,10 +653,8 @@ void Board::CoverOpponentCard(int row, int col, card weakerCard) {
 
 	grid[row][col]->push(weakerCard);
 	std::cout << "Your weaker card successfully covered the opponent's card!\n";
-}//commit
+}
 
-
-//commit
 void Board::CreatePit(int row, int col) {
 	if (row < 0 || row >= size || col < 0 || col >= size) {
 		std::cout << "Invalid position! Out of bounds.\n";
@@ -680,9 +668,7 @@ void Board::CreatePit(int row, int col) {
 
 	grid[row][col] = std::make_optional<std::stack<card>>();
 	std::cout << "Hole created successfully at (" << row << ", " << col << ").\n";
-}//commit
-
-//commit
+}
 
 bool Board::MoveStack(int srcRow, int srcCol, int destRow, int destCol, int currentPlayerId) {
 	if (srcRow < 0 || srcRow >= size || srcCol < 0 || srcCol >= size) {
@@ -724,7 +710,7 @@ bool Board::MoveStack(int srcRow, int srcCol, int destRow, int destCol, int curr
 		<< ") to (" << destRow << ", " << destCol << ").\n";
 
 	return true;
-}//commit
+}
 
 //commit
 
