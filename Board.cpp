@@ -712,8 +712,6 @@ bool Board::MoveStack(int srcRow, int srcCol, int destRow, int destCol, int curr
 	return true;
 }
 
-//commit
-
 bool Board::ExtraEterCard(int row, int col, int playerId) {
 	if (row < 0 || row >= size || col < 0 || col >= size) {
 		std::cout << "Invalid position! Out of bounds.\n";
@@ -729,13 +727,12 @@ bool Board::ExtraEterCard(int row, int col, int playerId) {
 		grid[row][col] = std::make_optional<std::stack<card>>();
 	}
 
-	grid[row][col]->push({ playerId, 5 }); // 5 represents the Eter card value
+	grid[row][col]->push({ playerId, 5 });
 	std::cout << "Eter card placed successfully at (" << row << ", " << col << ").\n";
 	return true;
-}//commit
+}
 
 
-//commit
 bool Board::MoveOpponentStack(int srcRow, int srcCol, int destRow, int destCol, int currentPlayerId) {
 	if (srcRow < 0 || srcRow >= size || srcCol < 0 || srcCol >= size) {
 		std::cout << "Invalid source position! Out of bounds.\n";
@@ -776,10 +773,9 @@ bool Board::MoveOpponentStack(int srcRow, int srcCol, int destRow, int destCol, 
 	std::cout << "Stack moved successfully from (" << srcRow << ", " << srcCol
 		<< ") to (" << destRow << ", " << destCol << ").\n";
 	return true;
-}//commit
+}
 
 
-//commit
 bool Board::ShiftRowToEdge(int index, bool isHorizontal) {
 	if (index < 0 || index >= size) {
 		std::cout << "Invalid index! Out of bounds.\n";
@@ -837,9 +833,8 @@ bool Board::ShiftRowToEdge(int index, bool isHorizontal) {
 	std::cout << "Row/column " << index << " successfully moved to the opposite edge.\n";
 
 	return true;
-}//commit
+}
 
-//commit
 
 bool Board::IsBoardConnected() const {
 	std::pair<int, int> start = { -1, -1 };
@@ -897,5 +892,5 @@ bool Board::IsBoardConnected() const {
 	}
 
 	return connectedCells == totalCells;
-}//commit
+}
 
