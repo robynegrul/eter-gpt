@@ -395,7 +395,6 @@ bool MageDuel::HandleEarthMagePower(Player& currentPlayer) {
 	return false;
 }
 
-//commit
 bool MageDuel::HandleAirMagePower(Player& currentPlayer) {
 	std::string currentPlayerActivePower = (currentPlayerId == 1) ? player1ActivePower : player2ActivePower;
 
@@ -436,16 +435,14 @@ bool MageDuel::HandleAirMagePower(Player& currentPlayer) {
 
 	std::cout << "Invalid active power for Air Mage.\n";
 	return false;
-}//commit
+}
 
-//commit
 bool MageDuel::HandleWaterMagePower(Player& currentPlayer) {
 	std::string currentPlayerActivePower = (currentPlayerId == 1) ? player1ActivePower : player2ActivePower;
 
 	std::cout << "Water Mage active power: " << currentPlayerActivePower << "\n";
 
 	if (currentPlayerActivePower == "Move Opponent Stack") {
-		// Logic for the first power (already implemented)
 		int srcRow, srcCol, destRow, destCol;
 
 		std::cout << "Enter source position (row, col) of the opponent's stack: ";
@@ -485,9 +482,8 @@ bool MageDuel::HandleWaterMagePower(Player& currentPlayer) {
 
 	std::cout << "Invalid active power for Water Mage.\n";
 	return false;
-}//commit
+}
 
-//commit
 std::string MageDuel::MageTypeToString(MageType type) {
 	switch (type) {
 	case MageType::Fire: return "Fire";
@@ -496,4 +492,4 @@ std::string MageDuel::MageTypeToString(MageType type) {
 	case MageType::Water: return "Water";
 	default: return "Unknown";
 	}
-}//commit
+}
