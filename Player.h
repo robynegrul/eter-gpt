@@ -13,6 +13,7 @@ private:
 	std::vector<int> cards;
 	const std::vector<int> initialCards;
 	const std::vector<int> extendedInitialCards;
+	card lastCardPlayed;
 
 public:
 	Player(int playerId);

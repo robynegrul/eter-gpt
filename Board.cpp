@@ -894,3 +894,44 @@ bool Board::IsBoardConnected() const {
 	return connectedCells == totalCells;
 }
 
+void Board::DrawAndApplyExplosion(Player& player, Player& opponent) {
+	srand(time(0)); // Reinitialize random generator
+
+	ExplosionPattern newExplosion(size);
+	std::cout << "Generated new explosion pattern at 0 degrees:\n";
+	newExplosion.Display();
+
+	int chosenRotation = -1;
+	while (chosenRotation != 0 && chosenRotation != 90 && chosenRotation != 180 && chosenRotation != 270) {
+		std::cout << "Choose rotation (0, 90, 180, 270): ";
+		std::cin >> chosenRotation;
+	}
+
+	if (chosenRotation > 0) {
+		newExplosion.Rotate(chosenRotation);
+	}
+
+	Explosion explosionEffect;
+	for (const auto& [rowOffset, colOffset] : newExplosion.GetAffectedPositions()) {
+		int affectedRow = rowOffset + size / 2; // Center explosion
+		int affectedCol = colOffset + size / 2;
+
+		if (affectedRow >= 0 && affectedRow < size && affectedCol >= 0 && affectedCol < size) {
+			if (newExplosion.IsHole(rowOffset + 1, colOffset + 1)) {
+				explosionEffect.affectedPositions.push_back({ affectedRow, affectedCol });
+				explosionEffect.effects.push_back(ExplosionEffect::CreateHole);
+			}
+			else if (newExplosion.IsHand(rowOffset + 1, colOffset + 1)) {
+				explosionEffect.affectedPositions.push_back({ affectedRow, affectedCol });
+				explosionEffect.effects.push_back(ExplosionEffect::TakeHand);
+			}
+			else {
+				explosionEffect.affectedPositions.push_back({ affectedRow, affectedCol });
+				explosionEffect.effects.push_back(ExplosionEffect::RemoveCard);
+			}
+		}
+	}
+
+	ApplyExplosionEffects(explosionEffect, player, opponent);
+	Display();
+}

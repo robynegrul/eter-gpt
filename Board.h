@@ -63,6 +63,7 @@ public:
 	bool IsFull() const;
 	int CalculateCardValueSum(int playerId) const;
 	bool ActivateMagicPower(MagicPower power, int row, int col, int playerId, card optionalCard = {});
+	void DrawAndApplyExplosion(Player& player, Player& opponent);
 
 private:
 	bool CheckRow(int row, int playerValue) const;
@@ -80,7 +81,6 @@ private:
 	void ApplyExplosionEffects(const Explosion& explosion, Player& player, Player& other);
 	void EliminateIllusions();
 	
-	//atentie noile functii de mai jos sa fie create in private
 	bool RemoveOpponentCard(int row, int col, int currentPlayerId);
 	bool RemoveRow(int row, int currentPlayerId);
 	bool RemoveColumn(int col, int currentPlayerId);
