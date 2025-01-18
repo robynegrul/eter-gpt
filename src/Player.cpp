@@ -24,6 +24,7 @@ bool Player::PlayCard(int cardValue)
 	for (auto it = cards.begin(); it != cards.end(); ++it) {
 		if (*it == cardValue)
 		{
+			m_LastCard = cardValue;
 			cards.erase(it);
 			return true;
 		}
@@ -62,6 +63,16 @@ bool Player::HasCard(int cardValue) const
 		if (card == cardValue)
 			return true;
 	return false;
+}
+
+void Player::RemoveCard(int cardValue)
+{
+	auto it = std::find(cards.begin(), cards.end(), cardValue);
+	while (it != cards.end())
+	{
+		cards.erase(it);
+		it = std::find(cards.begin(), cards.end(), cardValue);
+	}
 }
 
 void Player::AddCard(int cardValue)

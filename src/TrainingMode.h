@@ -1,6 +1,4 @@
 #pragma once
-#ifndef TRAININGMODE_H
-#define TRAININGMODE_H
 
 #include "Board.h"
 #include "GameModeStrategy.h"
@@ -31,7 +29,3 @@ private:
     Board board;
     Player player1, player2;
 };
-
-#endif
-
-

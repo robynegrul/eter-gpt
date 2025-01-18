@@ -1,6 +1,4 @@
 #pragma once
-#ifndef PLAYER_H
-#define PLAYER_H
 
 #include <iostream>
 #include <algorithm>
@@ -14,6 +12,8 @@ private:
 	const std::vector<int> initialCards;
 	const std::vector<int> extendedInitialCards;
 
+	int m_LastCard;
+
 public:
 	Player(int playerId);
 	Player(const Player& other);
@@ -24,8 +24,10 @@ public:
 	bool PlayCard(int cardValue);
 	bool HasCard(int cardValue) const;
 
+	void RemoveCard(int cardValue);
+	inline int GetLastCard() const { return m_LastCard; }
+
 private:
 	Player& operator=(const Player& other);
 	bool HasCardsLeft() const;
 };
-#endif

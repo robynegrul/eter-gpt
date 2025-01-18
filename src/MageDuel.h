@@ -1,6 +1,4 @@
 #pragma once
-#ifndef MAGEDUEL_H
-#define MAGEDUEL_H
 
 #include "Board.h"
 #include "GameModeStrategy.h"
@@ -59,13 +57,11 @@ private:
     bool player1UsedIllusion, player2UsedIllusion;
     bool player1UsedMagic, player2UsedMagic;
 
-    Board board;                      
-    Player player1, player2;   
-    std::vector<MageCard> mageCards;  
-    MageCard player1MageCard;         
-    MageCard player2MageCard;        
-    std::string player1ActivePower;   
-    std::string player2ActivePower;   
+    Board board;
+    Player player1, player2;
+    std::vector<MageCard> mageCards;
+    MageCard player1MageCard;
+    MageCard player2MageCard;
+    std::string player1ActivePower;
+    std::string player2ActivePower;
 };
-
-#endif

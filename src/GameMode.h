@@ -1,6 +1,4 @@
 #pragma once
-#ifndef GAMEMODE_H
-#define GAMEMODE_H
 
 #include <string>
 
@@ -10,5 +8,3 @@ public:
     virtual void start() = 0;
     virtual std::string getName() const = 0;
 };
-
-#endif

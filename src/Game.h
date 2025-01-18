@@ -1,6 +1,4 @@
 #pragma once
-#ifndef GAME_H
-#define GAME_H
 
 #include "GameModeStrategy.h"
 #include "TrainingMode.h"
@@ -19,5 +17,3 @@ public:
 private:
     std::unique_ptr<GameModeStrategy> currentMode;
 };
-
-#endif

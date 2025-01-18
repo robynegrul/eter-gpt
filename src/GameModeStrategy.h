@@ -1,6 +1,4 @@
 #pragma once
-#ifndef GAMEMODESTRATEGY_H
-#define GAMEMODESTRATEGY_H
 
 class GameModeStrategy {
 public:
@@ -12,5 +10,3 @@ public:
     virtual void DisplayScore() const = 0;
     virtual void ShowAvailableModes() const = 0;
 };
-
-#endif 

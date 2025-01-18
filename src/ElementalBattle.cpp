@@ -43,6 +43,8 @@ void ElementalBattle::ResetRound() {
 void ElementalBattle::PlayRound() {
     currentPlayerId = winnerId;
     while (true) {
+        // test :)
+        // HandeDestroyer(GetCurrentPlayer(), GetOtherPlayer());
         Player& currentPlayer = (currentPlayerId == 1) ? player1 : player2;
 
         if (board.CanActivateExplosion() && !explosionTriggered && !explosionExpired) {
@@ -193,6 +195,20 @@ bool ElementalBattle::HandleNormalCard(Player& currentPlayer, int cardValue) {
     }
 
     return true;
+}
+
+void ElementalBattle::HandeDestroyer(Player &currentPlayer, Player &otherPlayer)
+{
+    std::cout << "Player " << currentPlayer.GetId() << " do you want to use the Destroyer card? (y/n): ";
+    char choice = 'n';
+    std::cin >> choice;
+    if (choice == 'y' || choice == 'Y')
+    {
+        int lastCard = otherPlayer.GetLastCard();
+        currentPlayer.RemoveCard(lastCard);
+        otherPlayer.RemoveCard(lastCard);
+    }
+    currentPlayerId = (currentPlayerId == 1) ? 2 : 1;
 }
 
 void ElementalBattle::HandleDrawOrWinner() {

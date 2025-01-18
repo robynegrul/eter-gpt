@@ -1,6 +1,4 @@
 #pragma once
-#ifndef ELEMENTALBATTLE_H
-#define ELEMENTALBATTLE_H
 
 #include "Board.h"
 #include "GameModeStrategy.h"
@@ -23,6 +21,11 @@ private:
     bool HandleCardSelection(Player& currentPlayer);
     bool HandleNormalCard(Player& currentPlayer, int cardValue);
 
+    void HandeDestroyer(Player& currentPlayer, Player& otherPlayer);
+
+    inline Player& GetCurrentPlayer() { return (currentPlayerId == 1) ? player1 : player2; }
+    Player& GetOtherPlayer() { return (currentPlayerId == 1) ? player2 : player1; }
+
 private:
     int player1Wins, player2Wins;
     int currentPlayerId, winnerId;
@@ -32,5 +35,3 @@ private:
     Board board;
     Player player1, player2;
 };
-
-#endif

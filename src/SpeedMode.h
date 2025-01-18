@@ -1,6 +1,4 @@
 #pragma once
-#ifndef SPEEDMODE_H
-#define SPEEDMODE_H
 
 #include "GameModeStrategy.h"
 #include <memory>
@@ -21,5 +19,3 @@ private:
     std::unique_ptr<GameModeStrategy> currentMode;
     int roundDurationInSeconds;
 };
-
-#endif

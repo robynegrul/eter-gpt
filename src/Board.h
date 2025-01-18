@@ -1,6 +1,4 @@
 ﻿#pragma once
-#ifndef BOARD_H
-#define BOARD_H
 
 #include "ExplosionPattern.h"
 #include "Player.h"
@@ -92,5 +90,3 @@ private:
 	bool ShiftRowToEdge(int row, bool isHorizontal);
 	bool IsBoardConnected() const;
 };
-
-#endif

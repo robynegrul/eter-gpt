@@ -1,6 +1,4 @@
 #pragma once
-#ifndef EXPLOSIONPATTERN_H
-#define EXPLOSIONPATTERN_H
 
 #include <cstdlib>
 #include <ctime>
@@ -24,6 +22,3 @@ private:
 	void GenerateRandomPattern();
 
 };
-
-#endif
-
